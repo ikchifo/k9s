@@ -58,6 +58,7 @@ type Table struct {
 	readOnly       bool
 	noIcon         bool
 	fullGVR        bool
+	header         model1.Header
 }
 
 // NewTable returns a new table view.
@@ -143,9 +144,8 @@ func (t *Table) getSelectedColIdx() int {
 }
 
 // initSelectedColumn initializes the selected column index based on current sort column.
-func (t *Table) initSelectedColumn() {
-	data := t.GetFilteredData()
-	if data == nil || data.HeaderCount() == 0 {
+func (t *Table) initSelectedColumn(header model1.Header) {
+	if len(header) == 0 {
 		return
 	}
 
@@ -158,7 +158,6 @@ func (t *Table) initSelectedColumn() {
 	}
 
 	// Find the visual column index for the current sort column
-	header := data.Header()
 	visibleCol := 0
 	for _, h := range header {
 		if t.shouldExcludeColumn(h) {
@@ -181,14 +180,13 @@ func (t *Table) initSelectedColumn() {
 
 // moveSelectedColumn moves the column selection by delta (-1 for left, +1 for right).
 func (t *Table) moveSelectedColumn(delta int) {
-	data := t.GetFilteredData()
-	if data == nil || data.HeaderCount() == 0 {
+	if len(t.header) == 0 {
 		return
 	}
 
 	// Count visible columns
 	visibleCount := 0
-	for _, h := range data.Header() {
+	for _, h := range t.header {
 		if !t.shouldExcludeColumn(h) {
 			visibleCount++
 		}
@@ -208,7 +206,7 @@ func (t *Table) moveSelectedColumn(delta int) {
 	}
 	t.mx.Unlock()
 
-	t.refreshHeaders(data)
+	t.refreshHeaders(t.header)
 }
 
 // SelectNextColumn moves the column selection to the right.
@@ -223,8 +221,7 @@ func (t *Table) SelectPrevColumn() {
 
 // SortSelectedColumn sorts by the currently selected column.
 func (t *Table) SortSelectedColumn() {
-	data := t.GetFilteredData()
-	if data == nil || data.HeaderCount() == 0 {
+	if len(t.header) == 0 {
 		return
 	}
 
@@ -235,10 +232,9 @@ func (t *Table) SortSelectedColumn() {
 
 	// Map visual column index to actual header column name
 	// (accounting for hidden columns)
-	header := data.Header()
 	visibleCol := 0
 	var colName string
-	for _, h := range header {
+	for _, h := range t.header {
 		if t.shouldExcludeColumn(h) {
 			continue
 		}
@@ -456,7 +452,7 @@ func (t *Table) doUpdate(data *model1.TableData) *model1.TableData {
 	// This ensures the highlight starts at the sorted column
 	newSortCol := t.getSortCol()
 	if oldSortCol.Name != newSortCol.Name {
-		t.initSelectedColumn()
+		t.initSelectedColumn(data.Header())
 	}
 
 	return data
@@ -471,7 +467,8 @@ func (t *Table) shouldExcludeColumn(h model1.HeaderColumn) bool {
 
 func (t *Table) UpdateUI(cdata, data *model1.TableData) {
 	t.resetCells(cdata)
-	t.refreshHeaders(cdata)
+	t.header = cdata.Header()
+	t.refreshHeaders(t.header)
 	cdata.Sort(t.getSortCol())
 
 	pads := make(MaxyPad, cdata.HeaderCount())
@@ -613,7 +610,7 @@ func (t *Table) SortColCmd(name string, asc bool) func(evt *tcell.EventKey) *tce
 		t.setMSort(true)
 
 		// Sync selected column index with the new sort column
-		t.initSelectedColumn()
+		t.initSelectedColumn(t.header)
 
 		t.Refresh()
 		return nil
@@ -682,14 +679,14 @@ func (t *Table) AddHeaderCell(col int, h model1.HeaderColumn) {
 }
 
 // refreshHeaders updates only the header row cells without rebuilding the entire table.
-func (t *Table) refreshHeaders(data *model1.TableData) {
-	if data == nil || data.HeaderCount() == 0 {
+func (t *Table) refreshHeaders(header model1.Header) {
+	if len(header) == 0 {
 		return
 	}
 	fg := t.styles.Table().Header.FgColor.Color()
 	bg := t.styles.Table().Header.BgColor.Color()
 	var col int
-	for _, h := range data.Header() {
+	for _, h := range header {
 		if t.shouldExcludeColumn(h) {
 			continue
 		}
