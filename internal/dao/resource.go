@@ -80,7 +80,7 @@ func (r *Resource) Get(_ context.Context, path string) (runtime.Object, error) {
 
 // ToYAML returns a resource yaml.
 func (r *Resource) ToYAML(path string, showManaged bool) (string, error) {
-	o, err := r.Get(context.Background(), path)
+	o, err := r.yamlSource(path, showManaged)
 	if err != nil {
 		return "", err
 	}
@@ -90,4 +90,13 @@ func (r *Resource) ToYAML(path string, showManaged bool) (string, error) {
 		return "", fmt.Errorf("unable to marshal resource %w", err)
 	}
 	return raw, nil
+}
+
+// yamlSource reads from the API when managed fields are needed, since the cache drops them.
+func (r *Resource) yamlSource(path string, showManaged bool) (runtime.Object, error) {
+	if showManaged {
+		return r.Generic.Get(context.Background(), path)
+	}
+
+	return r.Get(context.Background(), path)
 }

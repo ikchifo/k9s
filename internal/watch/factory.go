@@ -248,6 +248,7 @@ func (f *Factory) ForResource(ns string, gvr *client.GVR) (informers.GenericInfo
 		)
 		return inf, nil
 	}
+	_ = inf.Informer().SetTransform(dropManagedFields)
 
 	f.mx.RLock()
 	defer f.mx.RUnlock()
@@ -278,6 +279,14 @@ func (f *Factory) ensureFactory(ns string) (di.DynamicSharedInformerFactory, err
 	)
 
 	return f.factories[ns], nil
+}
+
+func dropManagedFields(o any) (any, error) {
+	if u, ok := o.(*unstructured.Unstructured); ok {
+		u.SetManagedFields(nil)
+	}
+
+	return o, nil
 }
 
 // AddForwarder registers a new portforward for a given container.

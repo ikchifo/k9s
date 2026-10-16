@@ -48,7 +48,7 @@ func (s *Secret) ToYAML(path string, showManaged bool) (string, error) {
 }
 
 func (s *Secret) decodeYAML(path string, showManaged bool) (string, error) {
-	o, err := s.Get(context.Background(), path)
+	o, err := s.yamlSource(path, showManaged)
 	if err != nil {
 		return "", err
 	}
