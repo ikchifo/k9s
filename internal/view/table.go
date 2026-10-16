@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
+	"time"
 
 	"github.com/derailed/k9s/internal"
 	"github.com/derailed/k9s/internal/client"
@@ -29,7 +31,12 @@ type Table struct {
 	envFn      EnvFunc
 	bindKeysFn []BindKeysFunc
 	command    *cmd.Interpreter
+
+	filterTimer *time.Timer
+	filterMx    sync.Mutex
 }
+
+const filterDelay = 100 * time.Millisecond
 
 // NewTable returns a new viewer.
 func NewTable(gvr *client.GVR) *Table {
@@ -195,9 +202,18 @@ func (t *Table) SetEnterFn(f EnterFunc) {
 func (*Table) SetExtraActionsFn(BoostActionsFunc) {}
 
 // BufferCompleted indicates input was accepted.
-func (t *Table) BufferCompleted(text, _ string) {
-	t.app.QueueUpdateDraw(func() {
-		t.Filter(text)
+// Filtering redraws every row, so it waits until keys stop.
+func (t *Table) BufferCompleted(string, string) {
+	t.filterMx.Lock()
+	defer t.filterMx.Unlock()
+
+	if t.filterTimer != nil {
+		t.filterTimer.Stop()
+	}
+	t.filterTimer = time.AfterFunc(filterDelay, func() {
+		t.app.QueueUpdateDraw(func() {
+			t.Filter(t.CmdBuff().GetText())
+		})
 	})
 }
 

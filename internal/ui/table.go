@@ -386,7 +386,7 @@ func (t *Table) FilterInput(r rune) bool {
 // Filter filters out table data.
 func (t *Table) Filter(string) {
 	t.ClearSelection()
-	t.doUpdate(t.filtered(t.GetModel().Peek()))
+	t.Refresh()
 	t.UpdateTitle()
 	t.SelectFirstRow()
 }
