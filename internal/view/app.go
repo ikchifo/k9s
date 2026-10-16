@@ -82,7 +82,7 @@ func (a *App) ReloadStyles() {
 // UpdateClusterInfo updates clusterInfo panel
 func (a *App) UpdateClusterInfo() {
 	if a.factory != nil {
-		a.clusterModel.Reset(a.factory)
+		go a.clusterModel.Reset(a.factory)
 	}
 }
 
