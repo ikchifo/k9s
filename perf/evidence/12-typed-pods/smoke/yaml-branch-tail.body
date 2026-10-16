@@ -1,0 +1,38 @@
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-15T21:37:58Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-15T21:37:58Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - image: registry.example.com/team/svc-1:1.2.3
+    imageID: ""
+    lastState: {}
+    name: app
+    ready: true
+    restartCount: 0
+    state:
+      running:
+        startedAt: "2026-10-15T21:37:58Z"
+  - image: registry.example.com/infra/proxy:2.0
+    imageID: ""
+    lastState: {}
+    name: sidecar
+    ready: true
+    restartCount: 0
+    state:
+      running:
+        startedAt: "2026-10-15T21:37:58Z"
+  hostIP: 192.168.97.3
+  hostIPs:
+  - ip: 192.168.97.3
+  phase: Running
+  podIP: 10.244.17.4
+  podIPs:
+  - ip: 10.244.17.4
+  qosClass: Burstable
+  startTime: "2026-10-15T21:37:58Z"

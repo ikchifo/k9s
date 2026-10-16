@@ -1,0 +1,27 @@
+# Wire size + transfer time for the k9s-l pods LIST (20,170 pods), via kubectl
+# proxy on 127.0.0.1:18001 (local apiserver in docker), 2026-10-15.
+# NOTE: bare `Accept: application/json` + User-Agent curl/* gets PRETTY-printed
+# JSON from the apiserver (226,680,995B = 2.12x). k9s/kubectl/client-go UAs
+# get compact JSON. ?pretty=false forces compact for any UA. All numbers below
+# are compact unless noted.
+
+GET /api/v1/pods?pretty=false            Accept: application/json                 -> 106,847,285B  0.94-0.97s
+GET /api/v1/pods                         Accept: application/vnd.kubernetes.protobuf ->  67,723,821B  0.46-0.57s
+GET /api/v1/pods?includeObject=Object    Accept: application/json;as=Table;v=v1;g=meta.k8s.io -> 247,529,078B  2.96s
+GET /api/v1/pods?includeObject=Metadata Accept: application/json;as=Table;v=v1;g=meta.k8s.io -> 124,732,040B  1.24s
+GET /api/v1/pods?pretty=false (UA curl, pretty default)                     -> 226,680,995B  2.37s  [UA artifact, not k9s]
+
+# WatchList initial burst (what k9s's dynamic informer actually consumes):
+# 20,171 events (20,170 ADDED + 1 initial-events-end BOOKMARK), 108,003,328B.
+# Timing through the proxy (python raw read until bookmark, see watchlist-raw-timing.txt):
+#   run0 229.8s (cluster busy with other perf agents), run1 28.0s, run2 2.04s (quiet).
+
+# deployments LIST at l (200 deps): 714,571B compact JSON.
+# events table at l (21,173 events, as=Table includeObject=Metadata): 25,590,759B, 0.49s.
+
+# s cluster (514 pods): JSON LIST compact 2,745,902B / protobuf 1,743,395B.
+
+# Server-side duration (apiserver_request_duration_seconds, controlled
+# single-request deltas, see metrics-l-listexp-*.txt):
+#   JSON LIST (compact, 106.8MB): bucket le=1.0 (i.e. 0.8-1.0s server-side)
+#   protobuf LIST (67.7MB):       bucket le=0.6 (i.e. ~0.46s server-side)

@@ -1,0 +1,2 @@
+sort_l.cpu.pb.gz: 50 x 'A' at 400ms, 20s profile (sort_l.notes.txt)
+filter_l.cpu.pb.gz: 84 keys at 150ms (> 100ms keyEntryDelay, so each key fires BufferCompleted -> ui.Table.Filter)

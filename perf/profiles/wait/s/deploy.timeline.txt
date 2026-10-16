@@ -1,0 +1,10 @@
+     0.0 MARK key deploy-enter
+    29.5 "Response" verb="POST" url="/apis/authorization.k8s.io/v1/selfsubjectaccessreviews?timeout=2m0s" status="201 Created" milliseconds=2
+    29.6 "Starting reflector" type="apps/v1, Resource=deployments" resyncPeriod="10m0s" 
+    29.6 "Listing and watching" type="apps/v1, Resource=deployments" 
+    31.5 MARK title 
+    34.4 "Response" verb="GET" url="/apis/apps/v1/deployments?allowWatchBookmarks=true&resourceVersionMatch=NotOlderThan&sendInitialEvents=true&timeoutSeconds=
+    37.5 "Exiting watch because received the bookmark that marks the end of initial events stream"  totalItems=8 duration="7.832458ms"
+    37.5 "Caches populated" type="apps/v1, Resource=deployments" 
+   335.4 MARK title deployments(all)[7]
+   336.3 MARK done deploy

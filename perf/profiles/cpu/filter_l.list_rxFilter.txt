@@ -1,0 +1,42 @@
+Total: 19.90s
+ROUTINE ======================== github.com/derailed/k9s/internal/model1.(*TableData).rxFilter in /Users/ikennao/repos/OSS/k9s/internal/model1/table_data.go
+         0      5.58s (flat, cum) 28.04% of Total
+         .          .    166:func (t *TableData) rxFilter(q string, inverse bool) (*RowEvents, error) {
+         .          .    167:	if strings.Contains(q, " ") {
+         .          .    168:		return t.rowEvents, nil
+         .          .    169:	}
+         .          .    170:
+         .          .    171:	if inverse {
+         .          .    172:		q = q[1:]
+         .          .    173:	}
+         .          .    174:	rx, err := regexp.Compile(`(?i)(` + q + `)`)
+         .          .    175:	if err != nil {
+         .          .    176:		return nil, fmt.Errorf("invalid rx filter %q: %w", q, err)
+         .          .    177:	}
+         .          .    178:
+         .          .    179:	vidx := t.header.FilterColIndices(t.namespace, true)
+         .       10ms    180:	rr := NewRowEvents(t.RowCount() / 2)
+         .      5.57s    181:	t.rowEvents.Range(func(_ int, re RowEvent) bool {
+         .          .    182:		ff := make([]string, 0, len(re.Row.Fields))
+         .          .    183:		for idx, r := range re.Row.Fields {
+         .          .    184:			if !vidx.Has(idx) {
+         .          .    185:				continue
+         .          .    186:			}
+ROUTINE ======================== github.com/derailed/k9s/internal/model1.(*TableData).rxFilter.func1 in /Users/ikennao/repos/OSS/k9s/internal/model1/table_data.go
+     140ms      5.54s (flat, cum) 27.84% of Total
+         .          .    181:	t.rowEvents.Range(func(_ int, re RowEvent) bool {
+      10ms      210ms    182:		ff := make([]string, 0, len(re.Row.Fields))
+      90ms       90ms    183:		for idx, r := range re.Row.Fields {
+         .      280ms    184:			if !vidx.Has(idx) {
+         .          .    185:				continue
+         .          .    186:			}
+      40ms       60ms    187:			ff = append(ff, r)
+         .          .    188:		}
+         .      4.72s    189:		match := rx.MatchString(strings.Join(ff, spacer))
+         .          .    190:		if (inverse && !match) || (!inverse && match) {
+         .      180ms    191:			rr.Add(re)
+         .          .    192:		}
+         .          .    193:
+         .          .    194:		return true
+         .          .    195:	})
+         .          .    196:

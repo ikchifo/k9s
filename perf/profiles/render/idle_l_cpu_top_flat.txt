@@ -1,0 +1,38 @@
+File: k9s-prof-render
+Type: cpu
+Time: 2026-10-15 18:29:04 EDT
+Duration: 30.10s, Total samples = 15.92s (52.90%)
+Showing nodes accounting for 10.69s, 67.15% of 15.92s total
+Dropped 362 nodes (cum <= 0.08s)
+Showing top 30 nodes out of 212
+      flat  flat%   sum%        cum   cum%
+     2.28s 14.32% 14.32%      2.28s 14.32%  runtime.memclrNoHeapPointers
+     1.53s  9.61% 23.93%      1.53s  9.61%  runtime.madvise
+     0.73s  4.59% 28.52%      1.09s  6.85%  runtime.tryDeferToSpanScan
+     0.68s  4.27% 32.79%      0.68s  4.27%  runtime.kevent
+     0.57s  3.58% 36.37%      0.93s  5.84%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+     0.50s  3.14% 39.51%      1.18s  7.41%  runtime.scanObjectsSmall
+     0.47s  2.95% 42.46%      0.47s  2.95%  internal/runtime/maps.memHashAES
+     0.44s  2.76% 45.23%      0.44s  2.76%  runtime.usleep
+     0.33s  2.07% 47.30%      1.52s  9.55%  runtime.mapaccess2_faststr
+     0.32s  2.01% 49.31%      0.32s  2.01%  runtime.(*gcBits).bytep (inline)
+     0.26s  1.63% 50.94%      0.26s  1.63%  runtime.memequal
+     0.20s  1.26% 52.20%      0.32s  2.01%  github.com/fvbommel/sortorder.NaturalCompare
+     0.19s  1.19% 53.39%      0.19s  1.19%  runtime.pthread_cond_wait
+     0.18s  1.13% 54.52%      7.47s 46.92%  k8s.io/apimachinery/pkg/runtime.structFromUnstructured
+     0.16s  1.01% 55.53%      0.18s  1.13%  internal/runtime/maps.MemHash64
+     0.16s  1.01% 56.53%      0.20s  1.26%  runtime.(*mspan).moveInlineMarks
+     0.16s  1.01% 57.54%      0.98s  6.16%  runtime.mapaccess2
+     0.14s  0.88% 58.42%      0.14s  0.88%  runtime.(*spanScanOwnership).or (inline)
+     0.14s  0.88% 59.30%      0.14s  0.88%  runtime.mmap
+     0.14s  0.88% 60.18%      0.14s  0.88%  runtime.pthread_cond_signal
+     0.14s  0.88% 61.06%      0.17s  1.07%  type:.eq.IM8
+     0.13s  0.82% 61.87%      0.31s  1.95%  runtime.interhash
+     0.13s  0.82% 62.69%      0.16s  1.01%  runtime.mallocgcTinySC2
+     0.11s  0.69% 63.38%      0.43s  2.70%  runtime.mallocgcSmallScanNoHeaderSC2
+     0.10s  0.63% 64.01%      7.55s 47.42%  k8s.io/apimachinery/pkg/runtime.fromUnstructured
+     0.10s  0.63% 64.64%      0.15s  0.94%  reflect.Value.Elem
+     0.10s  0.63% 65.26%      0.13s  0.82%  reflect.Value.Field
+     0.10s  0.63% 65.89%      0.36s  2.26%  reflect.Value.Set
+     0.10s  0.63% 66.52%      0.10s  0.63%  runtime.extractHeapBitsSmall
+     0.10s  0.63% 67.15%      3.41s 21.42%  runtime.mallocgc

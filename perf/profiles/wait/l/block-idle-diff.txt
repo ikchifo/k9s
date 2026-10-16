@@ -1,0 +1,22 @@
+File: k9s-prof-wait
+Type: delay
+Time: 2026-10-15 18:46:25 EDT
+Showing nodes accounting for 94.75s, 62.72% of 151.07s total
+Dropped 44 nodes (cum <= 0.76s)
+Showing top 15 nodes out of 34
+      flat  flat%   sum%        cum   cum%
+    70.07s 46.38% 46.38%     70.07s 46.38%  runtime.selectgo
+    24.03s 15.90% 62.29%     24.03s 15.90%  runtime.chanrecv1
+     0.65s  0.43% 62.72%      0.65s  0.43%  sync.(*WaitGroup).Wait
+         0     0% 62.72%      0.65s  0.43%  github.com/cenkalti/backoff/v4.Operation.withEmptyData.func1
+         0     0% 62.72%      0.65s  0.43%  github.com/cenkalti/backoff/v4.Retry (inline)
+         0     0% 62.72%      0.65s  0.43%  github.com/cenkalti/backoff/v4.RetryNotify (inline)
+         0     0% 62.72%      0.65s  0.43%  github.com/cenkalti/backoff/v4.RetryNotifyWithTimer
+         0     0% 62.72%      0.65s  0.43%  github.com/cenkalti/backoff/v4.doRetryNotify[go.shape.struct {}]
+         0     0% 62.72%     10.52s  6.97%  github.com/derailed/k9s/cmd.Execute
+         0     0% 62.72%     10.52s  6.97%  github.com/derailed/k9s/cmd.run
+         0     0% 62.72%     10.65s  7.05%  github.com/derailed/k9s/internal/model.(*Table).Watch.gowrap1
+         0     0% 62.72%      0.65s  0.43%  github.com/derailed/k9s/internal/model.(*Table).reconcile
+         0     0% 62.72%      0.65s  0.43%  github.com/derailed/k9s/internal/model.(*Table).refresh
+         0     0% 62.72%     10.65s  7.05%  github.com/derailed/k9s/internal/model.(*Table).updater
+         0     0% 62.72%      0.65s  0.43%  github.com/derailed/k9s/internal/model.(*Table).updater.func1

@@ -1,0 +1,29 @@
+     0.0 MARK launch
+    69.0 Config loaded from file:  /Users/ikennao/repos/OSS/k9s/perf/.kube/k9s-l.yaml
+    86.1 "Response" verb="GET" url="/api" status="200 OK" milliseconds=16
+    87.1 "Response" verb="GET" url="/apis" status="200 OK" milliseconds=0
+    91.7 "Response" verb="POST" url="/apis/authorization.k8s.io/v1/selfsubjectaccessreviews" status="201 Created" milliseconds=3
+    93.2 "Response" verb="GET" url="/api/v1/namespaces" status="200 OK" milliseconds=1
+    94.0 "Response" verb="GET" url="/version?timeout=2m0s" status="200 OK" milliseconds=0
+    96.6 "Response" verb="GET" url="/version?timeout=32s" status="200 OK" milliseconds=1
+    97.8 "Response" verb="POST" url="/apis/authorization.k8s.io/v1/selfsubjectaccessreviews?timeout=2m0s" status="201 Created" milliseconds=0
+    98.0 "Starting reflector" type="apiextensions.k8s.io/v1, Resource=customresourcedefinitions" resyncPeriod="10m0s" 
+    98.1 "Listing and watching" type="apiextensions.k8s.io/v1, Resource=customresourcedefinitions" 
+    98.3 "Response" verb="POST" url="/apis/authorization.k8s.io/v1/selfsubjectaccessreviews?timeout=2m0s" status="201 Created" milliseconds=0
+    99.3 "Response" verb="GET" url="/apis/apiextensions.k8s.io/v1/customresourcedefinitions?allowWatchBookmarks=true&resourceVersionMatch=NotOlderThan&sendInit
+    99.4 "Exiting watch because received the bookmark that marks the end of initial events stream"  totalItems=1 duration="1.28875ms"
+    99.4 "Caches populated" type="apiextensions.k8s.io/v1, Resource=customresourcedefinitions" 
+   198.8 "Starting reflector" type="/v1, Resource=nodes" resyncPeriod="10m0s" 
+   198.8 "Listing and watching" type="/v1, Resource=nodes" 
+   201.3 "Response" verb="POST" url="/apis/authorization.k8s.io/v1/selfsubjectaccessreviews?timeout=2m0s" status="201 Created" milliseconds=1
+   201.4 "Response" verb="GET" url="/version?timeout=2m0s" status="200 OK" milliseconds=1
+   201.4 "Starting reflector" type="/v1, Resource=pods" resyncPeriod="10m0s" 
+   201.4 "Listing and watching" type="/v1, Resource=pods" 
+   203.8 "Response" verb="GET" url="/api/v1/nodes?allowWatchBookmarks=true&resourceVersionMatch=NotOlderThan&sendInitialEvents=true&timeoutSeconds=333&watch=tr
+   209.9 "Response" verb="GET" url="/api/v1/pods?allowWatchBookmarks=true&resourceVersionMatch=NotOlderThan&sendInitialEvents=true&timeoutSeconds=407&watch=tru
+   219.4 "Exiting watch because received the bookmark that marks the end of initial events stream"  totalItems=82 duration="20.573958ms"
+   219.4 "Caches populated" type="/v1, Resource=nodes" 
+  4321.9 "Exiting watch because received the bookmark that marks the end of initial events stream"  totalItems=20171 duration="4.120462916s"
+  4322.3 "Caches populated" type="/v1, Resource=pods" 
+  4788.9 MARK done startup
+  4789.0 MARK title pods(all)[20,170]

@@ -1,0 +1,15 @@
+label,size,metric,unit,n,median,p90,min,max
+07-managed-fields,m,startup_first_byte,ms,5,110.4,118.0,105.8,121.3
+07-managed-fields,m,startup_first_frame,ms,5,2383.5,2419.6,2288.5,2425.4
+07-managed-fields,m,startup_full_table,ms,5,2383.7,2419.8,2288.8,2425.7
+07-managed-fields,m,idle_cpu_pct,%,5,35.4,38.0,33.5,39.1
+07-managed-fields,m,idle_rss,MiB,5,410.7,415.5,380.9,417.7
+07-managed-fields,m,refresh_cpu,ms,5,709.0,759.8,670.0,783.0
+07-managed-fields,m,refresh_bytes,B,5,23.0,23.0,23.0,23.0
+07-managed-fields,m,switch_to_deploy,ms,5,71.9,78.5,65.0,79.0
+07-managed-fields,m,switch_to_pods,ms,5,107.9,116.6,99.2,117.7
+07-managed-fields,m,filter_key_echo,ms,30,8.2,10.8,5.1,11.4
+07-managed-fields,m,filter_apply,ms,5,186.3,190.4,181.3,192.6
+07-managed-fields,m,scroll_page_down,ms,50,7.8,8.3,5.4,10.1
+07-managed-fields,m,sort_toggle,ms,10,40.0,51.5,36.0,52.2
+07-managed-fields,m,context_switch,ms,5,2334.8,2395.1,2305.8,2409.7

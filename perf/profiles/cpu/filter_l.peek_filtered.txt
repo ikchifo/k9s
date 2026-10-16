@@ -1,0 +1,13 @@
+File: k9s-prof-cpu
+Type: cpu
+Time: 2026-10-15 18:26:23 EDT
+Duration: 20.09s, Total samples = 19.90s (99.06%)
+Showing nodes accounting for 19.90s, 100% of 19.90s total
+----------------------------------------------------------+-------------
+      flat  flat%   sum%        cum   cum%   calls calls% + context 	 	 
+----------------------------------------------------------+-------------
+                                             5.23s 93.73% |   github.com/derailed/k9s/internal/ui.(*Table).Filter
+                                             0.35s  6.27% |   github.com/derailed/k9s/internal/ui.(*Table).Update
+         0     0%     0%      5.58s 28.04%                | github.com/derailed/k9s/internal/ui.(*Table).filtered
+                                             5.58s   100% |   github.com/derailed/k9s/internal/model1.(*TableData).Filter
+----------------------------------------------------------+-------------

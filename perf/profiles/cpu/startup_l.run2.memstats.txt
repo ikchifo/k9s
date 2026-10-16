@@ -1,0 +1,4 @@
+# Sys = 1494584168
+# HeapSys = 1441660928
+# HeapReleased = 4595712
+# NumGC = 14

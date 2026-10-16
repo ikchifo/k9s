@@ -1,0 +1,22 @@
+go: downloading github.com/stretchr/testify v1.12.1
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/render
+cpu: Apple M1 Max
+BenchmarkPodRender-10    	   43546	     26685 ns/op	    8929 B/op	     178 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/render	3.227s
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+BenchmarkMaxColumn-10    	37030322	        32.23 ns/op	      32 B/op	       1 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/ui	3.044s
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/model1
+cpu: Apple M1 Max
+BenchmarkParallelRender-10    	   19232	     64929 ns/op	     722 B/op	      14 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/model1	2.849s

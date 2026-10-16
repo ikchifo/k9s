@@ -1,0 +1,39 @@
+File: ui.test
+Type: alloc_space
+Time: 2026-10-15 18:38:17 EDT
+Active filters:
+   focus=BenchmarkTick
+Showing nodes accounting for 2966.04MB, 82.51% of 3594.80MB total
+Dropped 37 nodes (cum <= 17.97MB)
+Showing top 30 nodes out of 35
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%  3020.53MB 84.03%  github.com/derailed/k9s/internal/ui.BenchmarkTick
+         0     0%     0%  3020.53MB 84.03%  testing.(*B).run1.func1
+         0     0%     0%  3020.53MB 84.03%  testing.(*B).runN
+         0     0%     0%  1923.14MB 53.50%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+         0     0%     0%  1923.14MB 53.50%  github.com/derailed/k9s/internal/model1.(*TableData).RowsRange (inline)
+         0     0%     0%  1923.14MB 53.50%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI
+         0     0%     0%  1923.14MB 53.50%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI.func1 (inline)
+  123.01MB  3.42%  3.42%  1923.14MB 53.50%  github.com/derailed/k9s/internal/ui.(*Table).buildRow
+ 1285.16MB 35.75% 39.17%  1285.16MB 35.75%  github.com/derailed/tview.NewTableCell (inline)
+   82.26MB  2.29% 41.46%   708.12MB 19.70%  github.com/derailed/k9s/internal/model1.(*RowEvents).Clone
+         0     0% 41.46%   708.12MB 19.70%  github.com/derailed/k9s/internal/model1.(*TableData).Clone
+  491.19MB 13.66% 55.12%   491.19MB 13.66%  github.com/derailed/k9s/internal/model1.Fields.Clone (inline)
+         0     0% 55.12%   491.19MB 13.66%  github.com/derailed/k9s/internal/model1.Row.Clone (inline)
+         0     0% 55.12%   491.19MB 13.66%  github.com/derailed/k9s/internal/model1.RowEvent.Clone (inline)
+  402.47MB 11.20% 66.32%   402.47MB 11.20%  github.com/derailed/tview.(*Table).SetCell
+         0     0% 66.32%   388.77MB 10.81%  github.com/derailed/k9s/internal/ui.newBenchTable
+         0     0% 66.32%   388.27MB 10.80%  github.com/derailed/k9s/internal/ui.loadModel
+    1.17MB 0.033% 66.35%   388.27MB 10.80%  github.com/derailed/k9s/internal/ui.loadModel.func1
+         0     0% 66.35%   388.27MB 10.80%  sync.(*Once).Do (inline)
+         0     0% 66.35%   388.27MB 10.80%  sync.(*Once).doSlow
+         0     0% 66.35%   333.11MB  9.27%  k8s.io/apimachinery/pkg/runtime.DeepCopyJSON (inline)
+  333.11MB  9.27% 75.62%   333.11MB  9.27%  k8s.io/apimachinery/pkg/runtime.DeepCopyJSONValue
+  135.17MB  3.76% 79.38%   135.17MB  3.76%  github.com/derailed/k9s/internal/model1.NewRowEvents (inline)
+         0     0% 79.38%   134.67MB  3.75%  github.com/derailed/k9s/internal/model1.NewRowEventsWithEvts (inline)
+  112.50MB  3.13% 82.51%   112.50MB  3.13%  github.com/derailed/k9s/internal/ui.Pad
+         0     0% 82.51%   112.50MB  3.13%  github.com/derailed/k9s/internal/ui.formatCell
+         0     0% 82.51%    23.01MB  0.64%  encoding/json.Unmarshal (inline)
+         0     0% 82.51%    23.01MB  0.64%  encoding/json/v2.Unmarshal
+         0     0% 82.51%    23.01MB  0.64%  encoding/json/v2.makeInterfaceArshaler.func2
+         0     0% 82.51%    23.01MB  0.64%  encoding/json/v2.makeMapArshaler.func3

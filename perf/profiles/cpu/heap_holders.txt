@@ -1,0 +1,16 @@
+== l
+Showing nodes accounting for 747.67MB, 96.09% of 778.06MB total
+decodeToUnstructured                          718.66MB 92.37%
+k9s/internal/render                           12MB 1.54%
+k9s/internal/model1                           40.85MB 5.25%
+k9s/internal/ui|tview                         28.58MB 3.67%
+k9s/internal/(model|dao|watch)\.              2.04MB 0.26%
+cache\.                                       3.57MB 0.46%
+== m
+Showing nodes accounting for 170.26MB, 93.24% of 182.60MB total
+decodeToUnstructured                          149.54MB 81.90%
+k9s/internal/render                           3MB 1.64%
+k9s/internal/model1                           12.79MB 7.00%
+k9s/internal/ui|tview                         10.36MB 5.67%
+k9s/internal/(model|dao|watch)\.              1.71MB 0.94%
+cache\.                                       0.50MB 0.27%

@@ -1,0 +1,77 @@
+File: k9s-prof-cpu
+Type: inuse_space
+Time: 2026-10-15 18:27:41 EDT
+Showing nodes accounting for 165.26MB, 90.51% of 182.60MB total
+Dropped 139 nodes (cum <= 0.91MB)
+Showing top 70 nodes out of 80
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%   150.04MB 82.17%  k8s.io/apimachinery/pkg/runtime.Decode (inline)
+         0     0%     0%   150.04MB 82.17%  k8s.io/apimachinery/pkg/runtime/serializer/json.(*Serializer).Decode
+         0     0%     0%   150.04MB 82.17%  k8s.io/apimachinery/pkg/watch.(*StreamWatcher).receive
+         0     0%     0%   150.04MB 82.17%  k8s.io/client-go/rest/watch.(*Decoder).Decode
+         0     0%     0%   149.54MB 81.90%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.(*Unstructured).UnmarshalJSON
+         0     0%     0%   149.54MB 81.90%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.Decode
+         0     0%     0%   149.54MB 81.90%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.decodeInto
+    0.50MB  0.27%  0.27%   149.54MB 81.90%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.decodeToUnstructured
+         0     0%  0.27%   149.54MB 81.90%  k8s.io/apimachinery/pkg/runtime/serializer/json.(*Serializer).unmarshal
+         0     0%  0.27%   149.54MB 81.90%  sigs.k8s.io/json.UnmarshalCaseSensitivePreserveInts (inline)
+       1MB  0.55%  0.82%   149.54MB 81.90%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).object
+         0     0%  0.82%   149.54MB 81.90%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).unmarshal
+         0     0%  0.82%   149.54MB 81.90%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).value
+         0     0%  0.82%   149.54MB 81.90%  sigs.k8s.io/json/internal/golang/encoding/json.Unmarshal
+         0     0%  0.82%   149.04MB 81.62%  k8s.io/apimachinery/pkg/util/json.Unmarshal (inline)
+  122.54MB 67.11% 67.93%   146.04MB 79.98%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).objectInterface
+    1.50MB  0.82% 68.75%   132.03MB 72.31%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).valueInterface
+    1.50MB  0.82% 69.57%   127.53MB 69.84%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).arrayInterface
+         0     0% 69.57%    25.32MB 13.87%  runtime.main
+   15.50MB  8.49% 78.06%    15.50MB  8.49%  sigs.k8s.io/json/internal/golang/encoding/json.unquote (inline)
+         0     0% 78.06%    14.47MB  7.92%  runtime.doInit (inline)
+         0     0% 78.06%    14.47MB  7.92%  runtime.doInit1
+         0     0% 78.06%    10.86MB  5.95%  github.com/derailed/k9s/cmd.Execute
+         0     0% 78.06%    10.86MB  5.95%  github.com/derailed/k9s/cmd.run
+         0     0% 78.06%    10.86MB  5.95%  github.com/spf13/cobra.(*Command).Execute (inline)
+         0     0% 78.06%    10.86MB  5.95%  github.com/spf13/cobra.(*Command).ExecuteC
+         0     0% 78.06%    10.86MB  5.95%  github.com/spf13/cobra.(*Command).execute
+         0     0% 78.06%    10.86MB  5.95%  main.main
+         0     0% 78.06%    10.36MB  5.67%  github.com/derailed/k9s/internal/view.(*App).Run
+         0     0% 78.06%    10.36MB  5.67%  github.com/derailed/tview.(*Application).Run
+         0     0% 78.06%     9.08MB  4.97%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+         0     0% 78.06%     9.08MB  4.97%  github.com/derailed/k9s/internal/model1.(*TableData).RowsRange (inline)
+         0     0% 78.06%     9.08MB  4.97%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI
+         0     0% 78.06%     9.08MB  4.97%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI.func1 (inline)
+         0     0% 78.06%     9.08MB  4.97%  github.com/derailed/k9s/internal/ui.(*Table).buildRow
+         0     0% 78.06%     9.08MB  4.97%  github.com/derailed/k9s/internal/view.(*Browser).TableDataChanged.func1
+         0     0% 78.06%     9.08MB  4.97%  github.com/derailed/tview.(*Application).QueueUpdateDraw.1
+       4MB  2.19% 80.25%        9MB  4.93%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).literalInterface
+       8MB  4.38% 84.63%        8MB  4.38%  github.com/derailed/tview.NewTableCell (inline)
+         0     0% 84.63%     4.01MB  2.19%  regexp.Compile (inline)
+         0     0% 84.63%     4.01MB  2.19%  regexp.MustCompile
+         0     0% 84.63%     4.01MB  2.19%  regexp.compile
+         0     0% 84.63%        3MB  1.64%  github.com/derailed/k9s/internal/model1.Hydrate.func1
+         0     0% 84.63%        3MB  1.64%  github.com/derailed/k9s/internal/model1.parallelRender.func1
+         0     0% 84.63%        3MB  1.64%  github.com/derailed/k9s/internal/render.(*Pod).Render
+       1MB  0.55% 85.18%        3MB  1.64%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+    2.51MB  1.37% 86.56%     2.51MB  1.37%  runtime.mallocgc
+         0     0% 86.56%     2.51MB  1.37%  runtime.newobject
+         0     0% 86.56%     2.01MB  1.10%  regexp.compileOnePass
+    0.50MB  0.27% 86.83%     1.50MB  0.82%  google.golang.org/protobuf/internal/filetype.Builder.Build
+         0     0% 86.83%     1.50MB  0.82%  reflect.Value.SetMapIndex
+         0     0% 86.83%     1.50MB  0.82%  reflect.mapassign_faststr
+    1.50MB  0.82% 87.65%     1.50MB  0.82%  reflect.mapassign_faststr0
+    1.39MB  0.76% 88.41%     1.39MB  0.76%  modernc.org/libc/honnef.co/go/netdb.init.0
+    1.28MB   0.7% 89.11%     1.28MB   0.7%  github.com/derailed/tcell/v2.(*CellBuffer).Resize
+         0     0% 89.11%     1.28MB   0.7%  github.com/derailed/tcell/v2.(*tScreen).Init
+         0     0% 89.11%     1.28MB   0.7%  github.com/derailed/tcell/v2.(*tScreen).resize
+         0     0% 89.11%     1.04MB  0.57%  golang.org/x/tools/internal/stdlib.init
+    1.04MB  0.57% 89.68%     1.04MB  0.57%  golang.org/x/tools/internal/stdlib.map.init.1
+         0     0% 89.68%     1.01MB  0.55%  github.com/google/go-cmp/cmp.init
+         0     0% 89.68%     1.01MB  0.55%  regexp.makeOnePass
+    0.50MB  0.28% 89.96%     1.01MB  0.55%  regexp.makeOnePass.func1
+         0     0% 89.96%        1MB  0.55%  runtime.allocm
+         0     0% 89.96%        1MB  0.55%  runtime.newm
+         0     0% 89.96%        1MB  0.55%  runtime.resetspinning
+         0     0% 89.96%        1MB  0.55%  runtime.schedule
+         0     0% 89.96%        1MB  0.55%  runtime.startm
+         0     0% 89.96%        1MB  0.55%  runtime.wakep
+       1MB  0.55% 90.51%        1MB  0.55%  regexp.onePassCopy
+         0     0% 90.51%        1MB  0.55%  google.golang.org/protobuf/internal/filedesc.Builder.Build

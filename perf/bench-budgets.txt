@@ -1,0 +1,14 @@
+# benchmark unit max
+# Max is the measured value after the change plus ~25% headroom.
+BenchmarkPodRender allocs/op 40
+BenchmarkPodRenderTick allocs/op 200000
+BenchmarkFilter/plain allocs/op 100
+BenchmarkFilter/regex allocs/op 250
+BenchmarkSortAge allocs/op 4
+BenchmarkSortCapacity allocs/op 200000
+BenchmarkTableRefresh allocs/op 280000
+BenchmarkTableSortToggle allocs/op 280000
+BenchmarkTableColumnMove allocs/op 100
+BenchmarkWatchDecode/codec allocs/op 1250000
+BenchmarkCachePods heap-B/pod 2500
+BenchmarkCheckConnectivity allocs/op 250

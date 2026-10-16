@@ -1,0 +1,20 @@
+# Linux runner: kwokctl (binary runtime) + k9s + harness in one pod.
+# Usage: sed 's/NAME/k9s-perf-l/' perf/gke/pod.yaml | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: NAME
+  labels: {app: k9s-perf}
+spec:
+  restartPolicy: Never
+  automountServiceAccountToken: false
+  terminationGracePeriodSeconds: 5
+  containers:
+  - name: runner
+    image: ubuntu:24.04
+    command: [sleep, infinity]
+    env:
+    - {name: TERM, value: xterm-256color}
+    resources:
+      requests: {cpu: "16", memory: 56Gi, ephemeral-storage: 40Gi}
+      limits: {cpu: "16", memory: 56Gi, ephemeral-storage: 40Gi}

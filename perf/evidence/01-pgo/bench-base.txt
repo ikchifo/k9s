@@ -1,0 +1,58 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/render
+cpu: Apple M1 Max
+BenchmarkPodRender-10    	   47403	     25182 ns/op	    8930 B/op	     178 allocs/op
+BenchmarkPodRender-10    	   47043	     25517 ns/op	    8927 B/op	     178 allocs/op
+BenchmarkPodRender-10    	   46784	     25383 ns/op	    8927 B/op	     178 allocs/op
+BenchmarkPodRender-10    	   47024	     25249 ns/op	    8928 B/op	     178 allocs/op
+BenchmarkPodRender-10    	   47246	     25326 ns/op	    8926 B/op	     178 allocs/op
+BenchmarkPodRender-10    	   47438	     26755 ns/op	    8928 B/op	     178 allocs/op
+BenchmarkPodRender-10    	   47424	     25457 ns/op	    8929 B/op	     178 allocs/op
+BenchmarkPodRender-10    	   46827	     25946 ns/op	    8928 B/op	     178 allocs/op
+BenchmarkPodRender-10    	   47432	     25577 ns/op	    8927 B/op	     178 allocs/op
+BenchmarkPodRender-10    	   47253	     25351 ns/op	    8927 B/op	     178 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/render	16.425s
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/model1
+cpu: Apple M1 Max
+BenchmarkParallelRender-10    	   18331	     65696 ns/op	     721 B/op	      14 allocs/op
+BenchmarkParallelRender-10    	   18627	     65344 ns/op	     721 B/op	      14 allocs/op
+BenchmarkParallelRender-10    	   18388	     64759 ns/op	     720 B/op	      14 allocs/op
+BenchmarkParallelRender-10    	   18327	     62149 ns/op	     720 B/op	      14 allocs/op
+BenchmarkParallelRender-10    	   18435	     65384 ns/op	     720 B/op	      14 allocs/op
+BenchmarkParallelRender-10    	   18357	     64864 ns/op	     720 B/op	      14 allocs/op
+BenchmarkParallelRender-10    	   18428	     65496 ns/op	     720 B/op	      14 allocs/op
+BenchmarkParallelRender-10    	   18765	     65187 ns/op	     720 B/op	      14 allocs/op
+BenchmarkParallelRender-10    	   18244	     64785 ns/op	     720 B/op	      14 allocs/op
+BenchmarkParallelRender-10    	   18294	     65467 ns/op	     720 B/op	      14 allocs/op
+BenchmarkRowCustomize-10      	269238843	         4.464 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRowCustomize-10      	268959721	         4.470 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRowCustomize-10      	269281665	         4.463 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRowCustomize-10      	268774028	         4.473 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRowCustomize-10      	269323064	         4.453 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRowCustomize-10      	269150502	         4.490 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRowCustomize-10      	269096608	         4.457 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRowCustomize-10      	269210154	         4.459 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRowCustomize-10      	269282596	         4.459 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRowCustomize-10      	269636790	         4.461 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/model1	35.861s
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+BenchmarkMaxColumn-10    	36960652	        31.75 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10    	36170180	        32.10 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10    	34579392	        31.79 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10    	35564379	        31.86 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10    	36144214	        31.85 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10    	36119691	        31.81 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10    	36163594	        31.81 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10    	36053764	        31.81 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10    	36562791	        31.79 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10    	35950881	        32.23 ns/op	      32 B/op	       1 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/ui	13.793s

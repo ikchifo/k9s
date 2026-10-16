@@ -1,0 +1,191 @@
+{
+ "t0": 1792103391.262,
+ "windows": {
+  "startup": {
+   "span": [
+    0.0,
+    0.6490850448608398
+   ],
+   "total_reqs": 15,
+   "by_kind": {
+    "GET /api/v1/nodes [watch]": {
+     "n": 1,
+     "ms_total": 1,
+     "ms_max": 1,
+     "server_ms_total": 1,
+     "bytes": 0,
+     "status": [
+      "200 OK"
+     ],
+     "accept": [
+      "application/json"
+     ]
+    },
+    "GET /apis/apiextensions.k8s.io/v1/customresourcedefinitions [watch]": {
+     "n": 1,
+     "ms_total": 1,
+     "ms_max": 1,
+     "server_ms_total": 1,
+     "bytes": 0,
+     "status": [
+      "200 OK"
+     ],
+     "accept": [
+      "application/json"
+     ]
+    },
+    "GET LIST pods [watch]": {
+     "n": 1,
+     "ms_total": 3,
+     "ms_max": 3,
+     "server_ms_total": 3,
+     "bytes": 0,
+     "status": [
+      "200 OK"
+     ],
+     "accept": [
+      "application/json"
+     ]
+    },
+    "GET discovery:/api [plain]": {
+     "n": 2,
+     "ms_total": 4,
+     "ms_max": 4,
+     "server_ms_total": 0,
+     "bytes": 0,
+     "status": [
+      "200 OK"
+     ],
+     "accept": [
+      "application/json;g=apidiscovery.k8s.io;v=v2;as=APIGroupDisco"
+     ]
+    },
+    "GET discovery:/apis [plain]": {
+     "n": 2,
+     "ms_total": 1,
+     "ms_max": 1,
+     "server_ms_total": 0,
+     "bytes": 0,
+     "status": [
+      "200 OK"
+     ],
+     "accept": [
+      "application/json;g=apidiscovery.k8s.io;v=v2;as=APIGroupDisco"
+     ]
+    },
+    "GET discovery:/version [plain]": {
+     "n": 3,
+     "ms_total": 1,
+     "ms_max": 1,
+     "server_ms_total": 1,
+     "bytes": 1137,
+     "status": [
+      "200 OK"
+     ],
+     "accept": [
+      "application/json"
+     ]
+    },
+    "GET namespaces [plain]": {
+     "n": 1,
+     "ms_total": 1,
+     "ms_max": 1,
+     "server_ms_total": 1,
+     "bytes": 1819,
+     "status": [
+      "200 OK"
+     ],
+     "accept": [
+      "application/vnd.kubernetes.protobuf"
+     ]
+    },
+    "POST auth [plain]": {
+     "n": 4,
+     "ms_total": 2,
+     "ms_max": 1,
+     "server_ms_total": 2,
+     "bytes": 1701,
+     "status": [
+      "201 Created"
+     ],
+     "accept": [
+      "application/vnd.kubernetes.protobuf"
+     ]
+    }
+   }
+  },
+  "idle20": {
+   "span": [
+    1.913550853729248,
+    21.991760969161987
+   ],
+   "total_reqs": 1,
+   "by_kind": {
+    "GET discovery:/version [plain]": {
+     "n": 1,
+     "ms_total": 2,
+     "ms_max": 2,
+     "server_ms_total": 2,
+     "bytes": 379,
+     "status": [
+      "200 OK"
+     ],
+     "accept": [
+      "application/json"
+     ]
+    }
+   }
+  },
+  "switch_deploy": {
+   "span": [
+    21.991760969161987,
+    22.43632698059082
+   ],
+   "total_reqs": 2,
+   "by_kind": {
+    "GET LIST deployments [watch]": {
+     "n": 1,
+     "ms_total": 3,
+     "ms_max": 3,
+     "server_ms_total": 3,
+     "bytes": 0,
+     "status": [
+      "200 OK"
+     ],
+     "accept": [
+      "application/json"
+     ]
+    },
+    "POST auth [plain]": {
+     "n": 1,
+     "ms_total": 9,
+     "ms_max": 9,
+     "server_ms_total": 8,
+     "bytes": 434,
+     "status": [
+      "201 Created"
+     ],
+     "accept": [
+      "application/vnd.kubernetes.protobuf"
+     ]
+    }
+   }
+  },
+  "switch_pods": {
+   "span": [
+    24.43632698059082,
+    24.57459783554077
+   ],
+   "total_reqs": 0,
+   "by_kind": {}
+  },
+  "ctx_switch": {
+   "span": [
+    39.59158372879028,
+    40.349188804626465
+   ],
+   "total_reqs": 0,
+   "by_kind": {}
+  }
+ }
+}

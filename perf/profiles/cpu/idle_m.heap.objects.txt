@@ -1,0 +1,27 @@
+File: k9s-prof-cpu
+Type: inuse_objects
+Time: 2026-10-15 18:27:41 EDT
+Showing nodes accounting for 2490736, 96.91% of 2570083 total
+Dropped 162 nodes (cum <= 12850)
+Showing top 20 nodes out of 57
+      flat  flat%   sum%        cum   cum%
+    926258 36.04% 36.04%    2168718 84.38%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).objectInterface
+    791899 30.81% 66.85%     791899 30.81%  sigs.k8s.io/json/internal/golang/encoding/json.unquote (inline)
+    262146 10.20% 77.05%     502445 19.55%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).literalInterface
+     65544  2.55% 79.60%      65544  2.55%  github.com/derailed/tview.NewTableCell (inline)
+     65536  2.55% 82.15%      65536  2.55%  k8s.io/client-go/dynamic.unstructuredCreater.New
+     65536  2.55% 84.70%      65536  2.55%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).convertNumber
+     65536  2.55% 87.25%    2283407 88.85%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).object
+     65535  2.55% 89.80%    2065397 80.36%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).valueInterface
+     57344  2.23% 92.03%    1927042 74.98%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).arrayInterface
+     32769  1.28% 93.31%      32769  1.28%  github.com/derailed/k9s/internal/client.FQN (inline)
+     32768  1.27% 94.58%      32768  1.27%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).literalStore
+     21845  0.85% 95.43%      21845  0.85%  github.com/derailed/k9s/internal/ui.Pad
+     16384  0.64% 96.07%      16384  0.64%  regexp/syntax.(*Regexp).CapNames
+     10923  0.43% 96.50%    2283407 88.85%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.decodeToUnstructured
+      8192  0.32% 96.81%      13385  0.52%  google.golang.org/protobuf/internal/filetype.Builder.Build
+      2521 0.098% 96.91%      44653  1.74%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+         0     0% 96.91%      89441  3.48%  github.com/derailed/k9s/cmd.Execute
+         0     0% 96.91%      89441  3.48%  github.com/derailed/k9s/cmd.run
+         0     0% 96.91%      87392  3.40%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+         0     0% 96.91%      87392  3.40%  github.com/derailed/k9s/internal/model1.(*TableData).RowsRange (inline)

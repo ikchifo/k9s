@@ -1,0 +1,27 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/model1
+cpu: Apple M1 Max
+               │ perf/evidence/06-sort-keys/bench-before.txt │ perf/evidence/06-sort-keys/bench-after.txt │
+               │                   sec/op                    │       sec/op        vs base                │
+SortAge-4                                       18.01m ± 14%         10.96m ± 10%  -39.14% (p=0.000 n=10)
+SortRestarts-4                                  15.94m ±  5%         13.37m ± 34%  -16.08% (p=0.019 n=10)
+SortCapacity-4                                 167.86m ± 28%         12.12m ± 17%  -92.78% (p=0.000 n=10)
+SortName-4                                      13.93m ± 14%         14.24m ± 12%        ~ (p=0.063 n=10)
+geomean                                         28.62m               12.61m        -55.93%
+
+               │ perf/evidence/06-sort-keys/bench-before.txt │  perf/evidence/06-sort-keys/bench-after.txt  │
+               │                    B/op                     │      B/op        vs base                     │
+SortAge-4                                         48.00 ± 2%   1122370.00 ± 0%  +2338170.83% (p=0.000 n=10)
+SortRestarts-4                                    48.00 ± 2%   1122372.50 ± 0%  +2338176.04% (p=0.000 n=10)
+SortCapacity-4                                153.642Mi ± 0%      6.331Mi ± 0%       -95.88% (p=0.000 n=10)
+SortName-4                                        48.00 ± 0%   1122369.00 ± 0%  +2338168.75% (p=0.000 n=10)
+geomean                                         2.006Ki           1.669Mi         +85094.68%
+
+               │ perf/evidence/06-sort-keys/bench-before.txt │ perf/evidence/06-sort-keys/bench-after.txt │
+               │                  allocs/op                  │     allocs/op      vs base                 │
+SortAge-4                                         1.000 ± 0%          2.000 ± 0%  +100.00% (p=0.000 n=10)
+SortRestarts-4                                    1.000 ± 0%          2.000 ± 0%  +100.00% (p=0.000 n=10)
+SortCapacity-4                                  4633.2k ± 0%         158.6k ± 0%   -96.58% (p=0.000 n=10)
+SortName-4                                        1.000 ± 0%          2.000 ± 0%  +100.00% (p=0.000 n=10)
+geomean                                           46.39               33.56        -27.66%

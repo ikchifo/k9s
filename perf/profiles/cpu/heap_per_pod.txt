@@ -1,0 +1,2 @@
+l bytes/pod: unstructured=36.5KB model1 rows=2.07KB ui/tview=1.45KB render=0.61KB
+m bytes/pod: unstructured=30.3KB model1 rows=2.59KB ui/tview=2.10KB

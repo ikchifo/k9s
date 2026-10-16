@@ -1,0 +1,33 @@
+k9s live-run request log summary — AFTER (perf/client connectivity reuse)
+==========================================================================
+
+Run: 65s interactive session (tmux), profiling binary built by
+perf/prof/build.sh from this branch, klog -v=6.
+Same cluster/env as the before run: kind-kwok-k9s-s (small),
+isolated K9S_CONFIG_DIR (refreshRate 2, splashless, active view pods),
+fresh KUBECACHEDIR (cold discovery disk cache).
+
+Requests per path (65s window):
+  GET  /version                                                  6
+       - identical cadence to before: 3 at startup + 3 periodic 15s
+         probes; every check still hits the wire (liveness preserved,
+         nothing served from a cache) but they now share one
+         clientset/transport, so no per-probe clientcmd merge,
+         NewForConfig or TLS handshake (see benchstat.txt: -68% time,
+         -90.8% allocs per check; reqs/op stays exactly 1.000)
+  POST /apis/authorization.k8s.io/v1/selfsubjectaccessreviews    4
+  GET  /api                                                      1
+       - single discovery stack: supportsMetricsResources now uses the
+         cached discovery client (?timeout=32s); loadPreferred and the
+         restmapper are served by its memcache delegate
+  GET  /apis                                                     1
+  GET  /api/v1/namespaces                                        1
+  GET  /api/v1/nodes (watch)                                     1
+  GET  /apis/apiextensions.k8s.io/v1/customresourcedefinitions   1
+  GET  /api/v1/pods (watch)                                      1
+
+Delta vs before (65s window):
+  /version 6 -> 6   (count unchanged by design: liveness probe)
+  /api     2 -> 1   (startup/ctx-switch discovery dedupe)
+  /apis    2 -> 1   (startup/ctx-switch discovery dedupe)
+  everything else unchanged (SSAR 4, namespaces 1, watches 1 each)

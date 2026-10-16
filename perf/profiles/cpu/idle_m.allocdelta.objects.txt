@@ -1,0 +1,27 @@
+File: k9s-prof-cpu
+Type: alloc_objects
+Time: 2026-10-15 18:27:11 EDT
+Showing nodes accounting for 20084646, 96.99% of 20708322 total
+Dropped 89 nodes (cum <= 103541)
+Showing top 20 nodes out of 74
+      flat  flat%   sum%        cum   cum%
+  11408937 55.09% 55.09%   11408937 55.09%  reflect.unsafe_New
+   1068550  5.16% 60.25%    1068550  5.16%  reflect.unsafe_NewArray
+   1048591  5.06% 65.32%    1048591  5.06%  k8s.io/apimachinery/pkg/apis/meta/v1.(*Time).UnmarshalJSON
+    917523  4.43% 69.75%    1986073  9.59%  reflect.MakeSlice
+    778287  3.76% 73.51%     778287  3.76%  github.com/derailed/k9s/internal/render.extractGPU (inline)
+    677219  3.27% 76.78%     677219  3.27%  bytes.Clone (inline)
+    602185  2.91% 79.68%     602185  2.91%  github.com/derailed/tview.NewTableCell
+    491533  2.37% 82.06%     491533  2.37%  github.com/derailed/k9s/internal/ui.Pad
+    458760  2.22% 84.27%     458760  2.22%  k8s.io/apimachinery/pkg/api/resource.(*Quantity).UnmarshalJSON
+    317341  1.53% 85.81%   18854249 91.05%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+    313170  1.51% 87.32%     313170  1.51%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.NestedNullCoercingStringMap
+    290598  1.40% 88.72%     290598  1.40%  reflect.mapassign_faststr0
+    286738  1.38% 90.11%     819250  3.96%  github.com/derailed/k9s/internal/render.cosRequests
+    284000  1.37% 91.48%     906602  4.38%  reflect.Value.MapKeys
+    253966  1.23% 92.70%     499741  2.41%  github.com/derailed/k9s/internal/render.cosLimits
+    218463  1.05% 93.76%     218463  1.05%  reflect.makemap
+    213005  1.03% 94.79%     213005  1.03%  github.com/derailed/k9s/internal/render.currentRes
+    196755  0.95% 95.74%     196755  0.95%  github.com/derailed/tview.(*Table).SetCell
+    189156  0.91% 96.65%     189156  0.91%  github.com/derailed/k9s/internal/render.mapToStr
+     69869  0.34% 96.99%    1601865  7.74%  github.com/derailed/k9s/internal/render.gatherPodMX

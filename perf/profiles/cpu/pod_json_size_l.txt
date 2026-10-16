@@ -1,0 +1,1 @@
+pods 1000 json bytes/pod median 5314.0 managedFields bytes median 1899.0

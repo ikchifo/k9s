@@ -1,0 +1,53 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/model1
+cpu: Apple M1 Max
+                  │ perf/evidence/01-pgo/bench-base.txt │ perf/evidence/01-pgo/bench-pgo.txt │
+                  │               sec/op                │   sec/op     vs base               │
+ParallelRender-10                           65.27µ ± 1%   65.22µ ± 1%       ~ (p=1.000 n=10)
+RowCustomize-10                             4.462n ± 0%   4.470n ± 0%       ~ (p=0.091 n=10)
+geomean                                     539.6n        539.9n       +0.05%
+
+                  │ perf/evidence/01-pgo/bench-base.txt │ perf/evidence/01-pgo/bench-pgo.txt  │
+                  │                B/op                 │    B/op     vs base                 │
+ParallelRender-10                          720.0 ± 0%     720.0 ± 0%       ~ (p=0.474 n=10)
+RowCustomize-10                            0.000 ± 0%     0.000 ± 0%       ~ (p=1.000 n=10) ¹
+geomean                                               ²               +0.00%                ²
+¹ all samples are equal
+² summaries must be >0 to compute geomean
+
+                  │ perf/evidence/01-pgo/bench-base.txt │ perf/evidence/01-pgo/bench-pgo.txt  │
+                  │              allocs/op              │ allocs/op   vs base                 │
+ParallelRender-10                          14.00 ± 0%     14.00 ± 0%       ~ (p=1.000 n=10) ¹
+RowCustomize-10                            0.000 ± 0%     0.000 ± 0%       ~ (p=1.000 n=10) ¹
+geomean                                               ²               +0.00%                ²
+¹ all samples are equal
+² summaries must be >0 to compute geomean
+
+pkg: github.com/derailed/k9s/internal/render
+             │ perf/evidence/01-pgo/bench-base.txt │ perf/evidence/01-pgo/bench-pgo.txt  │
+             │               sec/op                │   sec/op     vs base                │
+PodRender-10                           25.42µ ± 2%   22.50µ ± 1%  -11.50% (p=0.000 n=10)
+
+             │ perf/evidence/01-pgo/bench-base.txt │ perf/evidence/01-pgo/bench-pgo.txt  │
+             │                B/op                 │     B/op      vs base               │
+PodRender-10                          8.718Ki ± 0%   8.696Ki ± 0%  -0.26% (p=0.000 n=10)
+
+             │ perf/evidence/01-pgo/bench-base.txt │ perf/evidence/01-pgo/bench-pgo.txt │
+             │              allocs/op              │  allocs/op   vs base               │
+PodRender-10                            178.0 ± 0%    177.0 ± 0%  -0.56% (p=0.000 n=10)
+
+pkg: github.com/derailed/k9s/internal/ui
+             │ perf/evidence/01-pgo/bench-base.txt │ perf/evidence/01-pgo/bench-pgo.txt │
+             │               sec/op                │   sec/op     vs base               │
+MaxColumn-10                           31.81n ± 1%   32.09n ± 0%  +0.88% (p=0.004 n=10)
+
+             │ perf/evidence/01-pgo/bench-base.txt │ perf/evidence/01-pgo/bench-pgo.txt │
+             │                B/op                 │      B/op       vs base            │
+MaxColumn-10                            32.00 ± 0%       32.00 ± 0%  ~ (p=1.000 n=10) ¹
+¹ all samples are equal
+
+             │ perf/evidence/01-pgo/bench-base.txt │ perf/evidence/01-pgo/bench-pgo.txt │
+             │              allocs/op              │   allocs/op     vs base            │
+MaxColumn-10                            1.000 ± 0%       1.000 ± 0%  ~ (p=1.000 n=10) ¹
+¹ all samples are equal

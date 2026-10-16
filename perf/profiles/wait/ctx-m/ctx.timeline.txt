@@ -1,0 +1,37 @@
+     0.0 MARK key ctx-enter
+    98.7 Config loaded from file:  /Users/ikennao/repos/OSS/k9s/perf/.kube/k9s-s.yaml
+    98.8 Config loaded from file:  /Users/ikennao/repos/OSS/k9s/perf/.kube/k9s-m.yaml
+   109.2 "Response" verb="GET" url="/version?timeout=2m0s" status="200 OK" milliseconds=10
+   112.0 "Response" verb="POST" url="/apis/authorization.k8s.io/v1/selfsubjectaccessreviews?timeout=2m0s" status="201 Created" milliseconds=2
+   113.8 "Response" verb="GET" url="/api/v1/namespaces" status="200 OK" milliseconds=1
+   114.3 "Stopping reflector" type="/v1, Resource=pods" resyncPeriod="10m0s" 
+   114.3 "Stopping reflector" type="/v1, Resource=nodes" resyncPeriod="10m0s" 
+   114.4 "Stopping reflector" type="apiextensions.k8s.io/v1, Resource=customresourcedefinitions" resyncPeriod="10m0s" 
+   115.1 "Response" verb="GET" url="/api?timeout=2m0s" status="200 OK" milliseconds=0
+   116.9 "Response" verb="GET" url="/apis?timeout=2m0s" status="200 OK" milliseconds=0
+   133.9 "Response" verb="POST" url="/apis/authorization.k8s.io/v1/selfsubjectaccessreviews?timeout=2m0s" status="201 Created" milliseconds=10
+   134.0 "Starting reflector" type="apiextensions.k8s.io/v1, Resource=customresourcedefinitions" resyncPeriod="10m0s" 
+   134.0 "Listing and watching" type="apiextensions.k8s.io/v1, Resource=customresourcedefinitions" 
+   135.3 "Response" verb="GET" url="/apis/apiextensions.k8s.io/v1/customresourcedefinitions?allowWatchBookmarks=true&resourceVersionMatch=NotOlderThan&sendInit
+   135.5 "Exiting watch because received the bookmark that marks the end of initial events stream"  totalItems=1 duration="1.477041ms"
+   135.5 "Caches populated" type="apiextensions.k8s.io/v1, Resource=customresourcedefinitions" 
+   242.3 "Response" verb="GET" url="/version?timeout=2m0s" status="200 OK" milliseconds=5
+   245.1 "Response" verb="POST" url="/apis/authorization.k8s.io/v1/selfsubjectaccessreviews?timeout=2m0s" status="201 Created" milliseconds=1
+   245.2 "Starting reflector" type="/v1, Resource=nodes" resyncPeriod="10m0s" 
+   245.2 "Listing and watching" type="/v1, Resource=nodes" 
+   245.9 "Response" verb="GET" url="/api?timeout=2m0s" status="200 OK" milliseconds=0
+   247.4 "Response" verb="GET" url="/api/v1/nodes?allowWatchBookmarks=true&resourceVersionMatch=NotOlderThan&sendInitialEvents=true&timeout=2m0s&timeoutSeconds
+   247.4 "Response" verb="GET" url="/apis?timeout=2m0s" status="200 OK" milliseconds=1
+   250.2 "Response" verb="POST" url="/apis/authorization.k8s.io/v1/selfsubjectaccessreviews?timeout=2m0s" status="201 Created" milliseconds=0
+   250.3 "Starting reflector" type="/v1, Resource=pods" resyncPeriod="10m0s" 
+   250.3 "Listing and watching" type="/v1, Resource=pods" 
+   252.2 "Exiting watch because received the bookmark that marks the end of initial events stream"  totalItems=22 duration="6.986291ms"
+   252.2 "Caches populated" type="/v1, Resource=nodes" 
+   253.6 MARK title 
+   257.3 "Response" verb="GET" url="/version?timeout=2m0s" status="200 OK" milliseconds=6
+   258.6 "Response" verb="GET" url="/api/v1/pods?allowWatchBookmarks=true&resourceVersionMatch=NotOlderThan&sendInitialEvents=true&timeout=2m0s&timeoutSeconds=
+  1289.3 "Exiting watch because received the bookmark that marks the end of initial events stream"  totalItems=5051 duration="1.038941833s"
+  1289.4 "Caches populated" type="/v1, Resource=pods" 
+  2656.4 MARK title pods(all)[5,050]
+  2656.5 MARK done ctx
+  4157.2 MARK flight ctx

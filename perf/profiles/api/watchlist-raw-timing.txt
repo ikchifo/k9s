@@ -1,0 +1,3 @@
+run0: initial_events_done=229.776s bytes=108003328
+run1: initial_events_done=28.016s bytes=108003328
+run2: initial_events_done=2.036s bytes=108003328

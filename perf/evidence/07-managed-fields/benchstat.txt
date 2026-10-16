@@ -1,0 +1,19 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/watch
+cpu: Apple M1 Max
+            │ perf/evidence/07-managed-fields/bench-before.txt │ perf/evidence/07-managed-fields/bench-after.txt │
+            │                      sec/op                      │            sec/op              vs base          │
+CachePods-4                                        83.97m ± 7%                     84.36m ± 3%  ~ (p=0.796 n=10)
+
+            │ perf/evidence/07-managed-fields/bench-before.txt │ perf/evidence/07-managed-fields/bench-after.txt │
+            │                    heap-B/pod                    │       heap-B/pod         vs base                │
+CachePods-4                                       29.14Ki ± 0%              17.00Ki ± 0%  -41.67% (p=0.000 n=10)
+
+            │ perf/evidence/07-managed-fields/bench-before.txt │ perf/evidence/07-managed-fields/bench-after.txt │
+            │                       B/op                       │           B/op            vs base               │
+CachePods-4                                       58.71Mi ± 0%               58.74Mi ± 0%  +0.05% (p=0.000 n=10)
+
+            │ perf/evidence/07-managed-fields/bench-before.txt │ perf/evidence/07-managed-fields/bench-after.txt │
+            │                    allocs/op                     │           allocs/op            vs base          │
+CachePods-4                                        524.4k ± 0%                     524.4k ± 0%  ~ (p=0.468 n=10)

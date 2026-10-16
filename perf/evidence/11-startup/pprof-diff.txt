@@ -1,0 +1,40 @@
+File: client.test
+Type: cpu
+Time: 2026-10-16 00:01:57 EDT
+Duration: 7.80s, Total samples = 4.12s (52.81%)
+Showing nodes accounting for -1.57s, 38.11% of 4.12s total
+Dropped 3 nodes (cum <= 0.02s)
+      flat  flat%   sum%        cum   cum%
+    -0.33s  8.01%  8.01%     -0.33s  8.01%  sigs.k8s.io/json/internal/golang/encoding/json.stateInString
+    -0.20s  4.85% 12.86%     -0.20s  4.85%  encoding/json/internal/jsonwire.ConsumeSimpleString (inline)
+    -0.11s  2.67% 15.53%     -0.34s  8.25%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).skip
+    -0.10s  2.43% 17.96%     -0.10s  2.43%  encoding/json/internal/jsonwire.ConsumeWhitespace (inline)
+     0.10s  2.43% 15.53%      0.10s  2.43%  internal/runtime/atomic.(*UnsafePointer).Load (inline)
+    -0.09s  2.18% 17.72%     -0.09s  2.18%  runtime.pthread_cond_wait
+    -0.08s  1.94% 19.66%     -0.08s  1.94%  sigs.k8s.io/json/internal/golang/encoding/json.stateBeginValue
+    -0.07s  1.70% 21.36%     -0.29s  7.04%  encoding/json/jsontext.(*decoderState).ReadToken
+    -0.07s  1.70% 23.06%     -0.06s  1.46%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).rescanLiteral
+    -0.06s  1.46% 24.51%     -0.21s  5.10%  encoding/json/jsontext.(*decoderState).consumeValue
+    -0.06s  1.46% 25.97%     -0.06s  1.46%  sigs.k8s.io/json/internal/golang/encoding/json.stateBeginString
+    -0.05s  1.21% 27.18%     -0.05s  1.21%  runtime.kevent
+    -0.04s  0.97% 28.16%     -0.04s  0.97%  sigs.k8s.io/json/internal/golang/encoding/json.isSpace (inline)
+    -0.03s  0.73% 28.88%     -0.03s  0.73%  encoding/json/jsontext.Kind.normalize (inline)
+     0.03s  0.73% 28.16%      0.04s  0.97%  internal/runtime/maps.(*Map).putSlotSmallFastStr
+    -0.03s  0.73% 28.88%     -0.06s  1.46%  runtime.mapassign_faststr
+    -0.03s  0.73% 29.61%     -0.03s  0.73%  runtime.memclrNoHeapPointers
+    -0.03s  0.73% 30.34%     -0.03s  0.73%  runtime.releasem (inline)
+    -0.03s  0.73% 31.07%     -0.03s  0.73%  runtime.usleep
+    -0.03s  0.73% 31.80%     -0.06s  1.46%  sigs.k8s.io/json/internal/golang/encoding/json.stateEndValue
+    -0.03s  0.73% 32.52%     -0.03s  0.73%  sigs.k8s.io/json/internal/golang/encoding/json.unquoteBytes
+    -0.02s  0.49% 33.01%     -0.02s  0.49%  encoding/json/jsontext.(*decodeBuffer).needMore (inline)
+    -0.02s  0.49% 33.50%     -0.02s  0.49%  runtime.(*spanScanOwnership).or (inline)
+    -0.02s  0.49% 33.98%     -0.02s  0.49%  runtime.findObject
+    -0.02s  0.49% 34.47%     -0.02s  0.49%  runtime.mallocgcSmallScanNoHeaderSC4
+    -0.02s  0.49% 34.95%     -0.02s  0.49%  runtime.memmove
+    -0.02s  0.49% 35.44%     -0.03s  0.73%  runtime.wbBufFlush1
+     0.02s  0.49% 34.95%     -0.30s  7.28%  sigs.k8s.io/json/internal/golang/encoding/json.checkValid
+    -0.01s  0.24% 35.19%     -0.30s  7.28%  encoding/json/jsontext.(*decoderState).SkipValue
+     0.01s  0.24% 34.95%     -0.25s  6.07%  encoding/json/jsontext.(*decoderState).consumeArray
+    -0.01s  0.24% 35.19%     -0.21s  5.10%  encoding/json/jsontext.(*decoderState).consumeObject
+    -0.01s  0.24% 35.44%     -0.01s  0.24%  encoding/json/jsontext.(*stateMachine).pushObject (inline)
+    -0.01s  0.24% 35.68%     -0.01s  0.24%  encoding/json/jsontext.export.Decoder

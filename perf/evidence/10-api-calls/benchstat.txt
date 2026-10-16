@@ -1,0 +1,20 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/client
+cpu: Apple M1 Max
+                    │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/wt-version-check/perf/evidence/10-api-calls/bench-before.txt │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/wt-version-check/perf/evidence/10-api-calls/bench-after.txt │
+                    │                                                             sec/op                                                             │                                                sec/op                                                  vs base                │
+CheckConnectivity-4                                                                                                                     297.12µ ± 8%                                                                                            95.07µ ± 24%  -68.00% (p=0.000 n=10)
+
+                    │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/wt-version-check/perf/evidence/10-api-calls/bench-before.txt │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/wt-version-check/perf/evidence/10-api-calls/bench-after.txt │
+                    │                                                            reqs/op                                                             │                                                  reqs/op                                                   vs base            │
+CheckConnectivity-4                                                                                                                       1.000 ± 0%                                                                                                  1.000 ± 0%  ~ (p=1.000 n=10) ¹
+¹ all samples are equal
+
+                    │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/wt-version-check/perf/evidence/10-api-calls/bench-before.txt │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/wt-version-check/perf/evidence/10-api-calls/bench-after.txt │
+                    │                                                              B/op                                                              │                                                 B/op                                                   vs base                │
+CheckConnectivity-4                                                                                                                     98.25Ki ± 0%                                                                                            15.23Ki ± 1%  -84.50% (p=0.000 n=10)
+
+                    │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/wt-version-check/perf/evidence/10-api-calls/bench-before.txt │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/wt-version-check/perf/evidence/10-api-calls/bench-after.txt │
+                    │                                                           allocs/op                                                            │                                               allocs/op                                                vs base                │
+CheckConnectivity-4                                                                                                                      1757.0 ± 0%                                                                                              162.0 ± 0%  -90.78% (p=0.000 n=10)

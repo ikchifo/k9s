@@ -1,0 +1,595 @@
+goroutine 71 [running]:
+runtime/pprof.writeGoroutineStacks({0x10c33c9c0, 0x37adc8110960})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/pprof/pprof.go:816 +0x6c
+runtime/pprof.writeGoroutine({0x10c33c9c0?, 0x37adc8110960?}, 0x808080808080803d?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/pprof/pprof.go:779 +0x2c
+runtime/pprof.(*Profile).WriteTo(0x10c73f0a0?, {0x10c33c9c0?, 0x37adc8110960?}, 0xc?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/pprof/pprof.go:405 +0x144
+net/http/pprof.handler.ServeHTTP({0x37adc3d66671, 0x9}, {0x10c382060, 0x37adc8110960}, 0x37ad7fb6ea00)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/pprof/pprof.go:272 +0x434
+net/http/pprof.Index({0x10c382060?, 0x37adc8110960?}, 0x37adb205da98?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/pprof/pprof.go:391 +0xb0
+net/http.HandlerFunc.ServeHTTP(0x10c800300?, {0x10c382060?, 0x37adc8110960?}, 0x104763ca0?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:2338 +0x38
+net/http.(*ServeMux).ServeHTTP(0x0?, {0x10c382060, 0x37adc8110960}, 0x37ad7fb6ea00)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:2903 +0x194
+net/http.serverHandler.ServeHTTP({0x37adc3f3a440?}, {0x10c382060?, 0x37adc8110960?}, 0x1?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:3413 +0xb0
+net/http.(*conn).serve(0x37adc3f1c900, {0x10c38a500, 0x37ad80798240})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:2137 +0x5a0
+created by net/http.(*Server).Serve in goroutine 82
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:3581 +0x3e8
+
+goroutine 1 [select]:
+github.com/derailed/tview.(*Application).Run(0x37ad80962000)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tview@v0.8.5/application.go:302 +0x1f4
+github.com/derailed/k9s/internal/view.(*App).Run(0x37ad80864cc0)
+	/Users/ikennao/repos/OSS/k9s/internal/view/app.go:569 +0x9c
+github.com/derailed/k9s/cmd.run(0x37ad7fc06500?, {0x10787ee60?, 0x4?, 0x10787ed94?})
+	/Users/ikennao/repos/OSS/k9s/cmd/root.go:124 +0x3ac
+github.com/spf13/cobra.(*Command).execute(0x10c7aeba0, {0x37ad7f892190, 0x5, 0x5})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/spf13/cobra@v1.10.2/command.go:1015 +0x82c
+github.com/spf13/cobra.(*Command).ExecuteC(0x10c7aeba0)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/spf13/cobra@v1.10.2/command.go:1148 +0x340
+github.com/spf13/cobra.(*Command).Execute(...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/spf13/cobra@v1.10.2/command.go:1071
+github.com/derailed/k9s/cmd.Execute()
+	/Users/ikennao/repos/OSS/k9s/cmd/root.go:72 +0x24
+main.main()
+	/Users/ikennao/repos/OSS/k9s/main.go:45 +0x1c
+
+goroutine 82 [IO wait]:
+internal/poll.runtime_pollWait(0x11c0b5000, 0x72)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/netpoll.go:351 +0xa0
+internal/poll.(*pollDesc).wait(0x37ad8079a080?, 0x1043c0170?, 0x0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_poll_runtime.go:84 +0x28
+internal/poll.(*pollDesc).waitRead(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Accept(0x37ad8079a080)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_unix.go:618 +0x210
+net.(*netFD).accept(0x37ad8079a080)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/fd_unix.go:149 +0x28
+net.(*TCPListener).accept(0x37ad7f8dbe40)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/tcpsock_posix.go:159 +0x24
+net.(*TCPListener).Accept(0x37ad7f8dbe40)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/tcpsock.go:387 +0x2c
+net/http.(*Server).Serve(0x37ad80242000, {0x10c3825a0, 0x37ad7f8dbe40})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:3551 +0x2a8
+net/http.(*Server).ListenAndServe(0x37ad80242000)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:3462 +0x80
+net/http.ListenAndServe(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:3813
+main.init.1.func1()
+	/Users/ikennao/repos/OSS/k9s/prof.go:44 +0x64
+created by main.init.1 in goroutine 1
+	/Users/ikennao/repos/OSS/k9s/prof.go:44 +0x168
+
+goroutine 85 [trace reader (blocked)]:
+runtime.ReadTrace()
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/trace.go:893 +0x40
+runtime/trace.(*traceMultiplexer).startLocked.func1()
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/trace/subscribe.go:167 +0xac
+created by runtime/trace.(*traceMultiplexer).startLocked in goroutine 1
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/trace/subscribe.go:157 +0x1a4
+
+goroutine 36 [select]:
+k8s.io/klog/v2.(*flushDaemon).run.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/klog/v2@v2.140.0/klog.go:1186 +0xdc
+created by k8s.io/klog/v2.(*flushDaemon).run in goroutine 1
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/klog/v2@v2.140.0/klog.go:1182 +0x180
+
+goroutine 40 [IO wait]:
+internal/poll.runtime_pollWait(0x11c0b4e00, 0x72)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/netpoll.go:351 +0xa0
+internal/poll.(*pollDesc).wait(0x37ad80d28a00?, 0x37ad807ec000?, 0x0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_poll_runtime.go:84 +0x28
+internal/poll.(*pollDesc).waitRead(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0x37ad80d28a00, {0x37ad807ec000, 0x4a80, 0x4a80})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_unix.go:170 +0x22c
+net.(*netFD).Read(0x37ad80d28a00, {0x37ad807ec000?, 0x37ad8119e968?, 0x10430402c?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/fd_posix.go:68 +0x28
+net.(*conn).Read(0x37ad7f882610, {0x37ad807ec000?, 0x0?, 0x0?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/net.go:196 +0x34
+crypto/tls.(*Conn).readFromUntil(0x37ad80428408, {0x11bf90c40, 0x37ad7f882610}, 0x11c06be80?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/crypto/tls/conn.go:820 +0xdc
+crypto/tls.(*Conn).readRecordOrCCS(0x37ad80428408, 0x0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/crypto/tls/conn.go:626 +0x350
+crypto/tls.(*Conn).readRecord(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/crypto/tls/conn.go:588
+crypto/tls.(*Conn).Read(0x37ad80428408, {0x37ad80714000, 0x1000, 0x37adcfa355e0?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/crypto/tls/conn.go:1392 +0x150
+bufio.(*Reader).Read(0x37ad80909b00, {0x37ad800538a4, 0x9, 0x37adcfa7f010?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/bufio/bufio.go:245 +0x188
+io.ReadAtLeast({0x10c33c700, 0x37ad80909b00}, {0x37ad800538a4, 0x9, 0x9}, 0x9)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/io/io.go:335 +0x90
+io.ReadFull(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/io/io.go:354
+net/http/internal/http2.readFrameHeader({0x37ad800538a4, 0x9, 0x380ba522?}, {0x10c33c700?, 0x37ad80909b00?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/frame.go:252 +0x58
+net/http/internal/http2.(*Framer).ReadFrameHeader(0x37ad80053860)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/frame.go:525 +0x5c
+net/http/internal/http2.(*Framer).ReadFrame(0x37ad80053860)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/frame.go:584 +0x20
+net/http/internal/http2.(*clientConnReadLoop).run(0x37ad8119ef98)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:2047 +0xc0
+net/http/internal/http2.(*ClientConn).readLoop(0x37ad807428c0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1913 +0x4c
+created by net/http/internal/http2.(*Transport).newClientConn in goroutine 39
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:703 +0xa60
+
+goroutine 26 [select]:
+context.(*cancelCtx).propagateCancel.func2()
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/context/context.go:524 +0x84
+created by context.(*cancelCtx).propagateCancel in goroutine 134
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/context/context.go:523 +0x454
+
+goroutine 32 [select]:
+github.com/derailed/k9s/internal/model.(*Table).updater(0x37ad802c3500, {0x10c38a538, 0x37ad80224460})
+	/Users/ikennao/repos/OSS/k9s/internal/model/table.go:208 +0xb8
+created by github.com/derailed/k9s/internal/model.(*Table).Watch in goroutine 1
+	/Users/ikennao/repos/OSS/k9s/internal/model/table.go:125 +0x84
+
+goroutine 136 [select]:
+github.com/derailed/k9s/internal/ui.(*Flash).Watch(0x37ad80bde318, {0x10c38a500, 0x37ad804f37d0}, 0x37ad80465b90)
+	/Users/ikennao/repos/OSS/k9s/internal/ui/flash.go:60 +0xb0
+created by github.com/derailed/k9s/internal/view.(*App).layout in goroutine 1
+	/Users/ikennao/repos/OSS/k9s/internal/view/app.go:168 +0xac
+
+goroutine 73 [runnable]:
+syscall.syscalln(0x10439ff20, {0x37ad8059adc0, 0x3, 0x3})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/sys_darwin.go:27 +0x20
+syscall.syscall(0x37ad8059ae18?, 0x1043bf3d8?, 0x800000?, 0x7ffff800000?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/syscall/syscall_darwin.go:384 +0x24
+syscall.read(0x37adc3f54000?, {0x37adc3f3a461?, 0x37ad8059ae00?, 0x104327c68?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/syscall/zsyscall_darwin_arm64.go:1245 +0x48
+syscall.Read(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/syscall/syscall_unix.go:183
+internal/poll.ignoringEINTRIO(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_unix.go:743
+internal/poll.(*FD).Read(0x37adc3f54000, {0x37adc3f3a461, 0x1, 0x1})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_unix.go:166 +0x198
+net.(*netFD).Read(0x37adc3f54000, {0x37adc3f3a461?, 0x10c741e80?, 0x37adc3f3a4d4?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/fd_posix.go:68 +0x28
+net.(*conn).Read(0x37adc3f56000, {0x37adc3f3a461?, 0x37ad805b76e0?, 0x0?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/net.go:196 +0x34
+net/http.(*connReader).backgroundRead(0x37adc3f3a440)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:746 +0x38
+created by net/http.(*connReader).startBackgroundRead in goroutine 71
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/server.go:742 +0xc0
+
+goroutine 43 [select]:
+context.(*cancelCtx).propagateCancel.func2()
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/context/context.go:524 +0x84
+created by context.(*cancelCtx).propagateCancel in goroutine 123
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/context/context.go:523 +0x454
+
+goroutine 27 [select]:
+k8s.io/client-go/tools/cache.(*Reflector).startResync(0x37ad80be4000, {0x10c38a538, 0x37ad80224140}, 0x37ad804ceb60)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:521 +0xdc
+k8s.io/client-go/tools/cache.(*Reflector).watchWithResync.func2()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:551 +0x24
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:72 +0x4c
+created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 134
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:70 +0x7c
+
+goroutine 94 [select]:
+net/http/internal/http2.(*clientStream).writeRequest(0x37ad7fc5a808, 0x37ad7fc5a788, 0x0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1355 +0x980
+net/http/internal/http2.(*clientStream).doRequest(0x37ad7fc5a808, 0x105139990?, 0x37ad802c8e30?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1216 +0x20
+created by net/http/internal/http2.(*ClientConn).roundTrip in goroutine 93
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1123 +0x3b0
+
+goroutine 93 [select]:
+k8s.io/client-go/tools/cache.handleAnyWatch({0x10c38abc8, 0x37ad8046abd0}, {0x37ad7f80b958?, 0x15bd28782002?, 0x10c7ff940?}, {0x10c370588, 0x37ad802242d0}, {0x11c3840c8, 0x37ad80167180}, {0x10c3acf30, ...}, ...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:1001 +0x1e4
+k8s.io/client-go/tools/cache.handleWatch({0x10c38abc8?, 0x37ad8046abd0?}, {0x37ad7fd00808?, 0x0?, 0x10c7ff940?}, {0x10c370588?, 0x37ad802242d0?}, {0x11c3840c8?, 0x37ad80167180?}, {0x10c3acf30?, ...}, ...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:958 +0x6c
+k8s.io/client-go/tools/cache.(*Reflector).watch(0x37ad7fc06d00, {0x10c38abc8, 0x37ad8046abd0}, {0x10c370588, 0x37ad802242d0}, 0x37ad804b2a80)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:620 +0x4a8
+k8s.io/client-go/tools/cache.(*Reflector).watchWithResync(0x37ad7fc06d00, {0x10c38abc8, 0x37ad8046abd0}, {0x10c370588, 0x37ad802242d0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:553 +0x12c
+k8s.io/client-go/tools/cache.(*Reflector).ListAndWatchWithContext(0x37ad7fc06d00, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:508 +0x364
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1({0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:429 +0x38
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func1({0x10c38abc8?, 0x37ad8046abd0?}, 0x6?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/loop.go:53 +0x60
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext({0x10c38abc8, 0x37ad8046abd0}, {0x10c3852d0, 0x37ad7fc2a280}, 0x1, 0x1, 0x37ad81d09f38)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/loop.go:54 +0xc4
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until(...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext(0x37ad7fc06d00, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:428 +0x248
+k8s.io/apimachinery/pkg/util/wait.(*Group).StartWithContext.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:63 +0x28
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:72 +0x4c
+created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 31
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:70 +0x7c
+
+goroutine 90 [chan receive]:
+k8s.io/client-go/tools/cache.(*sharedProcessor).run(0x37ad802243c0, {0x10c38a538, 0x37ad80523c20})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/shared_informer.go:1283 +0x4c
+k8s.io/apimachinery/pkg/util/wait.(*Group).StartWithContext.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:63 +0x28
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:72 +0x4c
+created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 31
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:70 +0x7c
+
+goroutine 92 [chan receive]:
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:175 +0x34
+created by k8s.io/client-go/tools/cache.(*controller).RunWithContext in goroutine 31
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:174 +0xa8
+
+goroutine 25 [sync.Cond.Wait]:
+sync.runtime_notifyListWait(0x37ad812000d0, 0x0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/sema.go:617 +0x194
+sync.(*Cond).Wait(0x37ad812000c0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/sync/cond.go:71 +0xa4
+net/http/internal/http2.(*pipe).Read(0x37ad812000b8, {0x37ad80870601, 0x1ff, 0x1ff})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/pipe.go:76 +0xf4
+net/http/internal/http2.transportResponseBody.Read({0x37ad7f781420?}, {0x37ad80870601?, 0x16d?, 0x200?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:2355 +0x4c
+encoding/json/jsontext.(*decoderState).fetch(0x37ad7f781400)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:240 +0x350
+encoding/json/jsontext.(*decoderState).consumeWhitespace(0x37ad7f781400, 0x104453c24?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:844 +0xa0
+encoding/json/jsontext.(*decoderState).ReadValue(0x37ad7f781400, 0x37ad80ac5c80)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:702 +0x870
+encoding/json/jsontext.(*Decoder).ReadValue(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:679
+encoding/json.(*Decoder).Decode(0x37ad80e3e2d0, {0x10b5c3898, 0x37ad7f792318})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/v2_stream.go:78 +0x48
+k8s.io/apimachinery/pkg/util/framer.(*jsonFrameReader).Read(0x37ad80e3e300, {0x37ad80e3a800, 0x400, 0x400})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/framer/framer.go:151 +0x15c
+k8s.io/apimachinery/pkg/runtime/serializer/streaming.(*decoder).Decode(0x37ad802240a0, 0x0, {0x10c36fca0, 0x37ad8029bb00})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/runtime/serializer/streaming/streaming.go:77 +0x80
+k8s.io/client-go/rest/watch.(*Decoder).Decode(0x37ad7fbdf0a0)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/rest/watch/decoder.go:49 +0x60
+k8s.io/apimachinery/pkg/watch.(*StreamWatcher).receive(0x37ad802240f0)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/watch/streamwatcher.go:114 +0xb8
+created by k8s.io/apimachinery/pkg/watch.NewStreamWatcherWithLogger in goroutine 134
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/watch/streamwatcher.go:85 +0x134
+
+goroutine 131 [chan receive]:
+k8s.io/client-go/tools/cache.(*sharedProcessor).run(0x37ad8032ac30, {0x10c38a538, 0x37ad808840f0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/shared_informer.go:1283 +0x4c
+k8s.io/apimachinery/pkg/util/wait.(*Group).StartWithContext.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:63 +0x28
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:72 +0x4c
+created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 116
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:70 +0x7c
+
+goroutine 116 [sync.Cond.Wait]:
+sync.runtime_notifyListWait(0x37ad8016a7d0, 0x1)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/sema.go:617 +0x194
+sync.(*Cond).Wait(0x37ad8016a7c0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/sync/cond.go:71 +0xa4
+k8s.io/client-go/tools/cache.(*RealFIFO).PopBatch(0x37ad8016a780, 0x37ad805e2270, 0x37ad805e2210)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/the_real_fifo.go:498 +0x8c
+k8s.io/client-go/tools/cache.(*controller).processLoop(0x37ad80bce210, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:251 +0x154
+k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext.func1({0x10c38abc8?, 0x37ad8046abd0?}, 0x37ad80b2ac78?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:255 +0x58
+k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext({0x10c38abc8, 0x37ad8046abd0}, 0x37ad80ac7da0, {0x10c3414e0, 0x37ad805e2300}, 0x1)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:256 +0xac
+k8s.io/apimachinery/pkg/util/wait.JitterUntilWithContext({0x10c38abc8, 0x37ad8046abd0}, 0x37ad80b2ada0, 0x3b9aca00, 0x0, 0x1)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:223 +0x8c
+k8s.io/apimachinery/pkg/util/wait.UntilWithContext(...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:172
+k8s.io/client-go/tools/cache.(*controller).RunWithContext(0x37ad80bce210, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:209 +0x38c
+k8s.io/client-go/tools/cache.(*sharedIndexInformer).RunWithContext(0x37ad80ed6a20, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/shared_informer.go:904 +0x358
+k8s.io/client-go/tools/cache.(*sharedIndexInformer).Run(0x0?, 0x10434abf4?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/shared_informer.go:838 +0x28
+k8s.io/client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/dynamic/dynamicinformer/informer.go:108 +0x54
+created by k8s.io/client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start in goroutine 1
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/dynamic/dynamicinformer/informer.go:106 +0x1d8
+
+goroutine 28 [sync.Cond.Wait]:
+sync.runtime_notifyListWait(0x37ad7f7c67d0, 0x1)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/sema.go:617 +0x194
+sync.(*Cond).Wait(0x37ad7f7c67c0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/sync/cond.go:71 +0xa4
+k8s.io/client-go/tools/cache.(*RealFIFO).PopBatch(0x37ad7f7c6780, 0x37ad81184d20, 0x37ad81184cf0)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/the_real_fifo.go:498 +0x8c
+k8s.io/client-go/tools/cache.(*controller).processLoop(0x37ad81198000, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:251 +0x154
+k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext.func1({0x10c38abc8?, 0x37ad8046abd0?}, 0x37ad80577c78?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:255 +0x58
+k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext({0x10c38abc8, 0x37ad8046abd0}, 0x37ad812b3da0, {0x10c3414e0, 0x37ad81184d80}, 0x1)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:256 +0xac
+k8s.io/apimachinery/pkg/util/wait.JitterUntilWithContext({0x10c38abc8, 0x37ad8046abd0}, 0x37ad80577da0, 0x3b9aca00, 0x0, 0x1)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:223 +0x8c
+k8s.io/apimachinery/pkg/util/wait.UntilWithContext(...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:172
+k8s.io/client-go/tools/cache.(*controller).RunWithContext(0x37ad81198000, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:209 +0x38c
+k8s.io/client-go/tools/cache.(*sharedIndexInformer).RunWithContext(0x37ad80e2cb40, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/shared_informer.go:904 +0x358
+k8s.io/client-go/tools/cache.(*sharedIndexInformer).Run(0x37ad804b8c40?, 0x105139840?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/shared_informer.go:838 +0x28
+k8s.io/client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/dynamic/dynamicinformer/informer.go:108 +0x54
+created by k8s.io/client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start in goroutine 59
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/dynamic/dynamicinformer/informer.go:106 +0x1d8
+
+goroutine 133 [chan receive]:
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:175 +0x34
+created by k8s.io/client-go/tools/cache.(*controller).RunWithContext in goroutine 116
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:174 +0xa8
+
+goroutine 134 [select]:
+k8s.io/client-go/tools/cache.handleAnyWatch({0x10c38abc8, 0x37ad8046abd0}, {0x10433553c?, 0x15bd226da28a?, 0x10c7ff940?}, {0x10c370588, 0x37ad802240f0}, {0x11c3840c8, 0x37ad8016a780}, {0x10c3acf30, ...}, ...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:1001 +0x1e4
+k8s.io/client-go/tools/cache.handleWatch({0x10c38abc8?, 0x37ad8046abd0?}, {0x4?, 0x1?, 0x10c7ff940?}, {0x10c370588?, 0x37ad802240f0?}, {0x11c3840c8?, 0x37ad8016a780?}, {0x10c3acf30?, ...}, ...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:958 +0x6c
+k8s.io/client-go/tools/cache.(*Reflector).watch(0x37ad80be4000, {0x10c38abc8, 0x37ad8046abd0}, {0x10c370588, 0x37ad802240f0}, 0x37ad804ceb60)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:620 +0x4a8
+k8s.io/client-go/tools/cache.(*Reflector).watchWithResync(0x37ad80be4000, {0x10c38abc8, 0x37ad8046abd0}, {0x10c370588, 0x37ad802240f0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:553 +0x12c
+k8s.io/client-go/tools/cache.(*Reflector).ListAndWatchWithContext(0x37ad80be4000, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:508 +0x364
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1({0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:429 +0x38
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func1({0x10c38abc8?, 0x37ad8046abd0?}, 0x6?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/loop.go:53 +0x60
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext({0x10c38abc8, 0x37ad8046abd0}, {0x10c3852d0, 0x37ad7ff98880}, 0x1, 0x1, 0x37ad812adf38)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/loop.go:54 +0xc4
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until(...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext(0x37ad80be4000, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:428 +0x248
+k8s.io/apimachinery/pkg/util/wait.(*Group).StartWithContext.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:63 +0x28
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:72 +0x4c
+created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 116
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:70 +0x7c
+
+goroutine 135 [select]:
+net/http/internal/http2.(*clientStream).writeRequest(0x37ad81200088, 0x37ad81200008, 0x0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1355 +0x980
+net/http/internal/http2.(*clientStream).doRequest(0x37ad81200088, 0x105139990?, 0x37ad804aa4c0?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1216 +0x20
+created by net/http/internal/http2.(*ClientConn).roundTrip in goroutine 134
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1123 +0x3b0
+
+goroutine 120 [chan receive]:
+k8s.io/client-go/tools/cache.(*sharedProcessor).run(0x37ad80224230, {0x10c38a538, 0x37ad8032acd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/shared_informer.go:1283 +0x4c
+k8s.io/apimachinery/pkg/util/wait.(*Group).StartWithContext.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:63 +0x28
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:72 +0x4c
+created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 28
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:70 +0x7c
+
+goroutine 122 [chan receive]:
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:175 +0x34
+created by k8s.io/client-go/tools/cache.(*controller).RunWithContext in goroutine 28
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:174 +0xa8
+
+goroutine 123 [select]:
+k8s.io/client-go/tools/cache.handleAnyWatch({0x10c38abc8, 0x37ad8046abd0}, {0x37ad80bb7958?, 0x15bd229997f7?, 0x10c7ff940?}, {0x10c370588, 0x37ad80224af0}, {0x11c3840c8, 0x37ad7f7c6780}, {0x10c3acf30, ...}, ...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:1001 +0x1e4
+k8s.io/client-go/tools/cache.handleWatch({0x10c38abc8?, 0x37ad8046abd0?}, {0x37ad7fd00808?, 0x0?, 0x10c7ff940?}, {0x10c370588?, 0x37ad80224af0?}, {0x11c3840c8?, 0x37ad7f7c6780?}, {0x10c3acf30?, ...}, ...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:958 +0x6c
+k8s.io/client-go/tools/cache.(*Reflector).watch(0x37ad7fb3a800, {0x10c38abc8, 0x37ad8046abd0}, {0x10c370588, 0x37ad80224af0}, 0x37ad80500540)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:620 +0x4a8
+k8s.io/client-go/tools/cache.(*Reflector).watchWithResync(0x37ad7fb3a800, {0x10c38abc8, 0x37ad8046abd0}, {0x10c370588, 0x37ad80224af0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:553 +0x12c
+k8s.io/client-go/tools/cache.(*Reflector).ListAndWatchWithContext(0x37ad7fb3a800, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:508 +0x364
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1({0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:429 +0x38
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func1({0x10c38abc8?, 0x37ad8046abd0?}, 0x6?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/loop.go:53 +0x60
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext({0x10c38abc8, 0x37ad8046abd0}, {0x10c3852d0, 0x37ad7f873640}, 0x1, 0x1, 0x37ad80f15f38)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/loop.go:54 +0xc4
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until(...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext(0x37ad7fb3a800, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:428 +0x248
+k8s.io/apimachinery/pkg/util/wait.(*Group).StartWithContext.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:63 +0x28
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:72 +0x4c
+created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 28
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:70 +0x7c
+
+goroutine 124 [select]:
+net/http/internal/http2.(*clientStream).writeRequest(0x37ad81186308, 0x37ad81186288, 0x0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1355 +0x980
+net/http/internal/http2.(*clientStream).doRequest(0x37ad81186308, 0x105139990?, 0x37ad8050a3a0?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1216 +0x20
+created by net/http/internal/http2.(*ClientConn).roundTrip in goroutine 123
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:1123 +0x3b0
+
+goroutine 125 [syscall]:
+os/signal.signal_recv()
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/sigqueue.go:149 +0x104
+os/signal.loop()
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/os/signal/signal_unix.go:23 +0x1c
+created by os/signal.Notify.func2.1 in goroutine 1
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/os/signal/signal.go:164 +0x28
+
+goroutine 126 [chan receive]:
+github.com/derailed/k9s/internal/view.(*App).initSignals.func1(...)
+	/Users/ikennao/repos/OSS/k9s/internal/view/app.go:190
+created by github.com/derailed/k9s/internal/view.(*App).initSignals in goroutine 1
+	/Users/ikennao/repos/OSS/k9s/internal/view/app.go:189 +0xa0
+
+goroutine 44 [select]:
+k8s.io/client-go/tools/cache.(*Reflector).startResync(0x37ad7fb3a800, {0x10c38a538, 0x37ad7ffdc050}, 0x37ad80500540)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:521 +0xdc
+k8s.io/client-go/tools/cache.(*Reflector).watchWithResync.func2()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:551 +0x24
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:72 +0x4c
+created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 123
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:70 +0x7c
+
+goroutine 128 [select]:
+github.com/derailed/k9s/internal/view.(*App).clusterUpdater(0x37ad80864cc0, {0x10c38a538, 0x37ad8032b1d0})
+	/Users/ikennao/repos/OSS/k9s/internal/view/app.go:376 +0x1d8
+created by github.com/derailed/k9s/internal/view.(*App).Resume in goroutine 1
+	/Users/ikennao/repos/OSS/k9s/internal/view/app.go:344 +0xb8
+
+goroutine 95 [sync.Cond.Wait]:
+sync.runtime_notifyListWait(0x37ad7fc5a850, 0x1)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/sema.go:617 +0x194
+sync.(*Cond).Wait(0x37ad7fc5a840)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/sync/cond.go:71 +0xa4
+net/http/internal/http2.(*pipe).Read(0x37ad7fc5a838, {0x37ad814f4001, 0x3fff, 0x3fff})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/pipe.go:76 +0xf4
+net/http/internal/http2.transportResponseBody.Read({0x37ad80074b60?}, {0x37ad814f4001?, 0x159e?, 0x4000?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:2355 +0x4c
+encoding/json/jsontext.(*decoderState).fetch(0x37ad80074b40)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:240 +0x350
+encoding/json/jsontext.(*decoderState).consumeWhitespace(0x37ad80074b40, 0x1042fbc48?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:844 +0xa0
+encoding/json/jsontext.(*decoderState).ReadValue(0x37ad80074b40, 0x37ad80ac9c80)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:702 +0x870
+encoding/json/jsontext.(*Decoder).ReadValue(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:679
+encoding/json.(*Decoder).Decode(0x37ad81185980, {0x10b5c3898, 0x37adae35a210})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/v2_stream.go:78 +0x48
+k8s.io/apimachinery/pkg/util/framer.(*jsonFrameReader).Read(0x37ad811859b0, {0x37ad80600000, 0x4000, 0x5000})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/framer/framer.go:151 +0x15c
+k8s.io/apimachinery/pkg/runtime/serializer/streaming.(*decoder).Decode(0x37ad80224280, 0x0, {0x10c36fca0, 0x37adae1c5300})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/runtime/serializer/streaming/streaming.go:77 +0x80
+k8s.io/client-go/rest/watch.(*Decoder).Decode(0x37ad7fbdf860)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/rest/watch/decoder.go:49 +0x60
+k8s.io/apimachinery/pkg/watch.(*StreamWatcher).receive(0x37ad802242d0)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/watch/streamwatcher.go:114 +0xb8
+created by k8s.io/apimachinery/pkg/watch.NewStreamWatcherWithLogger in goroutine 93
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/watch/streamwatcher.go:85 +0x134
+
+goroutine 31 [sync.Cond.Wait]:
+sync.runtime_notifyListWait(0x37ad801671d0, 0x1)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/sema.go:617 +0x194
+sync.(*Cond).Wait(0x37ad801671c0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/sync/cond.go:71 +0xa4
+k8s.io/client-go/tools/cache.(*RealFIFO).PopBatch(0x37ad80167180, 0x37ad80582ea0, 0x37ad80582e70)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/the_real_fifo.go:498 +0x8c
+k8s.io/client-go/tools/cache.(*controller).processLoop(0x37ad80d8a790, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:251 +0x154
+k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext.func1({0x10c38abc8?, 0x37ad8046abd0?}, 0x37ad80596c78?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:255 +0x58
+k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext({0x10c38abc8, 0x37ad8046abd0}, 0x37ad80acbda0, {0x10c3414e0, 0x37ad80582f00}, 0x1)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:256 +0xac
+k8s.io/apimachinery/pkg/util/wait.JitterUntilWithContext({0x10c38abc8, 0x37ad8046abd0}, 0x37ad80596da0, 0x3b9aca00, 0x0, 0x1)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:223 +0x8c
+k8s.io/apimachinery/pkg/util/wait.UntilWithContext(...)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/backoff.go:172
+k8s.io/client-go/tools/cache.(*controller).RunWithContext(0x37ad80d8a790, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/controller.go:209 +0x38c
+k8s.io/client-go/tools/cache.(*sharedIndexInformer).RunWithContext(0x37ad80e2cc60, {0x10c38abc8, 0x37ad8046abd0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/shared_informer.go:904 +0x358
+k8s.io/client-go/tools/cache.(*sharedIndexInformer).Run(0x0?, 0x0?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/shared_informer.go:838 +0x28
+k8s.io/client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/dynamic/dynamicinformer/informer.go:108 +0x54
+created by k8s.io/client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start in goroutine 1
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/dynamic/dynamicinformer/informer.go:106 +0x1d8
+
+goroutine 96 [select]:
+context.(*cancelCtx).propagateCancel.func2()
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/context/context.go:524 +0x84
+created by context.(*cancelCtx).propagateCancel in goroutine 93
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/context/context.go:523 +0x454
+
+goroutine 97 [select]:
+k8s.io/client-go/tools/cache.(*Reflector).startResync(0x37ad7fc06d00, {0x10c38a538, 0x37ad7ffdc0a0}, 0x37ad804b2a80)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:521 +0xdc
+k8s.io/client-go/tools/cache.(*Reflector).watchWithResync.func2()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/tools/cache/reflector.go:551 +0x24
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:72 +0x4c
+created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 93
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/wait/wait.go:70 +0x7c
+
+goroutine 67 [syscall]:
+syscall.syscalln(0x10439ff20, {0x37ad80e51d90, 0x3, 0x3})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/sys_darwin.go:27 +0x20
+syscall.syscall(0x37ad80e51de8?, 0x1043bf3d8?, 0x800000?, 0x7ffff800000?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/syscall/syscall_darwin.go:384 +0x24
+syscall.read(0x37ad8074ef60?, {0x37ad8091a200?, 0x91?, 0x11?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/syscall/zsyscall_darwin_arm64.go:1245 +0x48
+syscall.Read(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/syscall/syscall_unix.go:183
+internal/poll.ignoringEINTRIO(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_unix.go:743
+internal/poll.(*FD).Read(0x37ad8074ef60, {0x37ad8091a200, 0x80, 0x80})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/internal/poll/fd_unix.go:166 +0x198
+os.(*File).read(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/os/file_posix.go:30
+os.(*File).Read(0x37ad7fd021d0, {0x37ad8091a200?, 0x10c837701?, 0x37ad80c4a3f0?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/os/file.go:144 +0x68
+github.com/derailed/tcell/v2.(*devTty).Read(0x0?, {0x37ad8091a200?, 0x0?, 0x10c39cdf0?})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tcell/v2@v2.3.1-rc.4/tty_unix.go:45 +0x24
+github.com/derailed/tcell/v2.(*tScreen).inputLoop(0x37ad80e2e248, 0x37ad80c72070)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tcell/v2@v2.3.1-rc.4/tscreen.go:1531 +0xa0
+created by github.com/derailed/tcell/v2.(*tScreen).engage in goroutine 1
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tcell/v2@v2.3.1-rc.4/tscreen.go:1660 +0x278
+
+goroutine 68 [select]:
+github.com/derailed/tcell/v2.(*tScreen).mainLoop(0x37ad80e2e248, 0x37ad80c72070)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tcell/v2@v2.3.1-rc.4/tscreen.go:1470 +0xd0
+created by github.com/derailed/tcell/v2.(*tScreen).engage in goroutine 1
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tcell/v2@v2.3.1-rc.4/tscreen.go:1661 +0x2c8
+
+goroutine 194 [select]:
+github.com/derailed/tcell/v2.(*tScreen).PollEvent(0x0?)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tcell/v2@v2.3.1-rc.4/tscreen.go:950 +0x58
+github.com/derailed/tview.(*Application).Run.func2()
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tview@v0.8.5/application.go:267 +0x118
+created by github.com/derailed/tview.(*Application).Run in goroutine 1
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tview@v0.8.5/application.go:254 +0x140
+
+goroutine 33 [select]:
+github.com/derailed/tcell/v2.(*devTty).Start.func1(0x37ad80e3c930)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tcell/v2@v2.3.1-rc.4/tty_unix.go:91 +0x90
+created by github.com/derailed/tcell/v2.(*devTty).Start in goroutine 1
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/github.com/derailed/tcell/v2@v2.3.1-rc.4/tty_unix.go:88 +0x234
+
+goroutine 178 [sync.Cond.Wait]:
+sync.runtime_notifyListWait(0x37ad81186350, 0x0)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/runtime/sema.go:617 +0x194
+sync.(*Cond).Wait(0x37ad81186340)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/sync/cond.go:71 +0xa4
+net/http/internal/http2.(*pipe).Read(0x37ad81186338, {0x37ad80f28001, 0x1fff, 0x1fff})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/pipe.go:76 +0xf4
+net/http/internal/http2.transportResponseBody.Read({0x37ad7fb6e660?}, {0x37ad80f28001?, 0x1a7?, 0x2000?})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/net/http/internal/http2/transport.go:2355 +0x4c
+encoding/json/jsontext.(*decoderState).fetch(0x37ad7fb6e640)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:240 +0x350
+encoding/json/jsontext.(*decoderState).consumeWhitespace(0x37ad7fb6e640, 0x104453c24?)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:844 +0xa0
+encoding/json/jsontext.(*decoderState).ReadValue(0x37ad7fb6e640, 0x37ad81d0fc80)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:702 +0x870
+encoding/json/jsontext.(*Decoder).ReadValue(...)
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/jsontext/decode.go:679
+encoding/json.(*Decoder).Decode(0x37ad80e6b230, {0x10b5c3898, 0x37ad80c75728})
+	/opt/homebrew/Cellar/go/1.27.1/libexec/src/encoding/json/v2_stream.go:78 +0x48
+k8s.io/apimachinery/pkg/util/framer.(*jsonFrameReader).Read(0x37ad80e6b260, {0x37ad80f36000, 0x2000, 0x2500})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/util/framer/framer.go:151 +0x15c
+k8s.io/apimachinery/pkg/runtime/serializer/streaming.(*decoder).Decode(0x37ad80224aa0, 0x0, {0x10c36fca0, 0x37ad8020b1c0})
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/runtime/serializer/streaming/streaming.go:77 +0x80
+k8s.io/client-go/rest/watch.(*Decoder).Decode(0x37ad7fbdf7e0)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/client-go@v0.37.1/rest/watch/decoder.go:49 +0x60
+k8s.io/apimachinery/pkg/watch.(*StreamWatcher).receive(0x37ad80224af0)
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/watch/streamwatcher.go:114 +0xb8
+created by k8s.io/apimachinery/pkg/watch.NewStreamWatcherWithLogger in goroutine 123
+	/Users/ikennao/.gvm/pkgsets/go1.25/global/pkg/mod/k8s.io/apimachinery@v0.37.1/pkg/watch/streamwatcher.go:85 +0x134

@@ -1,0 +1,191 @@
+File: render.test
+Type: cpu
+Time: 2026-10-15 23:35:35 EDT
+Duration: 9.08s, Total samples = 22.20s (244.37%)
+Showing nodes accounting for -14.47s, 65.18% of 22.20s total
+Dropped 399 nodes (cum <= 0.11s)
+      flat  flat%   sum%        cum   cum%
+    -2.28s 10.27% 10.27%     -2.28s 10.27%  runtime.usleep
+    -1.06s  4.77% 15.05%     -1.06s  4.77%  internal/runtime/maps.memHashAES
+    -1.02s  4.59% 19.64%     -2.13s  9.59%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+    -0.79s  3.56% 23.20%     -1.50s  6.76%  runtime.scanObjectsSmall
+    -0.76s  3.42% 26.62%     -0.96s  4.32%  runtime.tryDeferToSpanScan
+    -0.69s  3.11% 29.73%     -0.69s  3.11%  runtime.madvise
+    -0.34s  1.53% 31.26%    -10.73s 48.33%  k8s.io/apimachinery/pkg/runtime.structFromUnstructured
+    -0.27s  1.22% 32.48%     -1.56s  7.03%  runtime.mapaccess2
+    -0.25s  1.13% 33.60%     -0.25s  1.13%  runtime.typePointers.next
+    -0.24s  1.08% 34.68%     -0.24s  1.08%  runtime.pthread_cond_wait
+    -0.22s  0.99% 35.68%     -0.22s  0.99%  runtime.(*gcBits).bytep (inline)
+    -0.22s  0.99% 36.67%     -0.22s  0.99%  runtime.memclrNoHeapPointers
+    -0.21s  0.95% 37.61%    -10.73s 48.33%  k8s.io/apimachinery/pkg/runtime.fromUnstructured
+    -0.21s  0.95% 38.56%     -2.43s 10.95%  runtime.mapaccess2_faststr
+    -0.20s   0.9% 39.46%     -3.14s 14.14%  reflect.Value.MapIndex
+    -0.20s   0.9% 40.36%     -0.62s  2.79%  runtime.scanObject
+    -0.19s  0.86% 41.22%     -0.27s  1.22%  type:.eq.IM8
+    -0.18s  0.81% 42.03%     -0.39s  1.76%  runtime.interhash
+    -0.17s  0.77% 42.79%     -1.06s  4.77%  reflect.Value.Set
+    -0.17s  0.77% 43.56%     -0.65s  2.93%  runtime.mallocgcSmallScanNoHeaderSC2
+    -0.15s  0.68% 44.23%     -0.25s  1.13%  internal/runtime/maps.MemHash64
+    -0.15s  0.68% 44.91%     -0.15s  0.68%  reflect.flag.kind (inline)
+    -0.15s  0.68% 45.59%     -0.68s  3.06%  runtime.bulkBarrierPreWrite
+    -0.15s  0.68% 46.26%     -0.15s  0.68%  runtime.extractHeapBitsSmall
+    -0.15s  0.68% 46.94%     -0.38s  1.71%  runtime.mallocgcSmallScanSlowPath
+    -0.15s  0.68% 47.61%     -0.15s  0.68%  runtime.memequal
+    -0.12s  0.54% 48.15%     -0.14s  0.63%  internal/runtime/maps.(*Map).putSlotSmallFastStr
+    -0.12s  0.54% 48.69%     -0.13s  0.59%  reflect.directlyAssignable
+    -0.12s  0.54% 49.23%     -0.12s  0.54%  runtime.memmove
+    -0.12s  0.54% 49.77%     -0.12s  0.54%  runtime.mmap
+    -0.10s  0.45% 50.23%     -0.10s  0.45%  internal/runtime/maps.memHash64AES
+    -0.10s  0.45% 50.68%     -0.17s  0.77%  reflect.Value.Field
+    -0.10s  0.45% 51.13%     -0.12s  0.54%  runtime.ifaceeq
+    -0.10s  0.45% 51.58%     -0.14s  0.63%  runtime.mallocgcTinySC2
+    -0.10s  0.45% 52.03%     -0.48s  2.16%  runtime.typedmemmove
+    -0.10s  0.45% 52.48%     -0.27s  1.22%  runtime.wbBufFlush1
+    -0.09s  0.41% 52.88%     -0.12s  0.54%  reflect.Zero
+    -0.09s  0.41% 53.29%     -0.61s  2.75%  type:.hash.IM8
+    -0.08s  0.36% 53.65%     -1.33s  5.99%  k8s.io/apimachinery/pkg/runtime.fieldInfoFromField
+    -0.08s  0.36% 54.01%     -0.11s   0.5%  reflect.Value.NumMethod
+    -0.08s  0.36% 54.37%     -0.23s  1.04%  reflect.Value.assignTo
+    -0.08s  0.36% 54.73%     -2.20s  9.91%  runtime.mallocgc
+    -0.08s  0.36% 55.09%     -0.11s   0.5%  runtime.mapaccess1_fast64
+    -0.08s  0.36% 55.45%     -0.19s  0.86%  runtime.typehash
+    -0.07s  0.32% 55.77%     -0.91s  4.10%  github.com/derailed/k9s/internal/render.pick (inline)
+    -0.07s  0.32% 56.08%     -0.21s  0.95%  reflect.Value.Elem
+    -0.07s  0.32% 56.40%     -0.10s  0.45%  runtime.interequal
+    -0.07s  0.32% 56.71%     -0.90s  4.05%  runtime.mapassign_faststr
+    -0.07s  0.32% 57.03%     -0.35s  1.58%  runtime.memhash64 (partial-inline)
+    -0.06s  0.27% 57.30%     -0.14s  0.63%  encoding/json/jsontext.(*decoderState).reset
+    -0.06s  0.27% 57.57%     -0.22s  0.99%  encoding/json/jsontext.(*encoderState).reset
+    -0.06s  0.27% 57.84%     -1.19s  5.36%  encoding/json/v2.Marshal
+    -0.06s  0.27% 58.11%     -0.19s  0.86%  runtime.mallocgcSmallScanNoHeaderSC5
+    -0.06s  0.27% 58.38%     -0.12s  0.54%  sync.(*Pool).Get
+    -0.05s  0.23% 58.60%     -0.12s  0.54%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).Load
+    -0.05s  0.23% 58.83%     -2.09s  9.41%  reflect.mapaccess_faststr
+    -0.05s  0.23% 59.05%     -0.88s  3.96%  reflect.unsafe_New
+    -0.05s  0.23% 59.28%     -0.32s  1.44%  runtime.typedmemclr
+    -0.05s  0.23% 59.50%     -2.13s  9.59%  sigs.k8s.io/structured-merge-diff/v6/value.TypeReflectCacheEntry.FromUnstructured
+    -0.04s  0.18% 59.68%     -0.10s  0.45%  k8s.io/apimachinery/pkg/api/resource.parseQuantityString
+    -0.04s  0.18% 59.86%     -2.39s 10.77%  k8s.io/apimachinery/pkg/runtime.mapFromUnstructured
+    -0.04s  0.18% 60.05%     -0.32s  1.44%  k8s.io/apimachinery/pkg/runtime.unwrapInterface (inline)
+    -0.04s  0.18% 60.23%     -2.05s  9.23%  runtime.(*mheap).allocSpan
+    -0.04s  0.18% 60.41%     -0.17s  0.77%  runtime.(*spanSet).push
+    -0.03s  0.14% 60.54%     -0.15s  0.68%  encoding/json/v2.lookupArshaler
+    -0.03s  0.14% 60.68%     -0.62s  2.79%  encoding/json/v2.marshalEncode
+    -0.03s  0.14% 60.81%     -0.10s  0.45%  github.com/derailed/k9s/internal/render.filterSidecarCO (inline)
+    -0.03s  0.14% 60.95%     -0.22s  0.99%  k8s.io/apimachinery/pkg/api/resource.ParseQuantity
+    -0.03s  0.14% 61.08%     -9.52s 42.88%  k8s.io/apimachinery/pkg/runtime.sliceFromUnstructured
+    -0.03s  0.14% 61.22%     -0.11s   0.5%  reflect.(*rtype).AssignableTo
+    -0.03s  0.14% 61.35%     -0.84s  3.78%  reflect.copyVal
+    -0.03s  0.14% 61.49%     -0.44s  1.98%  reflect.typedmemmove
+    -0.03s  0.14% 61.62%     -0.11s   0.5%  runtime.(*mheap).allocMSpanLocked
+    -0.03s  0.14% 61.76%     -0.10s  0.45%  runtime.(*spanSet).pop
+    -0.03s  0.14% 61.89%     -0.45s  2.03%  runtime.mallocgcSmallScanHeader
+    -0.03s  0.14% 62.03%     -0.48s  2.16%  runtime.mallocgcSmallScanNoHeader
+    -0.03s  0.14% 62.16%     -0.24s  1.08%  runtime.mallocgcSmallScanNoHeaderSC6
+    -0.02s  0.09% 62.25%     -0.41s  1.85%  encoding/json.Unmarshal (inline)
+    -0.02s  0.09% 62.34%     -0.34s  1.53%  encoding/json/jsontext.getBufferedEncoder
+    -0.02s  0.09% 62.43%     -0.14s  0.63%  encoding/json/v2.makeStringArshaler.func1
+    -0.02s  0.09% 62.52%     -0.10s  0.45%  gcWriteBarrier
+    -0.02s  0.09% 62.61%     -0.10s  0.45%  github.com/derailed/k9s/internal/render.(*Pod).initContainerStats (inline)
+    -0.02s  0.09% 62.70%     -0.21s  0.95%  github.com/derailed/k9s/internal/render.extractGPU (inline)
+    -0.02s  0.09% 62.79%     -0.16s  0.72%  reflect.(*rtype).typeOff (inline)
+    -0.02s  0.09% 62.88%     -0.24s  1.08%  reflect.Value.MapKeys
+    -0.02s  0.09% 62.97%     -0.13s  0.59%  reflect.packIfaceValueIntoEmptyIface (inline)
+    -0.02s  0.09% 63.06%     -0.34s  1.53%  reflect.typedmemclr
+    -0.02s  0.09% 63.15%     -0.35s  1.58%  runtime.(*sweepLocked).sweep
+    -0.02s  0.09% 63.24%     -0.18s  0.81%  runtime.(*wbBuf).get2 (inline)
+    -0.02s  0.09% 63.33%     -2.20s  9.91%  runtime.gcDrain
+    -0.02s  0.09% 63.42%     -0.21s  0.95%  runtime.makemap (partial-inline)
+    -0.02s  0.09% 63.51%     -0.10s  0.45%  runtime.newArenaMayUnlock
+    -0.02s  0.09% 63.60%     -0.55s  2.48%  runtime.newMarkBits
+    -0.02s  0.09% 63.69%     -0.30s  1.35%  runtime.newobject (partial-inline)
+    -0.02s  0.09% 63.78%     -0.13s  0.59%  runtime.resolveTypeOff
+    -0.02s  0.09% 63.87%     -1.61s  7.25%  runtime.scanSpan
+    -0.02s  0.09% 63.96%     -0.16s  0.72%  runtime.slicebytetostring
+    -0.02s  0.09% 64.05%     -0.25s  1.13%  runtime.wbMove
+    -0.01s 0.045% 64.10%     -0.11s   0.5%  bytes.Clone (inline)
+    -0.01s 0.045% 64.14%     -1.20s  5.41%  encoding/json.Marshal (inline)
+    -0.01s 0.045% 64.19%     -0.16s  0.72%  encoding/json/jsontext.getBufferedDecoder
+    -0.01s 0.045% 64.23%     -0.39s  1.76%  encoding/json/v2.Unmarshal
+    -0.01s 0.045% 64.28%    -13.48s 60.72%  github.com/derailed/k9s/internal/model1.Hydrate.func1
+     0.01s 0.045% 64.23%      0.14s  0.63%  github.com/derailed/k9s/internal/render.(*podState).fill
+    -0.01s 0.045% 64.28%     -0.10s  0.45%  github.com/derailed/k9s/internal/render.cosLimits
+    -0.01s 0.045% 64.32%     -0.55s  2.48%  github.com/derailed/k9s/internal/render.gatherPodMX
+    -0.01s 0.045% 64.37%    -11.74s 52.88%  github.com/derailed/k9s/internal/render.podSpecStatus
+    -0.01s 0.045% 64.41%     -0.65s  2.93%  internal/runtime/maps.newGroups (inline)
+    -0.01s 0.045% 64.46%     -0.32s  1.44%  k8s.io/apimachinery/pkg/api/resource.(*Quantity).UnmarshalJSON
+    -0.01s 0.045% 64.50%     -0.50s  2.25%  k8s.io/apimachinery/pkg/apis/meta/v1.(*Time).UnmarshalJSON
+    -0.01s 0.045% 64.55%     -0.16s  0.72%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.NestedNullCoercingStringMap
+    -0.01s 0.045% 64.59%    -10.74s 48.38%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructured (inline)
+    -0.01s 0.045% 64.64%     -1.10s  4.95%  k8s.io/apimachinery/pkg/runtime.pointerFromUnstructured
+    -0.01s 0.045% 64.68%     -0.10s  0.45%  reflect.MakeMapWithSize
+    -0.01s 0.045% 64.73%     -0.16s  0.72%  reflect.MakeSlice
+    -0.01s 0.045% 64.77%     -0.44s  1.98%  reflect.New
+    -0.01s 0.045% 64.82%     -0.38s  1.71%  reflect.Value.SetMapIndex
+    -0.01s 0.045% 64.86%     -0.36s  1.62%  reflect.mapassign_faststr
+    -0.01s 0.045% 64.91%     -0.14s  0.63%  reflect.resolveTypeOff
+    -0.01s 0.045% 64.95%     -1.10s  4.95%  runtime.(*mcache).refill
+    -0.01s 0.045% 65.00%        -1s  4.50%  runtime.(*mcentral).cacheSpan
+    -0.01s 0.045% 65.05%     -1.24s  5.59%  runtime.(*mheap).freeSpan.func1
+    -0.01s 0.045% 65.09%     -0.22s  0.99%  runtime.(*mspan).refillAllocCache
+    -0.01s 0.045% 65.14%     -5.96s 26.85%  runtime.systemstack
+    -0.01s 0.045% 65.18%     -0.42s  1.89%  sigs.k8s.io/structured-merge-diff/v6/value.TypeReflectEntryOf
+         0     0% 65.18%     -0.16s  0.72%  encoding/json/jsontext.export.GetBufferedDecoder (inline)
+         0     0% 65.18%     -0.34s  1.53%  encoding/json/jsontext.export.GetBufferedEncoder (inline)
+         0     0% 65.18%     -0.21s  0.95%  encoding/json/v2.unmarshalDecode
+         0     0% 65.18%     -0.11s   0.5%  github.com/derailed/k9s/internal/model1.(*TableData).Render
+         0     0% 65.18%     -0.11s   0.5%  github.com/derailed/k9s/internal/model1.(*TableData).Update
+         0     0% 65.18%      0.70s  3.15%  github.com/derailed/k9s/internal/model1.hydrateCached.func1
+         0     0% 65.18%    -12.78s 57.57%  github.com/derailed/k9s/internal/model1.parallelRender.func1
+         0     0% 65.18%    -13.47s 60.68%  github.com/derailed/k9s/internal/render.(*Pod).Render
+         0     0% 65.18%      0.68s  3.06%  github.com/derailed/k9s/internal/render.(*Pod).RenderCached
+         0     0% 65.18%    -13.47s 60.68%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+         0     0% 65.18%      0.10s  0.45%  github.com/derailed/k9s/internal/render.(*Pod).newPodState
+         0     0% 65.18%     -1.29s  5.81%  github.com/derailed/k9s/internal/render.(*Pod).podRow
+         0     0% 65.18%     -0.21s  0.95%  github.com/derailed/k9s/internal/render.cosRequests
+         0     0% 65.18%     -0.50s  2.25%  github.com/derailed/k9s/internal/render.pickAll (inline)
+         0     0% 65.18%     -0.66s  2.97%  internal/runtime/maps.(*Map).growToSmall
+         0     0% 65.18%     -0.19s  0.86%  internal/runtime/maps.NewMap
+         0     0% 65.18%     -0.64s  2.88%  internal/runtime/maps.newarray
+         0     0% 65.18%     -0.16s  0.72%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.(*Unstructured).GetLabels (inline)
+         0     0% 65.18%    -10.73s 48.33%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructuredWithValidation
+         0     0% 65.18%     -0.16s  0.72%  reflect.(*rtype).ptrTo
+         0     0% 65.18%     -0.10s  0.45%  reflect.MakeMap (inline)
+         0     0% 65.18%     -0.14s  0.63%  reflect.Value.Kind (inline)
+         0     0% 65.18%     -0.35s  1.58%  reflect.mapassign_faststr0
+         0     0% 65.18%     -0.16s  0.72%  reflect.ptrTo (inline)
+         0     0% 65.18%     -0.13s  0.59%  reflect.unsafe_NewArray
+         0     0% 65.18%     -1.13s  5.09%  runtime.(*mcache).nextFree
+         0     0% 65.18%     -0.37s  1.67%  runtime.(*mcentral).grow
+         0     0% 65.18%     -0.36s  1.62%  runtime.(*mheap).alloc
+         0     0% 65.18%     -2.05s  9.23%  runtime.(*mheap).alloc.func1
+         0     0% 65.18%     -0.34s  1.53%  runtime.(*mheap).initSpan
+         0     0% 65.18%     -0.24s  1.08%  runtime.bgsweep
+         0     0% 65.18%     -0.12s  0.54%  runtime.copystack
+         0     0% 65.18%     -0.12s  0.54%  runtime.findRunnable
+         0     0% 65.18%     -0.10s  0.45%  runtime.gcAssistAlloc
+         0     0% 65.18%     -2.15s  9.68%  runtime.gcBgMarkWorker
+         0     0% 65.18%     -2.20s  9.91%  runtime.gcBgMarkWorker.func2
+         0     0% 65.18%     -1.74s  7.84%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 65.18%     -0.46s  2.07%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 65.18%     -0.10s  0.45%  runtime.gopreempt_m (inline)
+         0     0% 65.18%     -0.13s  0.59%  runtime.goschedImpl
+         0     0% 65.18%     -2.48s 11.17%  runtime.lock (partial-inline)
+         0     0% 65.18%     -2.48s 11.17%  runtime.lock2
+         0     0% 65.18%     -2.48s 11.17%  runtime.lockWithRank (inline)
+         0     0% 65.18%     -0.19s  0.86%  runtime.makeslice
+         0     0% 65.18%     -0.10s  0.45%  runtime.morestack
+         0     0% 65.18%     -0.77s  3.47%  runtime.newarray
+         0     0% 65.18%     -0.23s  1.04%  runtime.newstack
+         0     0% 65.18%     -2.27s 10.23%  runtime.osyield (inline)
+         0     0% 65.18%     -0.13s  0.59%  runtime.rtype.typeOff (inline)
+         0     0% 65.18%     -0.11s   0.5%  runtime.schedule
+         0     0% 65.18%     -0.24s  1.08%  runtime.semasleep
+         0     0% 65.18%     -0.27s  1.22%  runtime.sweepone
+         0     0% 65.18%     -0.11s   0.5%  runtime.sysAlloc
+         0     0% 65.18%     -0.11s   0.5%  runtime.sysAllocOS (inline)
+         0     0% 65.18%     -0.68s  3.06%  runtime.sysUsed (inline)
+         0     0% 65.18%     -0.68s  3.06%  runtime.sysUsedOS (inline)
+         0     0% 65.18%     -0.27s  1.22%  runtime.wbBufFlush
+         0     0% 65.18%     -0.27s  1.22%  runtime.wbBufFlush.func1
+         0     0% 65.18%     -0.12s  0.54%  sync.(*Map).Load (inline)

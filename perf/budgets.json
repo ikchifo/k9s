@@ -1,0 +1,182 @@
+[
+ {
+  "size": "s",
+  "metric": "startup_first_frame",
+  "median": 500
+ },
+ {
+  "size": "s",
+  "metric": "startup_full_table",
+  "median": 500
+ },
+ {
+  "size": "s",
+  "metric": "switch_to_deploy",
+  "median": 150
+ },
+ {
+  "size": "s",
+  "metric": "switch_to_pods",
+  "median": 150
+ },
+ {
+  "size": "s",
+  "metric": "context_switch",
+  "median": 500
+ },
+ {
+  "size": "s",
+  "metric": "filter_key_echo",
+  "median": 16
+ },
+ {
+  "size": "s",
+  "metric": "filter_apply",
+  "median": 250
+ },
+ {
+  "size": "s",
+  "metric": "scroll_page_down",
+  "median": 16
+ },
+ {
+  "size": "s",
+  "metric": "sort_toggle",
+  "median": 16
+ },
+ {
+  "size": "s",
+  "metric": "refresh_cpu",
+  "median": 20
+ },
+ {
+  "size": "s",
+  "metric": "idle_cpu_pct",
+  "median": 1
+ },
+ {
+  "size": "s",
+  "metric": "idle_rss",
+  "median": 150
+ },
+ {
+  "size": "m",
+  "metric": "startup_first_frame",
+  "median": 1500
+ },
+ {
+  "size": "m",
+  "metric": "startup_full_table",
+  "median": 1500
+ },
+ {
+  "size": "m",
+  "metric": "switch_to_deploy",
+  "median": 250
+ },
+ {
+  "size": "m",
+  "metric": "switch_to_pods",
+  "median": 250
+ },
+ {
+  "size": "m",
+  "metric": "context_switch",
+  "median": 1500
+ },
+ {
+  "size": "m",
+  "metric": "filter_key_echo",
+  "median": 16
+ },
+ {
+  "size": "m",
+  "metric": "filter_apply",
+  "median": 300
+ },
+ {
+  "size": "m",
+  "metric": "scroll_page_down",
+  "median": 33
+ },
+ {
+  "size": "m",
+  "metric": "sort_toggle",
+  "median": 33
+ },
+ {
+  "size": "m",
+  "metric": "refresh_cpu",
+  "median": 100
+ },
+ {
+  "size": "m",
+  "metric": "idle_cpu_pct",
+  "median": 5
+ },
+ {
+  "size": "m",
+  "metric": "idle_rss",
+  "median": 400
+ },
+ {
+  "size": "l",
+  "metric": "startup_first_frame",
+  "median": 3000
+ },
+ {
+  "size": "l",
+  "metric": "startup_full_table",
+  "median": 3000
+ },
+ {
+  "size": "l",
+  "metric": "switch_to_deploy",
+  "median": 500
+ },
+ {
+  "size": "l",
+  "metric": "switch_to_pods",
+  "median": 500
+ },
+ {
+  "size": "l",
+  "metric": "context_switch",
+  "median": 3000
+ },
+ {
+  "size": "l",
+  "metric": "filter_key_echo",
+  "median": 33
+ },
+ {
+  "size": "l",
+  "metric": "filter_apply",
+  "median": 400
+ },
+ {
+  "size": "l",
+  "metric": "scroll_page_down",
+  "median": 100
+ },
+ {
+  "size": "l",
+  "metric": "sort_toggle",
+  "median": 100
+ },
+ {
+  "size": "l",
+  "metric": "refresh_cpu",
+  "median": 400
+ },
+ {
+  "size": "l",
+  "metric": "idle_cpu_pct",
+  "median": 20
+ },
+ {
+  "size": "l",
+  "metric": "idle_rss",
+  "median": 1229
+ }
+]

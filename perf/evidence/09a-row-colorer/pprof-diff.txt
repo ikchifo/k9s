@@ -1,0 +1,60 @@
+File: ui.test
+Type: cpu
+Time: 2026-10-15 23:45:24 EDT
+Duration: 15.64s, Total samples = 8.11s (51.86%)
+Showing nodes accounting for 0.52s, 6.41% of 8.11s total
+Dropped 6 nodes (cum <= 0.04s)
+      flat  flat%   sum%        cum   cum%
+     0.35s  4.32%  4.32%      0.59s  7.27%  github.com/fvbommel/sortorder.NaturalCompare
+    -0.27s  3.33%  0.99%     -0.26s  3.21%  github.com/derailed/k9s/internal/model1.Header.IndexOf (partial-inline)
+     0.18s  2.22%  3.21%      0.18s  2.22%  runtime.pthread_kill
+    -0.16s  1.97%  1.23%     -0.18s  2.22%  github.com/derailed/k9s/internal/model1.durationToSeconds
+     0.15s  1.85%  3.08%      0.15s  1.85%  runtime.madvise
+     0.14s  1.73%  4.81%      0.14s  1.73%  runtime.memequal
+     0.14s  1.73%  6.54%      0.14s  1.73%  runtime.usleep
+     0.12s  1.48%  8.01%      0.12s  1.48%  runtime.pthread_cond_wait
+     0.12s  1.48%  9.49%      0.13s  1.60%  runtime.tryDeferToSpanScan
+    -0.10s  1.23%  8.26%      0.05s  0.62%  runtime.scanObjectsSmall
+     0.07s  0.86%  9.12%      0.07s  0.86%  github.com/fvbommel/sortorder.isDigit (inline)
+    -0.06s  0.74%  8.38%     -0.03s  0.37%  runtime.mallocgcSmallScanNoHeaderSC7
+    -0.06s  0.74%  7.64%     -0.06s  0.74%  runtime.mallocgcTinySC2
+    -0.04s  0.49%  7.15%     -0.03s  0.37%  github.com/derailed/k9s/internal/model.(*Table).GetNamespace
+    -0.04s  0.49%  6.66%     -0.01s  0.12%  github.com/derailed/k9s/internal/ui.formatCell
+    -0.04s  0.49%  6.17%     -0.14s  1.73%  github.com/derailed/tview.(*Table).SetCell
+     0.04s  0.49%  6.66%     -0.02s  0.25%  runtime.concatstrings
+     0.04s  0.49%  7.15%      0.07s  0.86%  runtime.mallocgcSmallScanNoHeader
+    -0.04s  0.49%  6.66%     -0.03s  0.37%  runtime.mallocgcSmallScanNoHeaderSC4
+     0.04s  0.49%  7.15%      0.04s  0.49%  runtime.memclrNoHeapPointers
+     0.04s  0.49%  7.64%      0.04s  0.49%  runtime.memmove
+    -0.04s  0.49%  7.15%     -0.04s  0.49%  runtime.roundupsize (inline)
+    -0.03s  0.37%  6.78%     -0.03s  0.37%  github.com/derailed/k9s/internal/model1.RowEventSorter.Swap
+    -0.03s  0.37%  6.41%     -0.36s  4.44%  github.com/derailed/k9s/internal/render.(*Pod).ColorerFunc.func1
+    -0.03s  0.37%  6.04%     -0.03s  0.37%  github.com/derailed/k9s/internal/ui.ComputeMaxColumns.func1 (inline)
+     0.03s  0.37%  6.41%      0.03s  0.37%  github.com/derailed/k9s/internal/ui.IsASCII (inline)
+    -0.03s  0.37%  6.04%      0.03s  0.37%  runtime.(*mheap).initSpan
+     0.03s  0.37%  6.41%      0.01s  0.12%  runtime.(*mspan).writeHeapBitsSmall
+    -0.03s  0.37%  6.04%     -0.06s  0.74%  runtime.mallocgc
+     0.03s  0.37%  6.41%      0.13s  1.60%  sort.partition
+    -0.03s  0.37%  6.04%     -0.03s  0.37%  strings.TrimSpace
+    -0.02s  0.25%  5.80%     -0.18s  2.22%  github.com/derailed/k9s/internal/model1.IsValid
+    -0.02s  0.25%  5.55%      0.33s  4.07%  github.com/derailed/k9s/internal/model1.RowEventSorter.Less
+    -0.02s  0.25%  5.30%     -0.02s  0.25%  github.com/derailed/k9s/internal/model1.runesToNum (inline)
+     0.02s  0.25%  5.55%      0.02s  0.25%  github.com/derailed/k9s/internal/ui.(*Table).shouldExcludeColumn
+     0.02s  0.25%  5.80%      0.02s  0.25%  github.com/derailed/tview.(*TableCell).SetExpansion (inline)
+    -0.02s  0.25%  5.55%      0.05s  0.62%  github.com/derailed/tview.NewTableCell (inline)
+     0.02s  0.25%  5.80%      0.02s  0.25%  internal/abi.(*Type).Pointers (inline)
+    -0.02s  0.25%  5.55%     -0.02s  0.25%  internal/runtime/atomic.(*Uint32).Add (inline)
+     0.02s  0.25%  5.80%      0.02s  0.25%  internal/runtime/atomic.(*UnsafePointer).Load (inline)
+    -0.02s  0.25%  5.55%     -0.02s  0.25%  runtime.(*gcBits).bytep (inline)
+     0.02s  0.25%  5.80%      0.02s  0.25%  runtime.(*mheap).allocNeedsZero
+     0.02s  0.25%  6.04%      0.02s  0.25%  runtime.extractHeapBitsSmall
+    -0.02s  0.25%  5.80%     -0.02s  0.25%  runtime.getMCache (inline)
+     0.02s  0.25%  6.04%      0.01s  0.12%  runtime.heapArenaOf (inline)
+     0.02s  0.25%  6.29%      0.02s  0.25%  runtime.heapBitsInSpan (inline)
+    -0.02s  0.25%  6.04%     -0.02s  0.25%  runtime.kevent
+    -0.02s  0.25%  5.80%     -0.04s  0.49%  runtime.mallocgcSmallNoScanSC3
+    -0.02s  0.25%  5.55%     -0.03s  0.37%  runtime.mallocgcSmallScanNoHeaderSC2
+    -0.02s  0.25%  5.30%     -0.02s  0.25%  runtime.mallocgcTinySlowPath
+     0.02s  0.25%  5.55%      0.01s  0.12%  runtime.mapaccess2_faststr
+     0.02s  0.25%  5.80%      0.06s  0.74%  runtime.mapassign_faststr
+     0.02s  0.25%  6.04%      0.02s  0.25%  runtime.mmap

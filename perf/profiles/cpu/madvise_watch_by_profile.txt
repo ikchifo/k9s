@@ -1,0 +1,4 @@
+idle_l    runtime\.madvise=0 0%        StreamWatcher\)\.receive=0 0%
+sort_l    runtime\.madvise=900ms 5.95% StreamWatcher\)\.receive=0 0%
+filter_l  runtime\.madvise=3.55s 17.84% StreamWatcher\)\.receive=0 0%
+idle_m    runtime\.madvise=0.01s 0.22% StreamWatcher\)\.receive=0 0%

@@ -1,0 +1,109 @@
+File: k9s-prof-render
+Type: alloc_space
+Time: 2026-10-15 18:29:04 EDT
+Showing nodes accounting for 4521.06MB, 97.76% of 4624.65MB total
+Dropped 162 nodes (cum <= 23.12MB)
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%  3575.73MB 77.32%  github.com/derailed/k9s/internal/model1.Hydrate.func1
+         0     0%     0%  3575.73MB 77.32%  github.com/derailed/k9s/internal/model1.parallelRender.func1
+         0     0%     0%  3575.73MB 77.32%  github.com/derailed/k9s/internal/render.(*Pod).Render
+  378.68MB  8.19%  8.19%  3575.73MB 77.32%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+         0     0%  8.19%  2407.29MB 52.05%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructured (inline)
+         0     0%  8.19%  2407.29MB 52.05%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructuredWithValidation
+         0     0%  8.19%  2407.29MB 52.05%  k8s.io/apimachinery/pkg/runtime.fromUnstructured
+         0     0%  8.19%  2406.79MB 52.04%  k8s.io/apimachinery/pkg/runtime.structFromUnstructured
+         0     0%  8.19%  2117.23MB 45.78%  k8s.io/apimachinery/pkg/runtime.sliceFromUnstructured
+  864.02MB 18.68% 26.87%   864.02MB 18.68%  reflect.unsafe_New
+         0     0% 26.87%   846.32MB 18.30%  k8s.io/apimachinery/pkg/runtime.mapFromUnstructured
+   84.50MB  1.83% 28.70%   796.34MB 17.22%  reflect.MakeSlice
+  711.84MB 15.39% 44.09%   711.84MB 15.39%  reflect.unsafe_NewArray
+         0     0% 44.09%   569.51MB 12.31%  reflect.copyVal
+  223.69MB  4.84% 48.93%   555.21MB 12.01%  github.com/derailed/k9s/internal/render.gatherPodMX
+         0     0% 48.93%   543.51MB 11.75%  reflect.Value.MapIndex
+         0     0% 48.93%   536.31MB 11.60%  reflect.Value.SetMapIndex
+         0     0% 48.93%   536.31MB 11.60%  reflect.mapassign_faststr
+  536.31MB 11.60% 60.52%   536.31MB 11.60%  reflect.mapassign_faststr0
+         0     0% 60.52%   438.17MB  9.47%  github.com/derailed/k9s/cmd.Execute
+         0     0% 60.52%   438.17MB  9.47%  github.com/derailed/k9s/cmd.run
+         0     0% 60.52%   438.17MB  9.47%  github.com/derailed/k9s/internal/view.(*App).Run
+         0     0% 60.52%   438.17MB  9.47%  github.com/derailed/tview.(*Application).QueueUpdateDraw.1
+         0     0% 60.52%   438.17MB  9.47%  github.com/derailed/tview.(*Application).Run
+         0     0% 60.52%   438.17MB  9.47%  github.com/spf13/cobra.(*Command).Execute (inline)
+         0     0% 60.52%   438.17MB  9.47%  github.com/spf13/cobra.(*Command).ExecuteC
+         0     0% 60.52%   438.17MB  9.47%  github.com/spf13/cobra.(*Command).execute
+         0     0% 60.52%   438.17MB  9.47%  main.main
+         0     0% 60.52%   438.17MB  9.47%  runtime.main
+         0     0% 60.52%   437.15MB  9.45%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+         0     0% 60.52%   437.15MB  9.45%  github.com/derailed/k9s/internal/model1.(*TableData).RowsRange (inline)
+         0     0% 60.52%   431.16MB  9.32%  github.com/derailed/k9s/internal/view.(*Browser).TableDataChanged.func1
+         0     0% 60.52%   430.15MB  9.30%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI
+         0     0% 60.52%   430.15MB  9.30%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI.func1 (inline)
+   20.50MB  0.44% 60.97%   430.15MB  9.30%  github.com/derailed/k9s/internal/ui.(*Table).buildRow
+         0     0% 60.97%   336.10MB  7.27%  k8s.io/apimachinery/pkg/runtime.pointerFromUnstructured
+         0     0% 60.97%   335.27MB  7.25%  github.com/cenkalti/backoff/v4.Operation.withEmptyData.func1
+         0     0% 60.97%   335.27MB  7.25%  github.com/cenkalti/backoff/v4.Retry (inline)
+         0     0% 60.97%   335.27MB  7.25%  github.com/cenkalti/backoff/v4.RetryNotify (inline)
+         0     0% 60.97%   335.27MB  7.25%  github.com/cenkalti/backoff/v4.RetryNotifyWithTimer
+         0     0% 60.97%   335.27MB  7.25%  github.com/cenkalti/backoff/v4.doRetryNotify[go.shape.struct {}]
+         0     0% 60.97%   335.27MB  7.25%  github.com/derailed/k9s/internal/model.(*Table).refresh
+         0     0% 60.97%   335.27MB  7.25%  github.com/derailed/k9s/internal/model.(*Table).updater
+         0     0% 60.97%   335.27MB  7.25%  github.com/derailed/k9s/internal/model.(*Table).updater.func1
+         0     0% 60.97%   290.02MB  6.27%  reflect.New
+  286.03MB  6.19% 67.15%   286.03MB  6.19%  github.com/derailed/tview.NewTableCell (inline)
+         0     0% 67.15%   260.71MB  5.64%  k8s.io/apimachinery/pkg/runtime/serializer/json.(*Serializer).Decode
+         0     0% 67.15%   260.21MB  5.63%  k8s.io/apimachinery/pkg/watch.(*StreamWatcher).receive
+         0     0% 67.15%   260.21MB  5.63%  k8s.io/client-go/rest/watch.(*Decoder).Decode
+         0     0% 67.15%   259.21MB  5.60%  k8s.io/apimachinery/pkg/runtime/serializer/json.(*Serializer).unmarshal
+         0     0% 67.15%   259.21MB  5.60%  sigs.k8s.io/json.UnmarshalCaseSensitivePreserveInts (inline)
+       3MB 0.065% 67.22%   259.21MB  5.60%  sigs.k8s.io/json/internal/golang/encoding/json.Unmarshal
+    0.50MB 0.011% 67.23%   255.71MB  5.53%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).object
+         0     0% 67.23%   255.71MB  5.53%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).unmarshal
+         0     0% 67.23%   255.71MB  5.53%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).value
+         0     0% 67.23%   227.55MB  4.92%  k8s.io/apimachinery/pkg/runtime.Decode (inline)
+         0     0% 67.23%   223.55MB  4.83%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.(*Unstructured).UnmarshalJSON
+         0     0% 67.23%   223.55MB  4.83%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.Decode
+         0     0% 67.23%   223.55MB  4.83%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.decodeInto
+    0.50MB 0.011% 67.24%   223.55MB  4.83%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.decodeToUnstructured
+         0     0% 67.24%   223.05MB  4.82%  k8s.io/apimachinery/pkg/util/json.Unmarshal (inline)
+  184.05MB  3.98% 71.22%   219.05MB  4.74%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).objectInterface
+  207.51MB  4.49% 75.71%   207.51MB  4.49%  github.com/derailed/k9s/internal/render.extractGPU (inline)
+       3MB 0.065% 75.77%   194.54MB  4.21%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).valueInterface
+   49.50MB  1.07% 76.84%   185.01MB  4.00%  github.com/derailed/k9s/internal/render.cosRequests
+    1.50MB 0.032% 76.87%   183.03MB  3.96%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).arrayInterface
+         0     0% 76.87%   172.91MB  3.74%  github.com/derailed/k9s/internal/model.(*Table).reconcile
+         0     0% 76.87%   170.04MB  3.68%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.(*Unstructured).GetLabels (inline)
+  170.04MB  3.68% 80.55%   170.04MB  3.68%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.NestedNullCoercingStringMap
+         0     0% 80.55%   161.50MB  3.49%  sigs.k8s.io/structured-merge-diff/v6/value.TypeReflectCacheEntry.FromUnstructured
+         0     0% 80.55%   155.35MB  3.36%  github.com/derailed/k9s/internal/model.(*Table).Peek
+   19.27MB  0.42% 80.97%   155.35MB  3.36%  github.com/derailed/k9s/internal/model1.(*RowEvents).Clone
+         0     0% 80.97%   155.35MB  3.36%  github.com/derailed/k9s/internal/model1.(*TableData).Clone
+   12.77MB  0.28% 81.24%   142.26MB  3.08%  github.com/derailed/k9s/internal/model1.(*TableData).Render
+         0     0% 81.24%   129.49MB  2.80%  github.com/derailed/k9s/internal/model1.(*TableData).Update
+      45MB  0.97% 82.22%   117.01MB  2.53%  github.com/derailed/k9s/internal/render.cosLimits
+  108.54MB  2.35% 84.56%   108.54MB  2.35%  github.com/derailed/k9s/internal/model1.Fields.Clone (inline)
+         0     0% 84.56%   108.54MB  2.35%  github.com/derailed/k9s/internal/model1.Row.Clone (inline)
+         0     0% 84.56%   108.54MB  2.35%  github.com/derailed/k9s/internal/model1.RowEvent.Clone (inline)
+         0     0% 84.56%       94MB  2.03%  encoding/json.Marshal (inline)
+         0     0% 84.56%       94MB  2.03%  encoding/json/v2.Marshal
+   93.54MB  2.02% 86.59%    93.54MB  2.02%  github.com/derailed/k9s/internal/model1.NewDeltaRow (inline)
+   81.61MB  1.76% 88.35%    81.61MB  1.76%  github.com/derailed/tview.(*Table).SetCell
+      43MB  0.93% 89.28%       69MB  1.49%  reflect.Value.MapKeys
+         0     0% 89.28%       56MB  1.21%  encoding/json/v2.marshalEncode
+   54.50MB  1.18% 90.46%    54.50MB  1.18%  github.com/derailed/k9s/internal/render.mapToStr
+         0     0% 90.46%       51MB  1.10%  reflect.MakeMap (inline)
+         0     0% 90.46%       51MB  1.10%  reflect.MakeMapWithSize
+      51MB  1.10% 91.56%       51MB  1.10%  reflect.makemap
+      42MB  0.91% 92.47%       42MB  0.91%  github.com/derailed/k9s/internal/ui.Pad
+         0     0% 92.47%       42MB  0.91%  github.com/derailed/k9s/internal/ui.formatCell
+   33.50MB  0.72% 93.19%       42MB  0.91%  k8s.io/apimachinery/pkg/apis/meta/v1.(*Time).UnmarshalJSON
+      38MB  0.82% 94.02%       38MB  0.82%  bytes.Clone (inline)
+         0     0% 94.02%    32.66MB  0.71%  k8s.io/apimachinery/pkg/runtime/serializer/streaming.(*decoder).Decode
+   31.66MB  0.68% 94.70%    31.66MB  0.68%  k8s.io/apimachinery/pkg/runtime.(*RawExtension).UnmarshalJSON
+    7.71MB  0.17% 94.87%    30.65MB  0.66%  github.com/derailed/k9s/internal/dao.(*Pod).List
+         0     0% 94.87%    30.65MB  0.66%  github.com/derailed/k9s/internal/model.(*Table).list
+   29.50MB  0.64% 95.51%    29.50MB  0.64%  github.com/derailed/k9s/internal/render.currentRes
+   28.72MB  0.62% 96.13%    28.72MB  0.62%  k8s.io/apimachinery/pkg/util/sets.Set[go.shape.string].Insert (inline)
+   27.54MB   0.6% 96.72%    27.54MB   0.6%  github.com/derailed/k9s/internal/model1.NewRowEvents (inline)
+         0     0% 96.72%    27.54MB   0.6%  github.com/derailed/k9s/internal/model1.NewRowEventsWithEvts (inline)
+   25.50MB  0.55% 97.27%    25.50MB  0.55%  k8s.io/apimachinery/pkg/api/resource.(*Quantity).UnmarshalJSON
+   22.50MB  0.49% 97.76%    23.50MB  0.51%  sigs.k8s.io/json/internal/golang/encoding/json.unquote (inline)

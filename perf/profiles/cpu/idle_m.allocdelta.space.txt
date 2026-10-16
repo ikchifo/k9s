@@ -1,0 +1,37 @@
+File: k9s-prof-cpu
+Type: alloc_space
+Time: 2026-10-15 18:27:11 EDT
+Showing nodes accounting for 1168.38MB, 98.10% of 1191.06MB total
+Dropped 82 nodes (cum <= 5.96MB)
+Showing top 30 nodes out of 81
+      flat  flat%   sum%        cum   cum%
+  214.01MB 17.97% 17.97%   214.01MB 17.97%  reflect.unsafe_New
+  201.59MB 16.93% 34.89%   201.59MB 16.93%  reflect.unsafe_NewArray
+  145.58MB 12.22% 47.12%   145.58MB 12.22%  reflect.mapassign_faststr0
+  101.55MB  8.53% 55.64%   964.30MB 80.96%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+   73.51MB  6.17% 61.81%    73.51MB  6.17%  github.com/derailed/tview.NewTableCell (inline)
+   58.55MB  4.92% 66.73%   152.06MB 12.77%  github.com/derailed/k9s/internal/render.gatherPodMX
+   53.51MB  4.49% 71.22%    53.51MB  4.49%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.NestedNullCoercingStringMap
+   47.50MB  3.99% 75.21%    47.50MB  3.99%  github.com/derailed/k9s/internal/render.extractGPU (inline)
+   36.51MB  3.07% 78.28%    36.51MB  3.07%  github.com/derailed/k9s/internal/model1.Fields.Clone (inline)
+   35.01MB  2.94% 81.22%    35.01MB  2.94%  github.com/derailed/k9s/internal/model1.NewDeltaRow (inline)
+   24.19MB  2.03% 83.25%    24.19MB  2.03%  github.com/derailed/tview.(*Table).SetCell
+      21MB  1.76% 85.01%   222.59MB 18.69%  reflect.MakeSlice
+   17.50MB  1.47% 86.48%       50MB  4.20%  github.com/derailed/k9s/internal/render.cosRequests
+      16MB  1.34% 87.82%       16MB  1.34%  k8s.io/apimachinery/pkg/apis/meta/v1.(*Time).UnmarshalJSON
+   15.50MB  1.30% 89.12%    30.50MB  2.56%  github.com/derailed/k9s/internal/render.cosLimits
+   15.50MB  1.30% 90.43%    15.50MB  1.30%  bytes.Clone (inline)
+   14.50MB  1.22% 91.64%    14.50MB  1.22%  github.com/derailed/k9s/internal/render.mapToStr
+   13.50MB  1.13% 92.78%    13.50MB  1.13%  github.com/derailed/k9s/internal/ui.Pad
+      13MB  1.09% 93.87%       13MB  1.09%  github.com/derailed/k9s/internal/render.currentRes
+   10.50MB  0.88% 94.75%       20MB  1.68%  reflect.Value.MapKeys
+      10MB  0.84% 95.59%       10MB  0.84%  reflect.makemap
+       7MB  0.59% 96.18%        7MB  0.59%  k8s.io/apimachinery/pkg/api/resource.(*Quantity).UnmarshalJSON
+    6.41MB  0.54% 96.71%     6.41MB  0.54%  github.com/derailed/k9s/internal/model1.NewRowEvents (inline)
+    6.27MB  0.53% 97.24%    49.19MB  4.13%  github.com/derailed/k9s/internal/model1.(*RowEvents).Clone
+       4MB  0.34% 97.58%   115.20MB  9.67%  github.com/derailed/k9s/internal/ui.(*Table).buildRow
+    3.16MB  0.27% 97.84%     9.42MB  0.79%  github.com/derailed/k9s/internal/dao.(*Pod).List
+    3.02MB  0.25% 98.10%    43.17MB  3.62%  github.com/derailed/k9s/internal/model1.(*TableData).Render
+         0     0% 98.10%       29MB  2.43%  encoding/json.Marshal (inline)
+         0     0% 98.10%       29MB  2.43%  encoding/json/v2.Marshal
+         0     0% 98.10%    13.50MB  1.13%  encoding/json/v2.marshalEncode

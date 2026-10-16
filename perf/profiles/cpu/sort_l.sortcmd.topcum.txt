@@ -1,0 +1,55 @@
+File: k9s-prof-cpu
+Type: cpu
+Time: 2026-10-15 18:25:52 EDT
+Duration: 20.12s, Total samples = 15.13s (75.20%)
+Active filters:
+   focus=SortColCmd
+Showing nodes accounting for 1.35s, 8.92% of 15.13s total
+Dropped 57 nodes (cum <= 0.08s)
+Showing top 45 nodes out of 119
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%      2.93s 19.37%  github.com/derailed/k9s/cmd.Execute
+         0     0%     0%      2.93s 19.37%  github.com/derailed/k9s/cmd.run
+         0     0%     0%      2.93s 19.37%  github.com/derailed/k9s/internal/ui.(*Table).SortColCmd.func1
+         0     0%     0%      2.93s 19.37%  github.com/derailed/k9s/internal/view.(*App).Run
+         0     0%     0%      2.93s 19.37%  github.com/derailed/k9s/internal/view.(*Table).keyboard
+         0     0%     0%      2.93s 19.37%  github.com/derailed/tview.(*Application).Run
+         0     0%     0%      2.93s 19.37%  github.com/derailed/tview.(*Box).WrapInputHandler.func1
+         0     0%     0%      2.93s 19.37%  github.com/derailed/tview.(*Flex).InputHandler.func1
+         0     0%     0%      2.93s 19.37%  github.com/derailed/tview.(*Pages).InputHandler.func1
+         0     0%     0%      2.93s 19.37%  github.com/spf13/cobra.(*Command).Execute (inline)
+         0     0%     0%      2.93s 19.37%  github.com/spf13/cobra.(*Command).ExecuteC
+         0     0%     0%      2.93s 19.37%  github.com/spf13/cobra.(*Command).execute
+         0     0%     0%      2.93s 19.37%  main.main
+         0     0%     0%      2.93s 19.37%  runtime.main
+         0     0%     0%      2.79s 18.44%  github.com/derailed/k9s/internal/ui.(*Table).Refresh
+         0     0%     0%      2.46s 16.26%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI
+         0     0%     0%      1.52s 10.05%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+         0     0%     0%      1.52s 10.05%  github.com/derailed/k9s/internal/model1.(*TableData).RowsRange (inline)
+         0     0%     0%      1.30s  8.59%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI.func1 (inline)
+     0.10s  0.66%  0.66%      1.27s  8.39%  github.com/derailed/k9s/internal/ui.(*Table).buildRow
+         0     0%  0.66%      1.11s  7.34%  github.com/derailed/k9s/internal/model1.(*RowEvents).Sort
+         0     0%  0.66%      1.11s  7.34%  github.com/derailed/k9s/internal/model1.(*TableData).Sort
+         0     0%  0.66%      1.08s  7.14%  sort.Sort
+         0     0%  0.66%      1.08s  7.14%  sort.pdqsort
+     0.07s  0.46%  1.12%      0.98s  6.48%  github.com/derailed/k9s/internal/model1.RowEventSorter.Less
+     0.05s  0.33%  1.45%      0.91s  6.01%  github.com/derailed/k9s/internal/model1.Less
+     0.07s  0.46%  1.92%      0.79s  5.22%  sort.partition
+     0.13s  0.86%  2.78%      0.52s  3.44%  runtime.mallocgc
+     0.33s  2.18%  4.96%      0.45s  2.97%  github.com/fvbommel/sortorder.NaturalCompare
+         0     0%  4.96%      0.45s  2.97%  github.com/fvbommel/sortorder.NaturalLess (inline)
+     0.03s   0.2%  5.16%      0.37s  2.45%  github.com/derailed/k9s/internal/model1.lessDuration
+     0.29s  1.92%  7.07%      0.34s  2.25%  github.com/derailed/k9s/internal/model1.durationToSeconds
+         0     0%  7.07%      0.30s  1.98%  github.com/derailed/k9s/internal/ui.formatCell
+     0.08s  0.53%  7.60%      0.30s  1.98%  github.com/derailed/tview.(*Table).SetCell
+         0     0%  7.60%      0.29s  1.92%  github.com/derailed/k9s/internal/model.(*Table).Peek
+     0.05s  0.33%  7.93%      0.29s  1.92%  github.com/derailed/k9s/internal/model1.(*RowEvents).Clone
+         0     0%  7.93%      0.29s  1.92%  github.com/derailed/k9s/internal/model1.(*TableData).Clone
+         0     0%  7.93%      0.25s  1.65%  github.com/derailed/k9s/internal/ui.Pad
+         0     0%  7.93%      0.23s  1.52%  github.com/derailed/tview.NewTableCell (inline)
+     0.01s 0.066%  8.00%      0.23s  1.52%  runtime.newobject
+     0.01s 0.066%  8.06%      0.22s  1.45%  runtime.concatstring2
+     0.04s  0.26%  8.33%      0.22s  1.45%  runtime.mallocgcSmallScanNoHeader
+         0     0%  8.33%      0.22s  1.45%  sort.insertionSort
+     0.01s 0.066%  8.39%      0.21s  1.39%  github.com/derailed/k9s/internal/render.(*Pod).ColorerFunc.func1
+     0.08s  0.53%  8.92%      0.21s  1.39%  runtime.concatstrings

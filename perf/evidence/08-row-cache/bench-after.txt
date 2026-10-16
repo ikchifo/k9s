@@ -1,0 +1,16 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/render
+cpu: Apple M1 Max
+BenchmarkPodRenderTick-4   	      66	  16208464 ns/op	24678634 B/op	  160228 allocs/op
+BenchmarkPodRenderTick-4   	      66	  16264766 ns/op	24678258 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-4   	      64	  16512210 ns/op	24678102 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-4   	      63	  16776856 ns/op	24678244 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-4   	      64	  16503025 ns/op	24678109 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-4   	      67	  17151950 ns/op	24678134 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-4   	      66	  16735566 ns/op	24678204 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-4   	      64	  16533003 ns/op	24678175 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-4   	      64	  16277333 ns/op	24678125 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-4   	      66	  16694445 ns/op	24678129 B/op	  160227 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/render	23.989s

@@ -1,0 +1,21 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+BenchmarkSortFromModelOrder/NAMESPACE-10         	      20	  22004031 ns/op	      48 B/op	       1 allocs/op
+BenchmarkSortFromModelOrder/NAMESPACE-10         	      20	  21831640 ns/op	      48 B/op	       1 allocs/op
+BenchmarkSortFromModelOrder/NAMESPACE-10         	      20	  21765375 ns/op	      48 B/op	       1 allocs/op
+BenchmarkSortFromModelOrder/AGE-10               	      20	  21615015 ns/op	      48 B/op	       1 allocs/op
+BenchmarkSortFromModelOrder/AGE-10               	      20	  22129937 ns/op	      48 B/op	       1 allocs/op
+BenchmarkSortFromModelOrder/AGE-10               	      20	  21509921 ns/op	      48 B/op	       1 allocs/op
+BenchmarkSortShuffled/NAMESPACE-10               	      20	  26143869 ns/op
+BenchmarkSortShuffled/NAMESPACE-10               	      20	  25350217 ns/op
+BenchmarkSortShuffled/NAMESPACE-10               	      20	  25070092 ns/op
+BenchmarkSortShuffled/NAME-10                    	      20	  23130540 ns/op
+BenchmarkSortShuffled/NAME-10                    	      20	  25182360 ns/op
+BenchmarkSortShuffled/NAME-10                    	      20	  23075462 ns/op
+BenchmarkSortShuffled/AGE-10                     	      20	  23008650 ns/op
+BenchmarkSortShuffled/AGE-10                     	      20	  25530712 ns/op
+BenchmarkSortShuffled/AGE-10                     	      20	  27989679 ns/op
+PASS
+ok  	github.com/derailed/k9s/internal/ui	10.524s

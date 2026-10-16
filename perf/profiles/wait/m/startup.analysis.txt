@@ -1,0 +1,267 @@
+# clock snapshot: trace 995851914682368 wall 18:44:56.732; anchor "launch" at 18:44:56.653
+create      79.0 g82 runtime.traceStartReadCPU.func1 <- runtime.traceStartReadCPU
+create      79.0 g83 runtime.(*traceAdvancerState).start.func1 <- runtime.(*traceAdvancerState).start
+create      79.0 g84 runtime/trace.(*traceMultiplexer).startLocked.func1 <- runtime/trace.(*traceMultiplexer).startLocked
+create      80.8 g21 klog/v2.(*flushDaemon).run.func1 <- client-go/tools/clientcmd.LoadFromFile:408 < client-go/tools/clientcmd.(*ClientConfigLoadingRules).Load:226 < client-go/tools/clientcmd.(*DeferredLoadingClientConfig).createClientConfig:69 < client-go/tools/clientcmd.(*DeferredLoadingClientConfig).ClientConfig:97
+create      81.5 g22 net/http.(*Transport).startDialConnForLocked.func1 <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create      81.8 g23 net/http.(*persistConn).addTLS.func2 <- net/http.(*persistConn).addTLS
+create      94.6 g24 net/http/internal/http2.(*addConnCall).run <- net/http/internal/http2.(*clientConnPool).addConnIfNeeded
+create      94.6 g25 net/http/internal/http2.(*ClientConn).readLoop <- net/http/internal/http2.(*Transport).newClientConn
+create      94.6 g26 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create      97.6 g27 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create     100.1 g28 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create     102.5 g29 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create     104.3 g30 net/http.setRequestCancel.func4 <- client-go/rest.(*Request).request:1090 < client-go/rest.(*Request).Do:1138 < client-go/discovery.(*DiscoveryClient).ServerVersionWithContext:1162 < client-go/discovery.(*DiscoveryClient).ServerVersion:1157
+create     104.3 g31 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create     106.5 g32 k9s/internal/view.(*App).Init.func1 <- k9s/internal/view.(*App).Init:120 < k9s/cmd.run:121 < k9s/cmd.Execute:72
+create     106.6 g98 net/http.setRequestCancel.func4 <- client-go/rest.(*Request).request:1090 < client-go/rest.(*Request).Do:1138 < client-go/discovery.(*DiscoveryClient).ServerVersionWithContext:1162 < client-go/discovery/cached/memory.(*memCacheClient).ServerVersionWithContext:254
+create     106.8 g85 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/third_party/forked/httpcache.(*Transport).RoundTrip:191 < client-go/discovery/cached/disk.(*cacheRoundTripper).RoundTrip:53 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599
+create     106.8 g33 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g114 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g115 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g116 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g117 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g118 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g119 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g120 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g121 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g122 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g123 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g124 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g125 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g126 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g127 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g128 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g129 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g130 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g131 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g132 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g133 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     106.8 g134 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     108.2 g38 net/http.setRequestCancel.func4 <- client-go/rest.(*Request).request:1090 < client-go/rest.(*Request).Do:1138 < client-go/gentype.(*Client[...]).Create:213 < k9s/internal/client.(*APIClient).CanI:189
+create     108.2 g39 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create     109.0 g146 net/http.setRequestCancel.func4 <- client-go/rest.(*Request).request:1090 < client-go/rest.(*Request).Do:1138 < client-go/gentype.(*Client[...]).Create:213 < k9s/internal/client.(*APIClient).CanI:189
+create     109.0 g147 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create     109.5 g148 client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1 <- client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start:106 < k9s/internal/watch.(*Factory).ForResource:267 < k9s/internal/watch.(*Factory).CanForResource:221 < k9s/internal/watch.(*Factory).List:79
+create     109.5 g149 k9s/internal/watch.(*Factory).waitForCacheSync.func1 <- k9s/internal/watch.(*Factory).waitForCacheSync:154 < k9s/internal/watch.(*Factory).List:94 < k9s/internal/dao.loadCRDs:384 < k9s/internal/dao.(*Meta).LoadResources:176
+create     109.5 g150 apimachinery/pkg/util/wait.poller.func1.1 <- client-go/tools/cache.WaitForCacheSync:539 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).WaitForCacheSync:132 < k9s/internal/watch.(*Factory).waitForCacheSync:158 < k9s/internal/watch.(*Factory).List:94
+create     109.5 g67 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*sharedIndexInformer).RunWithContext:887 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     109.5 g68 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*sharedIndexInformer).RunWithContext:888 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     109.5 g69 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*sharedIndexInformer).RunWithContext:889 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     109.5 g70 client-go/tools/cache.(*controller).RunWithContext.func1 <- client-go/tools/cache.(*controller).RunWithContext:174 < client-go/tools/cache.(*sharedIndexInformer).RunWithContext:904 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     109.5 g71 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*controller).RunWithContext:207 < client-go/tools/cache.(*sharedIndexInformer).RunWithContext:904 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     109.6 g72 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).Watch:796
+create     110.9 g73 apimachinery/pkg/watch.(*StreamWatcher).receive <- client-go/rest.(*Request).newStreamWatcher:849 < client-go/rest.(*Request).Watch:799 < client-go/dynamic.(*dynamicResourceClient).Watch:271 < client-go/dynamic/dynamicinformer.NewFilteredDynamicInformer.func4:174
+create     111.2 g74 context.(*cancelCtx).propagateCancel.func2 <- client-go/tools/cache.(*Reflector).watchWithResync:541 < client-go/tools/cache.(*Reflector).ListAndWatchWithContext:508 < client-go/tools/cache.(*Reflector).RunWithContext.func1:429 < client-go/tools/cache.(*Reflector).RunWithContext:428
+create     111.2 g75 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*Reflector).watchWithResync:550 < client-go/tools/cache.(*Reflector).ListAndWatchWithContext:508 < client-go/tools/cache.(*Reflector).RunWithContext.func1:429 < client-go/tools/cache.(*Reflector).RunWithContext:428
+create     210.6 g151 client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1 <- client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start:106 < k9s/internal/watch.(*Factory).ForResource:267 < k9s/internal/watch.(*Factory).CanForResource:221 < k9s/internal/watch.(*Factory).List:79
+create     210.6 g76 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*sharedIndexInformer).RunWithContext:887 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     210.6 g77 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*sharedIndexInformer).RunWithContext:888 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     210.6 g152 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*ClusterInfo).ClusterInfoChanged:114 < k9s/internal/model.(*ClusterInfo).fireMetaChanged:192 < k9s/internal/model.(*ClusterInfo).Refresh:161
+create     210.6 g78 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*sharedIndexInformer).RunWithContext:889 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     210.6 g79 client-go/tools/cache.(*controller).RunWithContext.func1 <- client-go/tools/cache.(*controller).RunWithContext:174 < client-go/tools/cache.(*sharedIndexInformer).RunWithContext:904 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     210.6 g153 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*App).Init.func1:122
+create     210.7 g80 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*controller).RunWithContext:207 < client-go/tools/cache.(*sharedIndexInformer).RunWithContext:904 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     210.7 g81 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).Watch:796
+create     211.4 g99 k9s/internal/ui.(*Flash).Watch <- k9s/internal/view.(*App).layout:168 < k9s/internal/view.(*App).Init:135 < k9s/cmd.run:121 < k9s/cmd.Execute:72
+create     211.5 g100 runtime.ensureSigM.func1 <- k9s/internal/view.(*App).initSignals:187 < k9s/internal/view.(*App).Init:136 < k9s/cmd.run:121 < k9s/cmd.Execute:72
+create     211.5 g154 os/signal.loop <- k9s/internal/view.(*App).initSignals:187 < k9s/internal/view.(*App).Init:136 < k9s/cmd.run:121 < k9s/cmd.Execute:72
+create     211.5 g155 k9s/internal/view.(*App).initSignals.func1 <- k9s/internal/view.(*App).initSignals:189 < k9s/internal/view.(*App).Init:136 < k9s/cmd.run:121 < k9s/cmd.Execute:72
+create     211.5 g156 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*ClusterInfo).ClusterInfoChanged:114 < k9s/internal/model.(*ClusterInfo).fireMetaChanged:192 < k9s/internal/model.(*ClusterInfo).Refresh:161
+create     211.8 g157 k9s/internal/view.(*App).clusterUpdater <- k9s/internal/view.(*App).Resume:344 < k9s/internal/view.(*App).Run:550 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+create     211.8 g158 k9s/internal/view.(*App).Run.func1 <- k9s/internal/view.(*App).Run:552 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+create     211.9 g86 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*App).Run.func1:556
+create     212.0 g159 net/http.setRequestCancel.func4 <- client-go/rest.(*Request).request:1090 < client-go/rest.(*Request).Do:1138 < client-go/gentype.(*Client[...]).Create:213 < k9s/internal/client.(*APIClient).CanI:189
+create     212.0 g160 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create     212.0 g162 net/http.setRequestCancel.func4 <- client-go/rest.(*Request).request:1090 < client-go/rest.(*Request).Do:1138 < client-go/discovery.(*DiscoveryClient).ServerVersionWithContext:1162 < client-go/discovery.(*DiscoveryClient).ServerVersion:1157
+create     212.0 g163 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).request:1090
+create     215.4 g164 k9s/internal/ui.(*App).QueueUpdate.func1 <- k9s/internal/ui.(*App).QueueUpdate:69 < k9s/internal/view.(*App).ClearStatus:594 < k9s/internal/view.(*App).refreshCluster:409 < k9s/internal/view.(*App).clusterUpdater:368
+create     215.4 g165 k9s/internal/view.(*App).refreshCluster.func1 <- k9s/internal/view.(*App).refreshCluster:432 < k9s/internal/view.(*App).clusterUpdater:368
+create     215.4 g161 client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1 <- client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start:106 < k9s/internal/watch.(*Factory).ForResource:267 < k9s/internal/watch.(*Factory).CanForResource:221 < k9s/internal/view.(*Browser).Init:92
+create     215.4 g101 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*ClusterInfo).ClusterInfoChanged:114 < k9s/internal/view.(*ClusterInfo).ClusterInfoUpdated:101 < k9s/internal/model.(*ClusterInfo).fireNoMetaChanged:198
+create     215.4 g102 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/ui.(*StatusIndicator).ClusterInfoUpdated:54 < k9s/internal/model.(*ClusterInfo).fireNoMetaChanged:198 < k9s/internal/model.(*ClusterInfo).Refresh:163
+create     215.5 g103 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*sharedIndexInformer).RunWithContext:887 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     215.5 g104 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*sharedIndexInformer).RunWithContext:888 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     215.5 g105 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*sharedIndexInformer).RunWithContext:889 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     215.5 g106 client-go/tools/cache.(*controller).RunWithContext.func1 <- client-go/tools/cache.(*controller).RunWithContext:174 < client-go/tools/cache.(*sharedIndexInformer).RunWithContext:904 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     215.5 g107 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*controller).RunWithContext:207 < client-go/tools/cache.(*sharedIndexInformer).RunWithContext:904 < client-go/tools/cache.(*sharedIndexInformer).Run:838 < client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1:108
+create     215.5 g178 k9s/internal/model.(*Table).updater <- k9s/internal/model.(*Table).Watch:125 < k9s/internal/view.(*Browser).Start:181 < k9s/internal/view.(*PageStack).StackPushed:39 < k9s/internal/model.(*Stack).notify:178
+create     215.5 g108 net/http/internal/http2.(*clientStream).doRequest <- client-go/transport.(*trackedTransport).RoundTrip:245 < client-go/transport.(*debuggingRoundTripper).RoundTrip:599 < client-go/transport.(*userAgentRoundTripper).RoundTrip:174 < client-go/rest.(*Request).Watch:796
+create     215.7 g166 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g167 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g168 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g169 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g170 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g171 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g172 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g173 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g174 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g175 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g176 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g177 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g194 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g195 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g196 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g197 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g198 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g199 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g200 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g201 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g202 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     215.7 g203 client-go/discovery.fetchGroupVersionResources.func1 <- client-go/discovery.fetchGroupVersionResources:1072 < client-go/discovery.ServerPreferredResourcesWithContext:1006 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResourcesWithContext:266 < client-go/discovery/cached/disk.(*CachedDiscoveryClient).ServerPreferredResources:260
+create     216.4 g179 tcell/v2.(*devTty).Start.func1 <- tview.(*Application).Run:228 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+create     216.4 g51 tcell/v2.(*tScreen).inputLoop <- tview.(*Application).Run:228 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+create     216.4 g52 tcell/v2.(*tScreen).mainLoop <- tview.(*Application).Run:228 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+create     218.6 g53 tview.(*Application).Run.func2 <- tview.(*Application).Run:254 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+create     220.7 g180 apimachinery/pkg/watch.(*StreamWatcher).receive <- client-go/rest.(*Request).newStreamWatcher:849 < client-go/rest.(*Request).Watch:799 < client-go/dynamic.(*dynamicResourceClient).Watch:271 < client-go/dynamic/dynamicinformer.NewFilteredDynamicInformer.func4:174
+create     223.8 g135 apimachinery/pkg/watch.(*StreamWatcher).receive <- client-go/rest.(*Request).newStreamWatcher:849 < client-go/rest.(*Request).Watch:799 < client-go/dynamic.(*dynamicResourceClient).Watch:271 < client-go/dynamic/dynamicinformer.NewFilteredDynamicInformer.func4:174
+create     225.1 g210 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/ui.(*Flash).SetMessage:83 < k9s/internal/ui.(*Flash).Watch:64
+create     225.8 g204 context.(*cancelCtx).propagateCancel.func2 <- client-go/tools/cache.(*Reflector).watchWithResync:541 < client-go/tools/cache.(*Reflector).ListAndWatchWithContext:508 < client-go/tools/cache.(*Reflector).RunWithContext.func1:429 < client-go/tools/cache.(*Reflector).RunWithContext:428
+create     225.8 g205 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*Reflector).watchWithResync:550 < client-go/tools/cache.(*Reflector).ListAndWatchWithContext:508 < client-go/tools/cache.(*Reflector).RunWithContext.func1:429 < client-go/tools/cache.(*Reflector).RunWithContext:428
+create    1246.9 g136 context.(*cancelCtx).propagateCancel.func2 <- client-go/tools/cache.(*Reflector).watchWithResync:541 < client-go/tools/cache.(*Reflector).ListAndWatchWithContext:508 < client-go/tools/cache.(*Reflector).RunWithContext.func1:429 < client-go/tools/cache.(*Reflector).RunWithContext:428
+create    1246.9 g137 apimachinery/pkg/util/wait.(*Group).Start.func1 <- client-go/tools/cache.(*Reflector).watchWithResync:550 < client-go/tools/cache.(*Reflector).ListAndWatchWithContext:508 < client-go/tools/cache.(*Reflector).RunWithContext.func1:429 < client-go/tools/cache.(*Reflector).RunWithContext:428
+create    2531.2 g40 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2531.2 g41 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2531.2 g42 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2531.2 g43 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2531.2 g44 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2531.2 g45 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2531.2 g46 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2531.2 g47 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2531.2 g48 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2531.2 g49 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    2601.0 g211 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243
+create    2601.0 g212 k9s/internal/model.(*Flash).refresh <- k9s/internal/model.(*Flash).SetMessage:137 < k9s/internal/model.(*Flash).Info:80 < k9s/internal/model.(*Flash).Infof:85 < k9s/internal/view.(*Browser).TableDataChanged.func1:365
+create    2601.2 g226 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/ui.(*Flash).SetMessage:83 < k9s/internal/ui.(*Flash).Watch:64
+create    4626.6 g181 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4626.6 g182 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4626.6 g183 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4626.6 g184 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4626.6 g185 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4626.6 g186 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4626.6 g187 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4626.6 g188 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4626.6 g189 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4626.6 g190 k9s/internal/model1.parallelRender.func1 <- k9s/internal/model1.parallelRender:49 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266 < k9s/internal/model.(*Table).reconcile:290
+create    4668.1 g227 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243
+
+## UI goroutine running spans in [0, 5000] ms (merged until it blocks; >= 2.0ms)
+    216.4 +    2.7ms (cpu    2.1) woken-by: runtime.chansend1 | blocks-at: tview.(*Application).draw:568 < tview.(*Application).QueueUpdateDraw.1:732
+    219.1 +    9.3ms (cpu    8.9) woken-by: tview.(*Application).Run.func2:259 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+   2086.8 +  514.2ms (cpu    0.0) woken-by: tview.(*Application).Run.func2:259 | blocks-at: ?
+   2601.0 +   28.1ms (cpu   25.9) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+   4092.2 +  575.9ms (cpu    0.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: ?
+   4668.1 +   21.3ms (cpu   21.3) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+UI busy total: 1152.6ms (running 59.0ms) in 7 spans
+
+## UI goroutine event stacks (preempt/block/syscall sample, count)
+   27 tview.(*Application).Run:228 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+   20 tview.(*Application).draw:605 < tview.(*Application).QueueUpdateDraw.1:732 < tview.(*Application).Run:376 < k9s/internal/view.(*App).Run:569
+    4 k9s/internal/config.Plugins.loadDir:210 < k9s/internal/config.Plugins.Load:142 < k9s/internal/view.pluginActions:132 < k9s/internal/view.(*Browser).refreshActions:695
+    3 tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+    2 tview.(*Application).draw:605 < tview.(*Application).Run:362 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124
+    2 tview.(*Application).draw:605 < tview.(*Application).Run:249 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124
+    2 k9s/internal/model1.(*RowEvents).Sort:281 < k9s/internal/model1.(*TableData).Sort:112 < k9s/internal/ui.(*Table).UpdateUI:475 < k9s/internal/view.(*Browser).TableDataChanged.func1:369
+    1 k9s/internal/config.(*Plugins).load:151 < k9s/internal/config.Plugins.Load:126 < k9s/internal/view.pluginActions:132 < k9s/internal/view.(*Browser).refreshActions:695
+    1 tview.(*Application).draw:568 < tview.(*Application).QueueUpdateDraw.1:732 < tview.(*Application).Run:376 < k9s/internal/view.(*App).Run:569
+    1 k9s/internal/config.HotKeys.LoadHotKeys:53 < k9s/internal/config.HotKeys.Load:41 < k9s/internal/view.hotKeyActions:69 < k9s/internal/view.(*Browser).refreshActions:699
+    1 k9s/internal/config.HotKeys.Load:44 < k9s/internal/view.hotKeyActions:69 < k9s/internal/view.(*Browser).refreshActions:699 < k9s/internal/view.(*Browser).TableDataChanged.func1:368
+    1 k9s/internal/model1.Less:187 < k9s/internal/model1.RowEventSorter.Less:317 < k9s/internal/model1.(*RowEvents).Sort:281 < k9s/internal/model1.(*TableData).Sort:112
+    1 k9s/internal/config.(*Plugins).load:151 < k9s/internal/config.Plugins.Load:131 < k9s/internal/view.pluginActions:132 < k9s/internal/view.(*Browser).refreshActions:695
+    1 k9s/internal/model1.Less:200 < k9s/internal/model1.RowEventSorter.Less:317 < k9s/internal/model1.(*RowEvents).Sort:281 < k9s/internal/model1.(*TableData).Sort:112
+    1 k9s/internal/ui.(*Table).shouldExcludeColumn:465 < k9s/internal/ui.(*Table).buildRow:512 < k9s/internal/ui.(*Table).UpdateUI.func1:485 < k9s/internal/model1.(*RowEvents).Range:244
+
+## per goroutine family (creator fn): ms in window
+run= 1012.4 runnable=   2.6 sys=  11.2 wait{=7737 sync.(*Cond).Wait=5681}  apimachinery/pkg/watch.(*StreamWatcher).receive
+run=  760.0 runnable=  26.9 sys=   0.0 wait{sync=83}  k9s/internal/model1.parallelRender.func1
+run=  445.1 runnable=   1.2 sys=   0.0 wait{=18239 system goroutine wait=30524}  runtime.gcBgMarkWorker
+run=   59.0 runnable=   0.3 sys=   3.1 wait{=1090 select=3632}  ** UI event loop (tview.Application.Run)
+run=   51.7 runnable=   2.5 sys=   0.0 wait{=943 select=3694 sync=93}  k9s/internal/model.(*Table).updater
+run=   22.8 runnable=   2.1 sys=  23.3 wait{=1910 network=2947}  net/http/internal/http2.(*ClientConn).readLoop
+run=   18.0 runnable=   1.2 sys=   0.0 wait{=1425 GC background sweeper wait=3477}  runtime.bgsweep
+run=   16.0 runnable= 184.7 sys=   0.0 wait{=24213 chan receive=5725 select=13267}  apimachinery/pkg/util/wait.(*Group).Start.func1
+run=   12.1 runnable=   0.1 sys=   0.0 wait{=7737 sync.(*Cond).Wait=6716}  client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1
+run=   11.2 runnable=   0.3 sys=   0.0 wait{chan receive=4908 sync=2}  runtime.(*traceAdvancerState).start.func1
+run=    4.9 runnable=   0.4 sys=   1.8 wait{select=128 sync=1}  runtime.doInit1
+run=    4.8 runnable=  14.2 sys=   6.4 wait{}  client-go/discovery.fetchGroupVersionResources.func1
+run=    1.6 runnable=   0.0 sys=   0.0 wait{network=11}  net/http.(*persistConn).addTLS.func2
+run=    0.9 runnable=   1.7 sys=   0.0 wait{chan receive=4918}  runtime.traceStartReadCPU.func1
+
+## top waiting sites (sum of goroutine-ms in window)
+  75729.0ms n=92    @ runtime.gopark
+  30523.7ms n=324  system goroutine wait @ runtime.gopark
+  19159.1ms n=80   select @ runtime.selectgo
+   9839.2ms n=56   chan receive @ runtime.chanrecv1
+   8739.6ms n=9     @ client-go/tools/cache.(*sharedProcessor).run:1283
+   8739.6ms n=9     @ client-go/tools/cache.(*controller).RunWithContext.func1:175
+   7736.7ms n=8     @ client-go/tools/cache.(*RealFIFO).PopBatch:498 < client-go/tools/cache.(*controller).processLoop:251 < client-go/tools/cache.(*controller).RunWithContext:209
+   7736.7ms n=8     @ client-go/rest/watch.(*Decoder).Decode:49
+   7736.7ms n=8     @ client-go/tools/cache.handleAnyWatch:1001 < client-go/tools/cache.handleWatch:958 < client-go/tools/cache.(*Reflector).watch:620
+   7736.7ms n=8     @ client-go/tools/cache.(*Reflector).startResync:521 < client-go/tools/cache.(*Reflector).watchWithResync.func2:551
+   6715.7ms n=6    sync.(*Cond).Wait @ client-go/tools/cache.(*RealFIFO).PopBatch:498 < client-go/tools/cache.(*controller).processLoop:251 < client-go/tools/cache.(*controller).RunWithContext:209
+   5724.8ms n=3    chan receive @ client-go/tools/cache.(*sharedProcessor).run:1283
+   5724.7ms n=3    chan receive @ client-go/tools/cache.(*controller).RunWithContext.func1:175
+   5681.2ms n=5    sync.(*Cond).Wait @ client-go/rest/watch.(*Decoder).Decode:49
+   5679.4ms n=3    select @ client-go/tools/cache.handleAnyWatch:1001 < client-go/tools/cache.handleWatch:958 < client-go/tools/cache.(*Reflector).watch:620
+   5679.4ms n=3    select @ client-go/tools/cache.(*Reflector).startResync:521 < client-go/tools/cache.(*Reflector).watchWithResync.func2:551
+   4918.6ms n=11   system goroutine wait @ runtime/trace.(*traceMultiplexer).startLocked.func1
+   3694.3ms n=4    select @ k9s/internal/model.(*Table).updater:208
+   3632.1ms n=3    select @ tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124
+   3498.8ms n=13   system goroutine wait @ runtime.(*scavengerState).park
+   3477.1ms n=7    GC background sweeper wait @ runtime.goparkunlock
+   3366.3ms n=3    select @ k9s/internal/ui.(*Flash).Watch:60
+   2957.6ms n=3255 network @ internal/poll.(*FD).Read
+   2913.2ms n=3     @ k9s/internal/view.(*App).initSignals.func1:190
+   2913.2ms n=3     @ k9s/internal/view.(*App).clusterUpdater:376
+
+## goroutines created / exited in window
+created    1 net/http.(*persistConn).addTLS.func2
+created   13 net/http/internal/http2.(*clientStream).doRequest
+created    1 k9s/internal/watch.(*Factory).waitForCacheSync.func1
+created   15 apimachinery/pkg/util/wait.(*Group).Start.func1
+created    3 context.(*cancelCtx).propagateCancel.func2
+created    1 runtime.traceStartReadCPU.func1
+created    3 client-go/tools/cache.(*controller).RunWithContext.func1
+created    1 k9s/internal/ui.(*App).QueueUpdate.func1
+created    1 tcell/v2.(*tScreen).inputLoop
+created    1 klog/v2.(*flushDaemon).run.func1
+created    1 net/http/internal/http2.(*addConnCall).run
+created    3 client-go/dynamic/dynamicinformer.(*dynamicSharedInformerFactory).Start.func1
+created    1 tview.(*Application).Run.func2
+created    1 k9s/internal/view.(*App).Run.func1
+created    1 net/http.(*Transport).startDialConnForLocked.func1
+created    1 net/http/internal/http2.(*ClientConn).readLoop
+created    1 k9s/internal/view.(*App).Init.func1
+created    1 runtime.ensureSigM.func1
+created    1 runtime.(*traceAdvancerState).start.func1
+created    1 runtime/trace.(*traceMultiplexer).startLocked.func1
+created    1 k9s/internal/ui.(*Flash).Watch
+created    1 os/signal.loop
+created    1 k9s/internal/view.(*App).initSignals.func1
+created    1 tcell/v2.(*tScreen).mainLoop
+created   44 client-go/discovery.fetchGroupVersionResources.func1
+created    1 k9s/internal/view.(*App).refreshCluster.func1
+created    1 k9s/internal/model.(*Table).updater
+created    1 tcell/v2.(*devTty).Start.func1
+created    1 k9s/internal/model.(*Flash).refresh
+created    6 net/http.setRequestCancel.func4
+created    1 apimachinery/pkg/util/wait.poller.func1.1
+created    3 apimachinery/pkg/watch.(*StreamWatcher).receive
+created   10 k9s/internal/ui.(*App).QueueUpdateDraw.func1
+created    1 k9s/internal/view.(*App).clusterUpdater
+created   20 k9s/internal/model1.parallelRender.func1
+exited     1 apimachinery/pkg/util/wait.poller.func1.1
+exited     1 k9s/internal/view.(*App).refreshCluster.func1
+exited     1 net/http/internal/http2.(*addConnCall).run
+exited    44 client-go/discovery.fetchGroupVersionResources.func1
+exited     1 k9s/internal/view.(*App).Run.func1
+exited     1 net/http.(*persistConn).addTLS.func2
+exited     6 net/http.setRequestCancel.func4
+exited     6 apimachinery/pkg/util/wait.(*Group).Start.func1
+exited    20 k9s/internal/model1.parallelRender.func1
+exited     1 net/http.(*Transport).startDialConnForLocked.func1
+exited    10 net/http/internal/http2.(*clientStream).doRequest
+exited     1 k9s/internal/view.(*App).Init.func1
+exited    10 k9s/internal/ui.(*App).QueueUpdateDraw.func1
+exited     1 k9s/internal/ui.(*App).QueueUpdate.func1
+exited     1 k9s/internal/watch.(*Factory).waitForCacheSync.func1

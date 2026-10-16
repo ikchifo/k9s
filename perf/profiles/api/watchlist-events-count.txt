@@ -1,0 +1,7 @@
+# WatchList initial burst measurement (k9s-l pods, via kubectl proxy 18001,
+# python JSON-parsing client, so the end timestamp includes parse overhead):
+{"bytes": 108003328, "events": 20171, "first_event_s": 0.023, "initial_events_end_s": 82.018}
+# 20171 events = 20170 ADDED (one per pod) + 1 BOOKMARK with annotation
+# k8s.io/initial-events-end=true. Wire framing: chunked, one JSON object per
+# event, compact (no Content-Length on the watch response).
+# Fast raw timing (no parse, see watchlist-raw-timing.txt): 2.036s best case.

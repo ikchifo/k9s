@@ -1,0 +1,56 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/model1
+cpu: Apple M1 Max
+BenchmarkFilter/plain-4         	      24	  86804795 ns/op	 8337411 B/op	   40074 allocs/op
+BenchmarkFilter/plain-4         	      15	 116124647 ns/op	 8339570 B/op	   40074 allocs/op
+BenchmarkFilter/plain-4         	      14	 131412339 ns/op	 8350870 B/op	   40075 allocs/op
+BenchmarkFilter/plain-4         	      14	 115181211 ns/op	 8340277 B/op	   40074 allocs/op
+BenchmarkFilter/plain-4         	      10	 133315333 ns/op	 8348264 B/op	   40075 allocs/op
+BenchmarkFilter/plain-4         	      14	  88495280 ns/op	 8340308 B/op	   40074 allocs/op
+BenchmarkFilter/plain-4         	      24	  74592408 ns/op	 8342037 B/op	   40074 allocs/op
+BenchmarkFilter/plain-4         	      18	  66707586 ns/op	 8337928 B/op	   40074 allocs/op
+BenchmarkFilter/plain-4         	      14	 110297083 ns/op	 8342919 B/op	   40074 allocs/op
+BenchmarkFilter/plain-4         	      20	  63904302 ns/op	 8333392 B/op	   40073 allocs/op
+BenchmarkFilter/upper-4         	      21	  87942728 ns/op	 8345580 B/op	   40074 allocs/op
+BenchmarkFilter/upper-4         	      16	  67087620 ns/op	 8341215 B/op	   40074 allocs/op
+BenchmarkFilter/upper-4         	       7	 175636530 ns/op	 8350876 B/op	   40075 allocs/op
+BenchmarkFilter/upper-4         	       6	 253450111 ns/op	 8348209 B/op	   40075 allocs/op
+BenchmarkFilter/upper-4         	       8	 137336719 ns/op	 8329779 B/op	   40073 allocs/op
+BenchmarkFilter/upper-4         	       6	 182325070 ns/op	 8342084 B/op	   40074 allocs/op
+BenchmarkFilter/upper-4         	       6	 229253548 ns/op	 8348400 B/op	   40076 allocs/op
+BenchmarkFilter/upper-4         	       9	 121092106 ns/op	 8342162 B/op	   40075 allocs/op
+BenchmarkFilter/upper-4         	      20	  72035592 ns/op	 8338887 B/op	   40073 allocs/op
+BenchmarkFilter/upper-4         	      22	  93852085 ns/op	 8341477 B/op	   40074 allocs/op
+BenchmarkFilter/inverse-4       	      33	  38742136 ns/op	 8344319 B/op	   40074 allocs/op
+BenchmarkFilter/inverse-4       	      33	  38372370 ns/op	 8343182 B/op	   40074 allocs/op
+BenchmarkFilter/inverse-4       	      32	  40638895 ns/op	 8345879 B/op	   40074 allocs/op
+BenchmarkFilter/inverse-4       	      33	  49898274 ns/op	 8346512 B/op	   40074 allocs/op
+BenchmarkFilter/inverse-4       	      26	  38791141 ns/op	 8339674 B/op	   40074 allocs/op
+BenchmarkFilter/inverse-4       	      31	  37097804 ns/op	 8342848 B/op	   40074 allocs/op
+BenchmarkFilter/inverse-4       	      33	  44375130 ns/op	 8339762 B/op	   40073 allocs/op
+BenchmarkFilter/inverse-4       	      28	  39194737 ns/op	 8337625 B/op	   40073 allocs/op
+BenchmarkFilter/inverse-4       	      28	  38256591 ns/op	 8342939 B/op	   40074 allocs/op
+BenchmarkFilter/inverse-4       	      33	  37904312 ns/op	 8340892 B/op	   40074 allocs/op
+BenchmarkFilter/regex-4         	      26	  57944268 ns/op	12788979 B/op	   40146 allocs/op
+BenchmarkFilter/regex-4         	      26	  46368822 ns/op	12783277 B/op	   40146 allocs/op
+BenchmarkFilter/regex-4         	      28	  41630240 ns/op	12796104 B/op	   40147 allocs/op
+BenchmarkFilter/regex-4         	      27	  41473645 ns/op	12782351 B/op	   40146 allocs/op
+BenchmarkFilter/regex-4         	      27	  41283508 ns/op	12780993 B/op	   40145 allocs/op
+BenchmarkFilter/regex-4         	      27	  40735599 ns/op	12780983 B/op	   40145 allocs/op
+BenchmarkFilter/regex-4         	      27	  41891275 ns/op	12771384 B/op	   40144 allocs/op
+BenchmarkFilter/regex-4         	      25	  57383123 ns/op	12782684 B/op	   40145 allocs/op
+BenchmarkFilter/regex-4         	      21	  52481661 ns/op	12778509 B/op	   40145 allocs/op
+BenchmarkFilter/regex-4         	      24	  46827613 ns/op	12786944 B/op	   40147 allocs/op
+BenchmarkFilter/miss-4          	      20	  58419581 ns/op	 8337122 B/op	   40074 allocs/op
+BenchmarkFilter/miss-4          	      20	  57441540 ns/op	 8340906 B/op	   40075 allocs/op
+BenchmarkFilter/miss-4          	      20	  56717365 ns/op	 8339026 B/op	   40075 allocs/op
+BenchmarkFilter/miss-4          	      21	  55915254 ns/op	 8336740 B/op	   40074 allocs/op
+BenchmarkFilter/miss-4          	      20	  70262067 ns/op	 8342708 B/op	   40075 allocs/op
+BenchmarkFilter/miss-4          	      18	  62493329 ns/op	 8340108 B/op	   40075 allocs/op
+BenchmarkFilter/miss-4          	      20	  56606708 ns/op	 8340829 B/op	   40074 allocs/op
+BenchmarkFilter/miss-4          	      20	  56792777 ns/op	 8339003 B/op	   40075 allocs/op
+BenchmarkFilter/miss-4          	      20	  56942871 ns/op	 8337145 B/op	   40074 allocs/op
+BenchmarkFilter/miss-4          	      20	  56879775 ns/op	 8342662 B/op	   40075 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/model1	67.227s

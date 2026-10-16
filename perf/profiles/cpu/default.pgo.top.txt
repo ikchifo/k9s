@@ -1,0 +1,23 @@
+File: k9s-prof-cpu
+Type: cpu
+Time: 2026-10-15 18:25:16 EDT
+Duration: 70.23s, Total samples = 49890ms (71.03%)
+Showing nodes accounting for 21240ms, 42.57% of 49890ms total
+Dropped 596 nodes (cum <= 249.45ms)
+Showing top 15 nodes out of 243
+      flat  flat%   sum%        cum   cum%
+    4450ms  8.92%  8.92%     4450ms  8.92%  runtime.madvise
+    2540ms  5.09% 14.01%     3760ms  7.54%  runtime.tryDeferToSpanScan
+    1950ms  3.91% 17.92%     4600ms  9.22%  runtime.scanObjectsSmall
+    1760ms  3.53% 21.45%     1760ms  3.53%  runtime.usleep
+    1680ms  3.37% 24.81%     1680ms  3.37%  runtime.kevent
+    1610ms  3.23% 28.04%     1610ms  3.23%  internal/runtime/maps.memHashAES
+    1210ms  2.43% 30.47%     1210ms  2.43%  unicode.SimpleFold
+     980ms  1.96% 32.43%      980ms  1.96%  runtime.pthread_cond_signal
+     940ms  1.88% 34.32%     3970ms  7.96%  runtime.mapaccess2_faststr
+     880ms  1.76% 36.08%     2110ms  4.23%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+     710ms  1.42% 37.50%     2980ms  5.97%  regexp.(*Regexp).tryBacktrack
+     650ms  1.30% 38.81%      650ms  1.30%  runtime.memmove
+     640ms  1.28% 40.09%     1130ms  2.26%  strings.(*Builder).WriteString
+     620ms  1.24% 41.33%      870ms  1.74%  github.com/fvbommel/sortorder.NaturalCompare
+     620ms  1.24% 42.57%    16670ms 33.41%  k8s.io/apimachinery/pkg/runtime.structFromUnstructured

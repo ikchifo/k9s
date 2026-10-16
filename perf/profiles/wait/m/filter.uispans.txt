@@ -1,0 +1,4 @@
+## UI goroutine running spans in [-10, 1000] ms (merged until it blocks; >= 1.0ms)
+    -85.4 +  193.7ms (cpu  192.6) woken-by: sync.(*Mutex).Unlock | 
+    801.5 +    5.6ms (cpu    3.9) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | 
+UI busy total: 199.3ms (running 196.4ms) in 2 spans

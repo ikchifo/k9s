@@ -1,0 +1,344 @@
+// Command drv drives k9s-prof through a pty, logs screen milestones with wall
+// clock stamps and dumps the flight recorder after each action.
+package main
+
+import (
+	"encoding/json"
+	"flag"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+)
+
+const (
+	podsTitle   = "pods(all)"
+	deployTitle = "deployments(all)"
+	filterText  = "svc-1-"
+)
+
+var sizes = map[string][2]int{"s": {500, 5}, "m": {5000, 50}, "l": {20000, 200}}
+
+type mark struct {
+	Wall int64  `json:"wall_ns"`
+	What string `json:"what"`
+}
+
+type run struct {
+	t     *Term
+	addr  string
+	out   string
+	marks []mark
+	title string
+	row   string
+}
+
+func (r *run) mark(at time.Time, what string) {
+	r.marks = append(r.marks, mark{at.UnixNano(), what})
+	log.Printf("%s %s", at.Format("15:04:05.000"), what)
+}
+
+// watch logs every change of the title line and first row until stop closes.
+func (r *run) watch(stop chan struct{}) {
+	for {
+		select {
+		case <-stop:
+			return
+		default:
+		}
+		s := r.t.Screen()
+		title, row := titleLine(s), firstRow(s)
+		now := time.Now()
+		if title != r.title {
+			r.title = title
+			r.mark(now, "title "+title)
+		}
+		if row != r.row {
+			r.row = row
+			r.mark(now, "row "+strings.Join(strings.Fields(row), " "))
+		}
+		time.Sleep(time.Millisecond)
+	}
+}
+
+func titleLine(s string) string {
+	for _, l := range strings.Split(s, "\n") {
+		if i := strings.Index(l, "("); i > 0 && strings.Contains(l, ")[") {
+			return strings.TrimSpace(strings.Trim(l, "─┌┐ "))
+		}
+	}
+	return ""
+}
+
+func firstRow(screen string) string {
+	ll := strings.Split(screen, "\n")
+	for i, l := range ll {
+		if strings.Contains(l, "NAME") && i+1 < len(ll) {
+			return ll[i+1]
+		}
+	}
+	return ""
+}
+
+func (r *run) get(path, file string) {
+	resp, err := http.Get("http://" + r.addr + path)
+	if err != nil {
+		log.Printf("get %s: %v", path, err)
+		return
+	}
+	defer resp.Body.Close()
+	f, err := os.Create(filepath.Join(r.out, file))
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	_, _ = io.Copy(f, resp.Body)
+}
+
+func (r *run) flight(name string, flightPath string) {
+	time.Sleep(1500 * time.Millisecond)
+	r.mark(time.Now(), "flight "+name)
+	r.get("/debug/flight", "flight-ignored")
+	_ = os.Remove(filepath.Join(r.out, "flight-ignored"))
+	b, err := os.ReadFile(flightPath)
+	if err != nil {
+		log.Printf("flight: %v", err)
+		return
+	}
+	_ = os.WriteFile(filepath.Join(r.out, name+".trace"), b, 0o644)
+}
+
+func (r *run) save() {
+	b, _ := json.MarshalIndent(r.marks, "", " ")
+	_ = os.WriteFile(filepath.Join(r.out, "marks.json"), b, 0o644)
+}
+
+func main() {
+	var (
+		bin  = flag.String("bin", "", "k9s binary")
+		size = flag.String("size", "s", "s|m|l")
+		mode = flag.String("mode", "session", "session|ctx")
+		out  = flag.String("out", "", "output dir")
+		work = flag.String("work", "", "work dir")
+		addr = flag.String("addr", "127.0.0.1:6062", "pprof addr")
+		kube = flag.String("kube", "", "kube dir")
+	)
+	flag.Parse()
+	_ = os.MkdirAll(*out, 0o755)
+
+	ctx := "kind-kwok-k9s-" + *size
+	kcfg := filepath.Join(*kube, "k9s-"+*size+".yaml")
+	other := "s"
+	if *size == "s" {
+		other = "m"
+	}
+	octx := "kind-kwok-k9s-" + other
+	cfgDir := filepath.Join(*work, "cfg-"+*size+"-"+*mode)
+	_ = os.RemoveAll(cfgDir)
+	_ = os.MkdirAll(cfgDir, 0o755)
+	_ = os.WriteFile(filepath.Join(cfgDir, "config.yaml"), []byte(k9sConfig), 0o644)
+	for _, c := range []string{ctx, octx} {
+		d := filepath.Join(cfgDir, "clusters", c, c)
+		_ = os.MkdirAll(d, 0o755)
+		_ = os.WriteFile(filepath.Join(d, "config.yaml"), []byte(fmt.Sprintf(ctxConfig, c)), 0o644)
+	}
+
+	flightPath := filepath.Join(*work, "flight-"+*size+".trace")
+	startCtx := ctx
+	if *mode == "ctx" {
+		kcfg = filepath.Join(*kube, "k9s-"+other+".yaml") + ":" + kcfg
+		startCtx = octx
+	}
+	env := []string{
+		"HOME=" + os.Getenv("HOME"), "PATH=" + os.Getenv("PATH"),
+		"TERM=xterm-256color", "COLORTERM=truecolor", "LANG=en_US.UTF-8",
+		"KUBECONFIG=" + kcfg,
+		"KUBECACHEDIR=" + filepath.Join(*work, "kubecache"),
+		"K9S_CONFIG_DIR=" + cfgDir, "K9S_LOGS_DIR=" + cfgDir,
+		"K9S_PROF_ADDR=" + *addr,
+		"K9S_PROF_FLIGHT=" + flightPath,
+		"K9S_PROF_TRACE=" + filepath.Join(*out, "startup.trace"),
+		"K9S_PROF_KLOG_V=6",
+		"K9S_PROF_KLOG_FILE=" + filepath.Join(*out, "klog.log"),
+	}
+
+	r := &run{addr: *addr, out: *out}
+	t, err := startTerm(*bin, []string{"--context", startCtx, "-c", "pods", "-A"}, env)
+	if err != nil {
+		log.Fatal(err)
+	}
+	r.t = t
+	cur = r
+	r.mark(t.start, "launch")
+	stop := make(chan struct{})
+	go r.watch(stop)
+	defer func() {
+		close(stop)
+		r.save()
+		t.Close()
+	}()
+
+	pods, deps := sizes[*size][0], sizes[*size][1]
+	if *mode == "ctx" {
+		runCtx(r, ctx, octx, pods, flightPath)
+		return
+	}
+	runSession(r, pods, deps, flightPath)
+}
+
+var cur *run
+
+func must(_ time.Time, err error) {
+	if err != nil {
+		cur.save()
+		log.Fatal(err)
+	}
+}
+
+func runCtx(r *run, ctx, octx string, pods int, flightPath string) {
+	must(r.t.WaitFor(3*time.Minute, func(s string) bool {
+		_, ok := titleCount(s, podsTitle)
+		return ok && strings.Contains(s, "Context: "+octx)
+	}))
+	r.t.Quiet(1200*time.Millisecond, 20*time.Second)
+	time.Sleep(10 * time.Second) // let the startup trace window close
+	r.get("/debug/pprof/goroutine?debug=1", "goroutines-before-ctx.txt")
+
+	at := r.t.Send(":ctx " + ctx + "\r")
+	r.mark(at, "key ctx-enter")
+	done, err := r.t.WaitFor(3*time.Minute, func(s string) bool {
+		c, ok := titleCount(s, podsTitle)
+		return strings.Contains(s, "Context: "+ctx) && ok && c >= pods
+	})
+	must(done, err)
+	r.mark(done, "done ctx")
+	r.flight("ctx", flightPath)
+	r.get("/debug/pprof/goroutine?debug=1", "goroutines-after-ctx.txt")
+}
+
+func runSession(r *run, pods, deps int, flightPath string) {
+	t := r.t
+	full, err := t.WaitFor(3*time.Minute, func(s string) bool {
+		c, ok := titleCount(s, podsTitle)
+		return ok && c >= pods
+	})
+	must(full, err)
+	r.mark(full, "done startup")
+	time.Sleep(16 * time.Second) // startup trace window = 15s
+
+	r.get("/debug/pprof/goroutine?debug=1", "goroutines-idle.txt")
+	r.get("/debug/pprof/goroutine?debug=2", "goroutines-idle-full.txt")
+	r.get("/debug/pprof/block", "block-idle-before.pb.gz")
+	r.get("/debug/pprof/mutex", "mutex-idle-before.pb.gz")
+	r.mark(time.Now(), "fgprof idle start")
+	r.get("/debug/fgprof?seconds=10", "fgprof-idle.pb.gz")
+	r.mark(time.Now(), "fgprof idle end")
+	r.flight("idle", flightPath)
+	r.get("/debug/pprof/block", "block-idle-after.pb.gz")
+	r.get("/debug/pprof/mutex", "mutex-idle-after.pb.gz")
+
+	// Idle key echo: open filter, type keys spaced 173ms (not a tick divisor), backspace them.
+	t.Send("/")
+	must(t.WaitFor(time.Minute, func(s string) bool { return strings.Contains(s, "/ ") }))
+	t.Quiet(800*time.Millisecond, 5*time.Second)
+	n := 0
+	for range 4 {
+		for i := 1; i <= len(filterText); i++ {
+			typed := filterText[:i]
+			at := t.Send(filterText[i-1 : i])
+			r.mark(at, "key echo-"+typed)
+			done, err := t.WaitFor(time.Minute, func(s string) bool { return strings.Contains(s, "/ "+typed) })
+			must(done, err)
+			r.mark(done, fmt.Sprintf("echo %d %.1fms", n, float64(done.Sub(at).Microseconds())/1000))
+			n++
+			time.Sleep(173 * time.Millisecond)
+		}
+		for range len(filterText) {
+			t.Send("\x7f")
+			time.Sleep(60 * time.Millisecond)
+		}
+		must(t.WaitFor(time.Minute, func(s string) bool { return !strings.Contains(s, "/ s") }))
+		time.Sleep(450 * time.Millisecond)
+	}
+	r.flight("echo", flightPath)
+	t.Send("\x1b")
+	time.Sleep(500 * time.Millisecond)
+	t.Send("\x1b")
+	time.Sleep(500 * time.Millisecond)
+	t.Quiet(1200*time.Millisecond, 10*time.Second)
+
+	// View switches.
+	r.get("/debug/pprof/goroutine?debug=1", "goroutines-before-switch.txt")
+	at := t.Send(":deploy\r")
+	r.mark(at, "key deploy-enter")
+	done, err := t.WaitFor(time.Minute, func(s string) bool { c, ok := titleCount(s, deployTitle); return ok && c >= deps })
+	must(done, err)
+	r.mark(done, "done deploy")
+	r.flight("deploy", flightPath)
+	t.Quiet(1200*time.Millisecond, 10*time.Second)
+
+	at = t.Send(":pods\r")
+	r.mark(at, "key pods-enter")
+	done, err = t.WaitFor(time.Minute, func(s string) bool { c, ok := titleCount(s, podsTitle); return ok && c >= pods })
+	must(done, err)
+	r.mark(done, "done pods")
+	r.flight("pods", flightPath)
+	t.Quiet(1200*time.Millisecond, 10*time.Second)
+	// Filter.
+	t.Send("/")
+	must(t.WaitFor(time.Minute, func(s string) bool { return strings.Contains(s, "/ ") }))
+	t.Quiet(600*time.Millisecond, 5*time.Second)
+	for i := 1; i <= len(filterText); i++ {
+		typed := filterText[:i]
+		at := t.Send(filterText[i-1 : i])
+		r.mark(at, "key filter-"+typed)
+		done, err := t.WaitFor(time.Minute, func(s string) bool { return strings.Contains(s, "/ "+typed) })
+		must(done, err)
+		r.mark(done, "echo "+typed)
+	}
+	done, err = t.WaitFor(time.Minute, func(s string) bool { c, ok := titleCount(s, podsTitle); return ok && c == 100 })
+	must(done, err)
+	r.mark(done, "done filter")
+	r.flight("filter", flightPath)
+	t.Send("\r")
+	t.Quiet(1200*time.Millisecond, 10*time.Second)
+	t.Send("\x1b")
+	time.Sleep(500 * time.Millisecond)
+	t.Send("\x1b")
+	time.Sleep(time.Second)
+	t.Quiet(1200*time.Millisecond, 10*time.Second)
+	r.get("/debug/pprof/goroutine?debug=1", "goroutines-after-switch1.txt")
+
+	for range 5 {
+		time.Sleep(300 * time.Millisecond)
+		t.Send(":deploy\r")
+		must(t.WaitFor(time.Minute, func(s string) bool { c, ok := titleCount(s, deployTitle); return ok && c >= deps }))
+		time.Sleep(300 * time.Millisecond)
+		t.Send(":pods\r")
+		must(t.WaitFor(time.Minute, func(s string) bool { c, ok := titleCount(s, podsTitle); return ok && c >= pods }))
+	}
+	t.Quiet(2500*time.Millisecond, 10*time.Second)
+	r.get("/debug/pprof/goroutine?debug=1", "goroutines-after-switch6.txt")
+
+}
+
+const k9sConfig = `k9s:
+  refreshRate: 2
+  skipLatestRevCheck: true
+  ui:
+    splashless: true
+    enableMouse: false
+`
+
+const ctxConfig = `k9s:
+  cluster: %[1]s
+  namespace:
+    active: all
+    favorites: [all, default]
+  view:
+    active: pods
+`

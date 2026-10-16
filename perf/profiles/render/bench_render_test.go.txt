@@ -1,0 +1,364 @@
+package ui
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"math/rand"
+	"os"
+	"sort"
+	"sync"
+	"testing"
+
+	"github.com/derailed/k9s/internal"
+	"github.com/derailed/k9s/internal/client"
+	"github.com/derailed/k9s/internal/config"
+	"github.com/derailed/k9s/internal/model1"
+	"github.com/derailed/k9s/internal/render"
+	"github.com/derailed/tcell/v2"
+	"github.com/derailed/tview"
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+)
+
+const (
+	podsJSON  = "/private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/render/team01.json"
+	copies    = 20
+	scrW      = 200
+	scrH      = 50
+	filterTxt = "svc-1-"
+)
+
+var (
+	once  sync.Once
+	fixture *model1.TableData
+)
+
+type countSorter struct {
+	model1.RowEventSorter
+	n *int
+}
+
+func (c countSorter) Less(i, j int) bool {
+	*c.n++
+	return c.RowEventSorter.Less(i, j)
+}
+
+func sortSort(s sort.Interface) { sort.Sort(s) }
+
+func loadModel(b *testing.B) *model1.TableData {
+	once.Do(func() {
+		raw, err := os.ReadFile(podsJSON)
+		if err != nil {
+			b.Fatal(err)
+		}
+		var list struct{ Items []map[string]any }
+		if err := json.Unmarshal(raw, &list); err != nil {
+			b.Fatal(err)
+		}
+		oo := make([]runtime.Object, 0, len(list.Items)*copies)
+		for c := range copies {
+			for _, it := range list.Items {
+				u := &unstructured.Unstructured{Object: runtime.DeepCopyJSON(it)}
+				u.SetNamespace(fmt.Sprintf("team-%02d", c+1))
+				oo = append(oo, &render.PodWithMetrics{Raw: u})
+			}
+		}
+		r := render.NewPod()
+		td := model1.NewTableData(client.PodGVR)
+		td.SetHeader(client.NamespaceAll, r.Header(client.NamespaceAll))
+		td.Reset(client.NamespaceAll)
+		if err := td.Render(context.Background(), r, oo); err != nil {
+			b.Fatal(err)
+		}
+		// second render so rows carry Update/Unchanged kinds like a steady-state tick
+		if err := td.Render(context.Background(), r, oo); err != nil {
+			b.Fatal(err)
+		}
+		fixture = td
+	})
+	b.Logf("rows=%d cols=%d", fixture.RowCount(), fixture.HeaderCount())
+
+	return fixture
+}
+
+func newBenchTable(b *testing.B) *Table {
+	ctx := context.WithValue(context.Background(), internal.KeyStyles, config.NewStyles())
+	ctx = context.WithValue(ctx, internal.KeyViewConfig, config.NewCustomView())
+	t := NewTable(client.PodGVR)
+	t.Init(ctx)
+	t.SetColorerFn(render.NewPod().ColorerFunc())
+	t.SetSortCol("NAMESPACE", true)
+	t.model.SetNamespace(client.NamespaceAll)
+	loadModel(b)
+
+	return t
+}
+
+func newScreen(b *testing.B) tcell.SimulationScreen {
+	s := tcell.NewSimulationScreen("UTF-8")
+	if err := s.Init(); err != nil {
+		b.Fatal(err)
+	}
+	s.SetSize(scrW, scrH)
+
+	return s
+}
+
+// One refresh tick on the UI goroutine: Update (filter copy) + UpdateUI.
+func BenchmarkTick(b *testing.B) {
+	t := newBenchTable(b)
+	b.ReportAllocs()
+	for b.Loop() {
+		data := fixture.Clone()
+		cdata := t.Update(data, false)
+		t.UpdateUI(cdata, data)
+	}
+}
+
+func BenchmarkUpdateUI(b *testing.B) {
+	t := newBenchTable(b)
+	data := fixture.Clone()
+	cdata := t.Update(data, false)
+	b.ReportAllocs()
+	for b.Loop() {
+		t.UpdateUI(cdata, data)
+	}
+}
+
+// Same UpdateUI but only the 48 rows that fit on screen.
+func BenchmarkUpdateUIVisibleOnly(b *testing.B) {
+	t := newBenchTable(b)
+	data := fixture.Clone()
+	cdata := t.Update(data, false)
+	cdata.Sort(t.getSortCol())
+	ee := make([]model1.RowEvent, 0, scrH)
+	cdata.RowsRange(func(i int, re model1.RowEvent) bool {
+		ee = append(ee, re)
+		return i < scrH-2
+	})
+	small := model1.NewTableDataFull(client.PodGVR, client.NamespaceAll, cdata.Header(), model1.NewRowEventsWithEvts(ee...))
+	b.ReportAllocs()
+	for b.Loop() {
+		t.UpdateUI(small, data)
+	}
+}
+
+func BenchmarkClear(b *testing.B) {
+	t := newBenchTable(b)
+	data := fixture.Clone()
+	t.UpdateUI(t.Update(data, false), data)
+	b.ReportAllocs()
+	for b.Loop() {
+		t.Clear()
+		t.UpdateUI(t.Update(data, false), data)
+	}
+}
+
+func BenchmarkBuildRowsOnly(b *testing.B) {
+	t := newBenchTable(b)
+	data := fixture.Clone()
+	cdata := t.Update(data, false)
+	pads := make(MaxyPad, cdata.HeaderCount())
+	ComputeMaxColumns(pads, "NAMESPACE", cdata)
+	b.ReportAllocs()
+	for b.Loop() {
+		cdata.RowsRange(func(row int, re model1.RowEvent) bool {
+			ore, _ := data.FindRow(re.Row.ID)
+			t.buildRow(row+1, re, ore, cdata.Header(), pads)
+			return true
+		})
+	}
+}
+
+func BenchmarkComputeMaxColumns(b *testing.B) {
+	data := loadModel(b)
+	pads := make(MaxyPad, data.HeaderCount())
+	b.ReportAllocs()
+	for b.Loop() {
+		ComputeMaxColumns(pads, "NAMESPACE", data)
+	}
+}
+
+func BenchmarkPeekClone(b *testing.B) {
+	data := loadModel(b)
+	b.ReportAllocs()
+	for b.Loop() {
+		_ = data.Clone()
+	}
+}
+
+func BenchmarkFilterNone(b *testing.B) {
+	data := loadModel(b)
+	b.ReportAllocs()
+	for b.Loop() {
+		_ = data.Filter(model1.FilterOpts{})
+	}
+}
+
+func BenchmarkFilterRx(b *testing.B) {
+	data := loadModel(b)
+	b.ReportAllocs()
+	for b.Loop() {
+		_ = data.Filter(model1.FilterOpts{Filter: filterTxt})
+	}
+}
+
+func BenchmarkFilterFuzzy(b *testing.B) {
+	data := loadModel(b)
+	b.ReportAllocs()
+	for b.Loop() {
+		_ = data.Filter(model1.FilterOpts{Filter: "-f " + filterTxt})
+	}
+}
+
+func benchSort(b *testing.B, col string, asc bool) {
+	data := loadModel(b).Clone()
+	sc := model1.SortColumn{Name: col, ASC: asc}
+	b.ReportAllocs()
+	for b.Loop() {
+		sc.ASC = !sc.ASC
+		data.Sort(sc)
+	}
+}
+
+func BenchmarkSortAge(b *testing.B)       { benchSort(b, "AGE", true) }
+func BenchmarkSortNamespace(b *testing.B) { benchSort(b, "NAMESPACE", true) }
+func BenchmarkSortName(b *testing.B)      { benchSort(b, "NAME", true) }
+func BenchmarkSortRestarts(b *testing.B)  { benchSort(b, "RESTARTS", true) }
+
+// Sorting an already-sorted slice: what every refresh tick pays.
+func BenchmarkSortNamespaceSorted(b *testing.B) {
+	data := loadModel(b).Clone()
+	sc := model1.SortColumn{Name: "NAMESPACE", ASC: true}
+	data.Sort(sc)
+	b.ReportAllocs()
+	for b.Loop() {
+		data.Sort(sc)
+	}
+}
+
+func BenchmarkSortAgeSorted(b *testing.B) {
+	data := loadModel(b).Clone()
+	sc := model1.SortColumn{Name: "AGE", ASC: true}
+	data.Sort(sc)
+	b.ReportAllocs()
+	for b.Loop() {
+		data.Sort(sc)
+	}
+}
+
+func BenchmarkLessCalls(b *testing.B) {
+	data := loadModel(b).Clone()
+	for _, col := range []string{"NAMESPACE", "AGE"} {
+		h, idx := data.HeadCol(col, true)
+		n := 0
+		s := model1.RowEventSorter{Events: data.GetRowEvents(), Index: idx, IsDuration: h.Time, Asc: true}
+		cs := countSorter{s, &n}
+		sortSort(cs)
+		b.Logf("col=%s less_calls_unsorted->sorted=%d", col, n)
+		n = 0
+		sortSort(cs)
+		b.Logf("col=%s less_calls_already_sorted=%d", col, n)
+	}
+	for b.Loop() {
+	}
+}
+
+func BenchmarkAsThousands(b *testing.B) {
+	b.ReportAllocs()
+	for b.Loop() {
+		_ = render.AsThousands(20170)
+	}
+}
+
+func BenchmarkAsThousandsCachedPrinter(b *testing.B) {
+	p := message.NewPrinter(language.English)
+	b.ReportAllocs()
+	for b.Loop() {
+		_ = p.Sprintf("%d", 20170)
+	}
+}
+
+func BenchmarkStyleTitle(b *testing.B) {
+	t := newBenchTable(b)
+	data := fixture.Clone()
+	t.UpdateUI(t.Update(data, false), data)
+	b.ReportAllocs()
+	for b.Loop() {
+		_ = t.styleTitle()
+	}
+}
+
+// tview Table.Draw + tcell Show with 20k rows loaded vs 48 rows loaded.
+func BenchmarkDrawShow(b *testing.B) {
+	t := newBenchTable(b)
+	data := fixture.Clone()
+	t.UpdateUI(t.Update(data, false), data)
+	s := newScreen(b)
+	t.SetRect(0, 0, scrW, scrH)
+	b.ReportAllocs()
+	for b.Loop() {
+		t.Draw(s)
+		s.Show()
+	}
+}
+
+func BenchmarkDrawShowVisibleOnly(b *testing.B) {
+	t := newBenchTable(b)
+	data := fixture.Clone()
+	cdata := t.Update(data, false)
+	cdata.Sort(t.getSortCol())
+	ee := make([]model1.RowEvent, 0, scrH)
+	cdata.RowsRange(func(i int, re model1.RowEvent) bool {
+		ee = append(ee, re)
+		return i < scrH-2
+	})
+	small := model1.NewTableDataFull(client.PodGVR, client.NamespaceAll, cdata.Header(), model1.NewRowEventsWithEvts(ee...))
+	t.UpdateUI(small, data)
+	s := newScreen(b)
+	t.SetRect(0, 0, scrW, scrH)
+	b.ReportAllocs()
+	for b.Loop() {
+		t.Draw(s)
+		s.Show()
+	}
+}
+
+var _ = tview.AlignLeft
+
+// Model order as Peek returns it each tick (informer list order, unsorted).
+func BenchmarkSortFromModelOrder(b *testing.B) {
+	base := loadModel(b)
+	for _, col := range []string{"NAMESPACE", "AGE"} {
+		b.Run(col, func(b *testing.B) {
+			b.ReportAllocs()
+			for b.Loop() {
+				b.StopTimer()
+				d := base.Clone()
+				b.StartTimer()
+				d.Sort(model1.SortColumn{Name: col, ASC: true})
+			}
+		})
+	}
+}
+
+func BenchmarkSortShuffled(b *testing.B) {
+	base := loadModel(b)
+	ee := make([]model1.RowEvent, 0, base.RowCount())
+	base.RowsRange(func(_ int, re model1.RowEvent) bool { ee = append(ee, re); return true })
+	rand.New(rand.NewSource(1)).Shuffle(len(ee), func(i, j int) { ee[i], ee[j] = ee[j], ee[i] })
+	for _, col := range []string{"NAMESPACE", "NAME", "AGE"} {
+		b.Run(col, func(b *testing.B) {
+			for b.Loop() {
+				b.StopTimer()
+				cp := append([]model1.RowEvent(nil), ee...)
+				d := model1.NewTableDataFull(client.PodGVR, client.NamespaceAll, base.Header(), model1.NewRowEventsWithEvts(cp...))
+				b.StartTimer()
+				d.Sort(model1.SortColumn{Name: col, ASC: true})
+			}
+		})
+	}
+}

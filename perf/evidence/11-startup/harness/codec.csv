@@ -1,0 +1,4 @@
+label,size,metric,unit,n,median,p90,min,max
+codec,l,startup_first_byte,ms,5,112.0,125.0,93.4,129.2
+codec,l,startup_first_frame,ms,5,3061.1,3380.3,2987.1,3579.6
+codec,l,startup_full_table,ms,5,3061.2,3380.4,2987.2,3579.7

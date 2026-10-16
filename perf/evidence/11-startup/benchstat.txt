@@ -1,0 +1,15 @@
+              │ perf/evidence/11-startup/bench-before.txt │ perf/evidence/11-startup/bench-after.txt │
+              │                  sec/op                   │      sec/op       vs base                │
+WatchDecode-4                                 231.4m ± 4%       151.2m ± 22%  -34.65% (p=0.000 n=10)
+
+              │ perf/evidence/11-startup/bench-before.txt │ perf/evidence/11-startup/bench-after.txt │
+              │                    B/s                    │       B/s         vs base                │
+WatchDecode-4                                32.73Mi ± 3%      50.10Mi ± 18%  +53.04% (p=0.000 n=10)
+
+              │ perf/evidence/11-startup/bench-before.txt │ perf/evidence/11-startup/bench-after.txt │
+              │                   B/op                    │       B/op         vs base               │
+WatchDecode-4                                57.74Mi ± 0%        56.07Mi ± 0%  -2.89% (p=0.000 n=10)
+
+              │ perf/evidence/11-startup/bench-before.txt │ perf/evidence/11-startup/bench-after.txt │
+              │                 allocs/op                 │     allocs/op      vs base               │
+WatchDecode-4                                 1.108M ± 0%         1.082M ± 0%  -2.35% (p=0.000 n=10)

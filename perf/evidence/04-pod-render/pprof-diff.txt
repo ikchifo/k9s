@@ -1,0 +1,47 @@
+File: render.test
+Type: cpu
+Time: 2026-10-15 21:32:02 EDT
+Duration: 705.18ms, Total samples = 270ms (38.29%)
+Showing nodes accounting for -90ms, 33.33% of 270ms total
+Dropped 1 node (cum <= 1.35ms)
+      flat  flat%   sum%        cum   cum%
+     -30ms 11.11% 11.11%      -30ms 11.11%  runtime.pthread_cond_signal
+     -20ms  7.41% 18.52%      -20ms  7.41%  runtime.kevent
+      10ms  3.70% 14.81%       10ms  3.70%  internal/abi.(*MapType).IndirectElem (inline)
+     -10ms  3.70% 18.52%      -10ms  3.70%  internal/abi.(*Type).IsDirectIface (inline)
+      10ms  3.70% 14.81%       10ms  3.70%  internal/abi.(*Type).Kind (inline)
+     -10ms  3.70% 18.52%      -10ms  3.70%  internal/abi.(*Type).Size (inline)
+     -10ms  3.70% 22.22%      -10ms  3.70%  internal/runtime/atomic.(*Uint32).Add (inline)
+      10ms  3.70% 18.52%       10ms  3.70%  internal/strconv.ParseUint
+     -10ms  3.70% 22.22%      -10ms  3.70%  reflect.flag.ro (inline)
+     -10ms  3.70% 25.93%      -10ms  3.70%  reflect.mapaccess_faststr
+     -10ms  3.70% 29.63%      -10ms  3.70%  reflect.typedmemclr
+      10ms  3.70% 25.93%       10ms  3.70%  runtime.gcmarknewobject
+     -10ms  3.70% 29.63%      -20ms  7.41%  runtime.mallocgcSmallScanNoHeaderSC2
+     -10ms  3.70% 33.33%      -10ms  3.70%  runtime.mapaccess2
+      10ms  3.70% 29.63%       10ms  3.70%  runtime.mapassign_faststr
+      10ms  3.70% 25.93%       10ms  3.70%  runtime.mmap
+     -10ms  3.70% 29.63%      -10ms  3.70%  runtime.pthread_cond_wait
+     -10ms  3.70% 33.33%      -10ms  3.70%  runtime.typehash
+     -10ms  3.70% 37.04%      -10ms  3.70%  runtime.walltime
+      10ms  3.70% 33.33%       10ms  3.70%  sigs.k8s.io/json/internal/golang/encoding/json.CaseSensitive
+         0     0% 33.33%       10ms  3.70%  encoding/json.Unmarshal (inline)
+         0     0% 33.33%       10ms  3.70%  encoding/json/v2.Unmarshal
+         0     0% 33.33%       10ms  3.70%  encoding/json/v2.makeMethodArshaler.func6
+Showing top 15 nodes out of 95
+      flat  flat%   sum%        cum   cum%
+      40ms 21.05% 21.05%       40ms 21.05%  runtime.madvise
+      20ms 10.53% 31.58%       20ms 10.53%  internal/runtime/atomic.(*UnsafePointer).Load
+      10ms  5.26% 36.84%       10ms  5.26%  internal/abi.(*MapType).IndirectElem (inline)
+      10ms  5.26% 42.11%       10ms  5.26%  internal/abi.(*Type).Kind (inline)
+      10ms  5.26% 47.37%       10ms  5.26%  internal/runtime/maps.memHashAES
+      10ms  5.26% 52.63%       10ms  5.26%  internal/strconv.ParseUint
+      10ms  5.26% 57.89%       20ms 10.53%  k8s.io/apimachinery/pkg/runtime.fieldInfoFromField
+      10ms  5.26% 63.16%       30ms 15.79%  reflect.Value.MapIndex
+      10ms  5.26% 68.42%       10ms  5.26%  runtime.(*gcBits).bytep
+      10ms  5.26% 73.68%       10ms  5.26%  runtime.gcmarknewobject
+      10ms  5.26% 78.95%       10ms  5.26%  runtime.kevent
+      10ms  5.26% 84.21%       10ms  5.26%  runtime.mapassign_faststr
+      10ms  5.26% 89.47%       10ms  5.26%  runtime.mmap
+      10ms  5.26% 94.74%       10ms  5.26%  runtime.pthread_cond_wait
+      10ms  5.26%   100%       10ms  5.26%  sigs.k8s.io/json/internal/golang/encoding/json.CaseSensitive

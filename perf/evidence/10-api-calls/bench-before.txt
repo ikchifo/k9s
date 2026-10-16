@@ -1,0 +1,16 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/client
+cpu: Apple M1 Max
+BenchmarkCheckConnectivity-4   	     100	    320739 ns/op	         1.000 reqs/op	  100979 B/op	    1758 allocs/op
+BenchmarkCheckConnectivity-4   	     100	    297122 ns/op	         1.000 reqs/op	  100690 B/op	    1757 allocs/op
+BenchmarkCheckConnectivity-4   	     100	    319768 ns/op	         1.000 reqs/op	  100460 B/op	    1756 allocs/op
+BenchmarkCheckConnectivity-4   	     100	    318566 ns/op	         1.000 reqs/op	  100758 B/op	    1758 allocs/op
+BenchmarkCheckConnectivity-4   	     100	    311268 ns/op	         1.000 reqs/op	  100960 B/op	    1757 allocs/op
+BenchmarkCheckConnectivity-4   	     100	    297121 ns/op	         1.000 reqs/op	  101539 B/op	    1759 allocs/op
+BenchmarkCheckConnectivity-4   	     100	    295473 ns/op	         1.000 reqs/op	  100492 B/op	    1756 allocs/op
+BenchmarkCheckConnectivity-4   	     100	    292188 ns/op	         1.000 reqs/op	   99805 B/op	    1755 allocs/op
+BenchmarkCheckConnectivity-4   	     100	    286805 ns/op	         1.000 reqs/op	  100487 B/op	    1756 allocs/op
+BenchmarkCheckConnectivity-4   	     100	    249167 ns/op	         1.000 reqs/op	  100532 B/op	    1757 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/client	1.265s
