@@ -172,10 +172,47 @@ func (m *Meta) LoadResources(f Factory) error {
 	loadNonResource(m.resMetas)
 
 	// We've actually loaded all the CRDs in loadPreferred, and we're now adding
-	// some additional CRD properties on top of that.
-	loadCRDs(f, m.resMetas)
+	// some additional CRD properties on top of that once the CRD cache syncs.
+	go m.addCRDs(f)
 
 	return nil
+}
+
+func (m *Meta) addCRDs(f Factory) {
+	crds := listCRDs(f)
+	if len(crds) == 0 {
+		return
+	}
+
+	m.mx.Lock()
+	var stale bool
+	for _, crd := range crds {
+		stale = !addCRDProperties(m.resMetas, crd) || stale
+	}
+	m.mx.Unlock()
+
+	// A CRD missing from cached discovery means the disk cache is stale.
+	if stale {
+		m.refreshDiscovery(f, crds)
+	}
+}
+
+func (m *Meta) refreshDiscovery(f Factory, crds []*apiext.CustomResourceDefinition) {
+	dial, err := f.Client().CachedDiscovery()
+	if err != nil {
+		return
+	}
+	dial.Invalidate()
+
+	m.mx.Lock()
+	defer m.mx.Unlock()
+	if err := loadPreferred(f, m.resMetas); err != nil {
+		slog.Debug("Discovery refresh failed", slogs.Error, err)
+		return
+	}
+	for _, crd := range crds {
+		addCRDProperties(m.resMetas, crd)
+	}
 }
 
 // BOZO!! Need countermeasures for direct commands!
@@ -375,18 +412,19 @@ func isDeprecated(gvr *client.GVR) bool {
 	return deprecatedGVRs.Has(gvr) || gvr.V() == ""
 }
 
-// loadCRDs Wait for the cache to synced and then add some additional properties to CRD.
-func loadCRDs(f Factory, m ResourceMetas) {
+// listCRDs waits for the CRD cache to sync and returns its CRDs.
+func listCRDs(f Factory) []*apiext.CustomResourceDefinition {
 	if f == nil || f.Client() == nil || !f.Client().ConnectionOK() {
-		return
+		return nil
 	}
 
 	oo, err := f.List(client.CrdGVR, client.ClusterScope, true, labels.Everything())
 	if err != nil {
 		slog.Warn("CRDs load Fail", slogs.Error, err)
-		return
+		return nil
 	}
 
+	crds := make([]*apiext.CustomResourceDefinition, 0, len(oo))
 	for _, o := range oo {
 		var crd apiext.CustomResourceDefinition
 		err = runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &crd)
@@ -394,14 +432,19 @@ func loadCRDs(f Factory, m ResourceMetas) {
 			slog.Error("CRD conversion failed", slogs.Error, err)
 			continue
 		}
-		addCRDProperties(m, &crd)
+		crds = append(crds, &crd)
 	}
+
+	return crds
 }
 
-func addCRDProperties(m ResourceMetas, crd *apiext.CustomResourceDefinition) {
+// addCRDProperties returns false when a served CRD version is unknown.
+func addCRDProperties(m ResourceMetas, crd *apiext.CustomResourceDefinition) bool {
+	known := true
 	for gvr, version := range client.NewGVRFromCRD(crd) {
 		meta, ok := m[gvr]
 		if !ok {
+			known = false
 			continue
 		}
 		if !slices.Contains(meta.Categories, crdCat) {
@@ -412,4 +455,6 @@ func addCRDProperties(m ResourceMetas, crd *apiext.CustomResourceDefinition) {
 		}
 		m[gvr] = meta
 	}
+
+	return known
 }
