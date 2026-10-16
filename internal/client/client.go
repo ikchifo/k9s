@@ -584,6 +584,7 @@ func (a *APIClient) CachedDiscovery() (*disk.CachedDiscoveryClient, error) {
 	if err != nil {
 		return nil, err
 	}
+	seedEmptyResourceCaches(discCacheDir)
 	a.setCachedClient(c)
 
 	return a.getCachedClient(), nil
