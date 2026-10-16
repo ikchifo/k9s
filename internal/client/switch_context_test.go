@@ -192,7 +192,7 @@ func TestInitConnectionMetricsUnsupported(t *testing.T) {
 		"InitConnection should succeed when metrics-server is absent")
 }
 
-func TestInitConnectionStoresDialClient(t *testing.T) {
+func TestInitConnectionStoresDiscoveryClient(t *testing.T) {
 	srv, _, _ := setupSwitchTest(t)
 
 	kubeconfig := writeSwitchTestKubeconfig(t, srv.URL, srv.URL)
@@ -204,6 +204,6 @@ func TestInitConnectionStoresDialClient(t *testing.T) {
 	a, err := InitConnection(NewConfig(flags), slog.Default())
 	require.NoError(t, err)
 
-	assert.NotNil(t, a.getClient(),
-		"InitConnection should store a Dial client for reuse")
+	assert.NotNil(t, a.getCachedClient(),
+		"InitConnection should reuse the shared cached discovery client")
 }

@@ -314,21 +314,27 @@ func (a *APIClient) CheckConnectivity() bool {
 		}
 	}()
 
-	cfg, err := a.config.RESTConfig()
-	if err != nil {
-		slog.Error("RestConfig load failed", slogs.Error, err)
-		a.connOK = false
-		return a.connOK
-	}
-	cfg.Timeout = a.config.CallTimeout()
-	client, err := kubernetes.NewForConfig(cfg)
-	if err != nil {
-		slog.Error("Unable to connect to api server", slogs.Error, err)
-		a.setConnOK(false)
-		return a.getConnOK()
+	// Reuse the shared clientset so the periodic check keeps its transport
+	// warm. Rebuild while a proxy is configured since it can be swapped on
+	// context changes, and always hit the wire: this is a liveness probe.
+	client := a.getClient()
+	if client == nil || a.config.proxy != nil {
+		cfg, err := a.config.RESTConfig()
+		if err != nil {
+			slog.Error("RestConfig load failed", slogs.Error, err)
+			a.setConnOK(false)
+			return a.getConnOK()
+		}
+		cfg.Timeout = a.config.CallTimeout()
+		client, err = kubernetes.NewForConfig(cfg)
+		if err != nil {
+			slog.Error("Unable to connect to api server", slogs.Error, err)
+			a.setConnOK(false)
+			return a.getConnOK()
+		}
 	}
 
-	if _, err := client.ServerVersion(); err == nil {
+	if _, err := client.Discovery().ServerVersion(); err == nil {
 		a.setClient(client)
 		if !a.getConnOK() {
 			a.reset()
@@ -471,6 +477,7 @@ func (a *APIClient) Dial() (kubernetes.Interface, error) {
 	if err != nil {
 		return nil, err
 	}
+	cfg.Timeout = a.config.CallTimeout()
 	c, err := kubernetes.NewForConfig(cfg)
 	if err != nil {
 		return nil, err
@@ -620,14 +627,17 @@ func (a *APIClient) supportsMetricsResources() error {
 		a.cache.Add(cacheMXAPIKey, supported, cacheExpiry)
 	}()
 
-	dial, err := a.Dial()
+	dial, err := a.CachedDiscovery()
 	if err != nil {
 		if a.HasActiveContext() {
 			slog.Warn("Unable to dial API client for metrics", slogs.Error, err)
 		}
 		return err
 	}
-	apiGroups, err := dial.Discovery().ServerGroups()
+	// Force live discovery so a metrics-server installed after the cached
+	// data was fetched is still detected.
+	dial.Invalidate()
+	apiGroups, err := dial.ServerGroups()
 	if err != nil {
 		return err
 	}
