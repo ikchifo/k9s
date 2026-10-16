@@ -4,6 +4,7 @@
 package model1
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -11,6 +12,7 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+	"unicode/utf8"
 
 	"github.com/derailed/k9s/internal"
 	"github.com/derailed/k9s/internal/client"
@@ -171,22 +173,48 @@ func (t *TableData) rxFilter(q string, inverse bool) (*RowEvents, error) {
 	if inverse {
 		q = q[1:]
 	}
-	rx, err := regexp.Compile(`(?i)(` + q + `)`)
-	if err != nil {
-		return nil, fmt.Errorf("invalid rx filter %q: %w", q, err)
+
+	var (
+		rx    *regexp.Regexp
+		sub   []byte // case-folded needle for plain-text queries
+		plain = isPlainText(q)
+	)
+	if plain {
+		sub = appendFold(nil, q)
+	} else {
+		var err error
+		if rx, err = regexp.Compile(`(?i)(` + q + `)`); err != nil {
+			return nil, fmt.Errorf("invalid rx filter %q: %w", q, err)
+		}
 	}
 
 	vidx := t.header.FilterColIndices(t.namespace, true)
 	rr := NewRowEvents(t.RowCount() / 2)
+	buf := make([]byte, 0, 128)
 	t.rowEvents.Range(func(_ int, re RowEvent) bool {
-		ff := make([]string, 0, len(re.Row.Fields))
-		for idx, r := range re.Row.Fields {
+		buf = buf[:0]
+		sep := false
+		for idx, field := range re.Row.Fields {
 			if !vidx.Has(idx) {
 				continue
 			}
-			ff = append(ff, r)
+			if sep {
+				buf = append(buf, spacer[0])
+			}
+			sep = true
+			if plain {
+				buf = appendFold(buf, field)
+			} else {
+				buf = append(buf, field...)
+			}
 		}
-		match := rx.MatchString(strings.Join(ff, spacer))
+
+		var match bool
+		if plain {
+			match = bytes.Contains(buf, sub)
+		} else {
+			match = rx.Match(buf)
+		}
 		if (inverse && !match) || (!inverse && match) {
 			rr.Add(re)
 		}
@@ -195,6 +223,52 @@ func (t *TableData) rxFilter(q string, inverse bool) (*RowEvents, error) {
 	})
 
 	return rr, nil
+}
+
+// rxMeta chars turn a query into a regex; queries without them are plain text.
+const rxMeta = `\.+*?()|[]{}^$`
+
+// isPlainText reports whether q is ASCII and free of regex metacharacters,
+// so a case-folded substring match keeps the (?i) regex semantics.
+func isPlainText(q string) bool {
+	for i := range len(q) {
+		if b := q[i]; b >= utf8.RuneSelf || strings.IndexByte(rxMeta, b) >= 0 {
+			return false
+		}
+	}
+
+	return true
+}
+
+const (
+	longS   = "\u017f" // ſ, case-insensitive-equal to s
+	kelvinK = "\u212a" // K (kelvin sign), case-insensitive-equal to k
+)
+
+// appendFold appends s to dst, lowercasing A-Z and folding the only two
+// non-ASCII runes (?i) treats as ASCII letters. All other bytes are kept
+// as-is so plain-text and regex filters match the same rows.
+func appendFold(dst []byte, s string) []byte {
+	for i := 0; i < len(s); i++ {
+		b := s[i]
+		switch {
+		case b < utf8.RuneSelf:
+			if 'A' <= b && b <= 'Z' {
+				b += 'a' - 'A'
+			}
+			dst = append(dst, b)
+		case strings.HasPrefix(s[i:], longS):
+			dst = append(dst, 's')
+			i += len(longS) - 1
+		case strings.HasPrefix(s[i:], kelvinK):
+			dst = append(dst, 'k')
+			i += len(kelvinK) - 1
+		default:
+			dst = append(dst, b)
+		}
+	}
+
+	return dst
 }
 
 func (t *TableData) fuzzyFilter(q string) *RowEvents {

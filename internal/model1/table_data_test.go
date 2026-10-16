@@ -4,6 +4,7 @@
 package model1
 
 import (
+	"fmt"
 	"log/slog"
 	"testing"
 
@@ -438,6 +439,137 @@ func TestTableDataDelete(t *testing.T) {
 			table.SetRowEvents(u.re)
 			table.Delete(u.kk)
 			assert.Equal(t, u.e, table.GetRowEvents())
+		})
+	}
+}
+
+func TestTableDataFilter(t *testing.T) {
+	newTable := func() *TableData {
+		h := Header{
+			HeaderColumn{Name: "NAMESPACE"},
+			HeaderColumn{Name: "NAME"},
+			HeaderColumn{Name: "STATUS"},
+			HeaderColumn{Name: "SECRET", Attrs: Attrs{Hide: true}},
+			HeaderColumn{Name: "AGE"},
+			HeaderColumn{Name: "LABELS", Attrs: Attrs{Wide: true}},
+		}
+		rows := []RowEvent{
+			{Row: Row{ID: "default/nginx-7f9c49b5c8-abcde", Fields: Fields{"default", "nginx-7f9c49b5c8-abcde", "Running", "s3cr3t", "42d", "app=nginx"}}},
+			{Row: Row{ID: "prod/web-1", Fields: Fields{"prod", "web-1", "CrashLoopBackOff", "", "1d", "app=web"}}},
+			{Row: Row{ID: "kube-system/coredns-6f8b9c4c4d-xyz12", Fields: Fields{"kube-system", "coredns-6f8b9c4c4d-xyz12", "Running", "top-secret", "23h", "k8s-app=kube-dns"}}},
+			{Row: Row{ID: "prod/ſpecial-1", Fields: Fields{"prod", "ſpecial-1", "Running", "", "2d", "app=long-s"}}},
+			{Row: Row{ID: "prod/special-1", Fields: Fields{"prod", "special-1", "Pending", "", "3d", "wide-col"}}},
+			{Row: Row{ID: "prod/kelvin-1", Fields: Fields{"prod", "K-1", "Running", "", "4d", ""}}},
+		}
+
+		return NewTableDataFull(client.NewGVR("v1/pods"), "all", h, NewRowEventsWithEvts(rows...))
+	}
+	allIDs := func() []string {
+		return []string{
+			"default/nginx-7f9c49b5c8-abcde",
+			"prod/web-1",
+			"kube-system/coredns-6f8b9c4c4d-xyz12",
+			"prod/ſpecial-1",
+			"prod/special-1",
+			"prod/kelvin-1",
+		}
+	}
+
+	uu := map[string]struct {
+		filter string
+		e      []string
+	}{
+		"plain":          {"nginx", []string{"default/nginx-7f9c49b5c8-abcde"}},
+		"upper-case":     {"NGINX-7f9c", []string{"default/nginx-7f9c49b5c8-abcde"}},
+		"lower-case":     {"running", []string{"default/nginx-7f9c49b5c8-abcde", "kube-system/coredns-6f8b9c4c4d-xyz12", "prod/ſpecial-1", "prod/kelvin-1"}},
+		"dash":           {"kube-system", []string{"kube-system/coredns-6f8b9c4c4d-xyz12"}},
+		"age-skipped":    {"42d", []string{}},
+		"hidden-skipped": {"s3cr3t", []string{}},
+		"wide-matched":   {"wide-col", []string{"prod/special-1"}},
+		"kelvin":         {"k-1", []string{"prod/kelvin-1"}},
+		"kelvin-regex":   {"K-1", []string{"prod/kelvin-1"}},
+		"regex":          {"ngin[x]", []string{"default/nginx-7f9c49b5c8-abcde"}},
+		"regex-dot":      {"Run.*", []string{"default/nginx-7f9c49b5c8-abcde", "kube-system/coredns-6f8b9c4c4d-xyz12", "prod/ſpecial-1", "prod/kelvin-1"}},
+		"inverse":        {"!running", []string{"prod/web-1", "prod/special-1"}},
+		"inverse-regex":  {"!Run.*", []string{"prod/web-1", "prod/special-1"}},
+		"inverse-empty":  {"!", []string{}},
+		"long-s":         {"special", []string{"prod/ſpecial-1", "prod/special-1"}},
+		"long-s-regex":   {"ſpecial", []string{"prod/ſpecial-1", "prod/special-1"}},
+		"space-noop":     {"foo bar", allIDs()},
+		"label-selector": {"app=web", allIDs()},
+		"fuzzy":          {"-fweb", []string{"prod/web-1"}},
+	}
+
+	for k := range uu {
+		u := uu[k]
+		t.Run(k, func(t *testing.T) {
+			td := newTable().Filter(FilterOpts{Filter: u.filter})
+
+			ids := make([]string, 0, len(u.e))
+			td.RowsRange(func(_ int, re RowEvent) bool {
+				ids = append(ids, re.Row.ID)
+				return true
+			})
+			assert.Equal(t, u.e, ids)
+		})
+	}
+}
+
+func benchPodData(size int) *TableData {
+	h := Header{
+		HeaderColumn{Name: "NAMESPACE"},
+		HeaderColumn{Name: "NAME"},
+		HeaderColumn{Name: "READY"},
+		HeaderColumn{Name: "STATUS"},
+		HeaderColumn{Name: "RESTARTS"},
+		HeaderColumn{Name: "AGE"},
+		HeaderColumn{Name: "IP"},
+		HeaderColumn{Name: "NODE"},
+		HeaderColumn{Name: "NOMINATED NODE"},
+		HeaderColumn{Name: "READINESS GATES"},
+		HeaderColumn{Name: "CPU"},
+		HeaderColumn{Name: "MEM"},
+		HeaderColumn{Name: "LABELS", Attrs: Attrs{Wide: true}},
+	}
+	nn := []string{"kube-system", "default", "prod", "monitoring", "kube-public"}
+	ss := []string{"Running", "Running", "Running", "ContainerCreating", "CrashLoopBackOff"}
+
+	ee := make([]RowEvent, 0, size)
+	for i := range size {
+		ns, name := nn[i%len(nn)], fmt.Sprintf("worker-%d-6d4f9b7c", i)
+		if i%5 == 0 {
+			name = fmt.Sprintf("nginx-7f9c49b5c8-%05d", i)
+		}
+		ee = append(ee, RowEvent{Row: Row{
+			ID: ns + "/" + name,
+			Fields: Fields{
+				ns, name, "1/1", ss[i%len(ss)], "0", "42d",
+				fmt.Sprintf("10.244.%d.%d", i%256, i%254+1),
+				fmt.Sprintf("kind-worker-%d", i%4),
+				"<none>", "<none>", "250m", "128Mi", "app=nginx,pod-template-hash=7f9c49b5c8",
+			},
+		}})
+	}
+
+	return NewTableDataFull(client.NewGVR("v1/pods"), "all", h, NewRowEventsWithEvts(ee...))
+}
+
+func BenchmarkFilter(b *testing.B) {
+	data := benchPodData(20_000)
+	uu := map[string]string{
+		"plain":   "nginx-7",
+		"upper":   "NGINX-7",
+		"inverse": "!running",
+		"regex":   "ngin[x]",
+		"miss":    "no-such-pod",
+	}
+
+	for name, q := range uu {
+		b.Run(name, func(b *testing.B) {
+			b.ReportAllocs()
+			for b.Loop() {
+				data.Filter(FilterOpts{Filter: q})
+			}
 		})
 	}
 }
