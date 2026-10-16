@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"time"
 
+	"golang.org/x/sync/singleflight"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/cache"
@@ -44,7 +45,8 @@ func ResetMetrics() {
 type MetricsServer struct {
 	Connection
 
-	cache *cache.LRUExpireCache
+	cache    *cache.LRUExpireCache
+	inFlight singleflight.Group
 }
 
 // NewMetricsServer return a metric server instance.
@@ -149,6 +151,22 @@ func (m *MetricsServer) FetchNodesMetricsMap(ctx context.Context) (NodesMetricsM
 
 // FetchNodesMetrics return all metrics for nodes.
 func (m *MetricsServer) FetchNodesMetrics(ctx context.Context) (*mv1beta1.NodeMetricsList, error) {
+	// Concurrent fetches share a single round trip.
+	v, err, _ := m.inFlight.Do("nodesMetrics", func() (any, error) {
+		return m.fetchNodesMetrics(ctx)
+	})
+	if err != nil {
+		return new(mv1beta1.NodeMetricsList), err
+	}
+	mxList, ok := v.(*mv1beta1.NodeMetricsList)
+	if !ok || mxList == nil {
+		return nil, fmt.Errorf("expected nodemetricslist but got %T", v)
+	}
+
+	return mxList, nil
+}
+
+func (m *MetricsServer) fetchNodesMetrics(ctx context.Context) (*mv1beta1.NodeMetricsList, error) {
 	const msg = "user is not authorized to list node metrics"
 
 	mx := new(mv1beta1.NodeMetricsList)
@@ -228,6 +246,22 @@ func (m *MetricsServer) FetchPodsMetricsMap(ctx context.Context, ns string) (Pod
 
 // FetchPodsMetrics return all metrics for pods in a given namespace.
 func (m *MetricsServer) FetchPodsMetrics(ctx context.Context, ns string) (*mv1beta1.PodMetricsList, error) {
+	// Concurrent fetches share a single round trip.
+	v, err, _ := m.inFlight.Do(FQN(ns, "podsMetrics"), func() (any, error) {
+		return m.fetchPodsMetrics(ctx, ns)
+	})
+	if err != nil {
+		return new(mv1beta1.PodMetricsList), err
+	}
+	mxList, ok := v.(*mv1beta1.PodMetricsList)
+	if !ok || mxList == nil {
+		return nil, fmt.Errorf("expected podmetricslist but got %T", v)
+	}
+
+	return mxList, nil
+}
+
+func (m *MetricsServer) fetchPodsMetrics(ctx context.Context, ns string) (*mv1beta1.PodMetricsList, error) {
 	mx := new(mv1beta1.PodMetricsList)
 	const msg = "user is not authorized to list pods metrics"
 

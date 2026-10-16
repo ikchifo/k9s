@@ -17,6 +17,7 @@ import (
 	"github.com/derailed/k9s/internal/config"
 	"github.com/derailed/k9s/internal/dao"
 	"github.com/derailed/k9s/internal/slogs"
+	"golang.org/x/sync/singleflight"
 	"k8s.io/apimachinery/pkg/util/cache"
 )
 
@@ -82,6 +83,7 @@ type ClusterInfo struct {
 	cfg       *config.K9s
 	listeners []ClusterInfoListener
 	cache     *cache.LRUExpireCache
+	inFlight  singleflight.Group
 	mx        sync.RWMutex
 }
 
@@ -130,6 +132,16 @@ func (c *ClusterInfo) Reset(f dao.Factory) {
 
 // Refresh fetches the latest cluster meta.
 func (c *ClusterInfo) Refresh() {
+	// Startup fires several refreshes concurrently (initial load, cluster info
+	// panel, cluster updater); concurrent callers share a single fetch.
+	_, _, _ = c.inFlight.Do("refresh", func() (any, error) {
+		c.refresh()
+
+		return nil, nil
+	})
+}
+
+func (c *ClusterInfo) refresh() {
 	data := NewClusterMeta()
 	if c.factory.Client().ConnectionOK() {
 		data.Context = c.cluster.ContextName()
