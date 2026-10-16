@@ -91,7 +91,7 @@ func (f *Factory) List(gvr *client.GVR, ns string, wait bool, lbls labels.Select
 		return oo, err
 	}
 
-	f.waitForCacheSync(ns)
+	waitForSync(inf)
 	if client.IsClusterScoped(ns) {
 		return inf.Lister().List(lbls)
 	}
@@ -129,7 +129,7 @@ func (f *Factory) Get(gvr *client.GVR, fqn string, wait bool, _ labels.Selector)
 		return o, err
 	}
 
-	f.waitForCacheSync(ns)
+	waitForSync(inf)
 	if client.IsClusterScoped(ns) {
 		return inf.Lister().Get(n)
 	}
@@ -137,25 +137,12 @@ func (f *Factory) Get(gvr *client.GVR, fqn string, wait bool, _ labels.Selector)
 	return inf.Lister().ByNamespace(ns).Get(n)
 }
 
-func (f *Factory) waitForCacheSync(ns string) {
-	if client.IsClusterWide(ns) {
-		ns = client.BlankNamespace
+// waitForSync hangs until the informer is synced or the wait time is up.
+func waitForSync(inf informers.GenericInformer) {
+	select {
+	case <-inf.Informer().HasSyncedChecker().Done():
+	case <-time.After(defaultWaitTime):
 	}
-
-	f.mx.RLock()
-	defer f.mx.RUnlock()
-	fac, ok := f.factories[ns]
-	if !ok {
-		return
-	}
-
-	// Hang for a sec for the cache to refresh if still not done bail out!
-	c := make(chan struct{})
-	go func(c chan struct{}) {
-		<-time.After(defaultWaitTime)
-		close(c)
-	}(c)
-	_ = fac.WaitForCacheSync(c)
 }
 
 // WaitForCacheSync waits for all factories to update their cache.
