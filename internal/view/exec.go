@@ -29,9 +29,7 @@ import (
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/apimachinery/pkg/runtime"
 )
 
 const (
@@ -445,8 +443,8 @@ func launchShellPod(ctx context.Context, a *App, node string) error {
 			}
 		}
 
-		var pod v1.Pod
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &pod); err != nil {
+		pod, err := client.ToPod(o)
+		if err != nil {
 			return err
 		}
 		slog.Debug("Checking k9s shell pod retries",

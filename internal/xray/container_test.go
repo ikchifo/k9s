@@ -251,3 +251,10 @@ func load(t *testing.T, n string) *unstructured.Unstructured {
 
 	return &o
 }
+
+func loadPod(t *testing.T, n string) *v1.Pod {
+	var pod v1.Pod
+	require.NoError(t, runtime.DefaultUnstructuredConverter.FromUnstructured(load(t, n).Object, &pod))
+
+	return &pod
+}

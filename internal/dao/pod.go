@@ -22,7 +22,6 @@ import (
 	"github.com/derailed/tview"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -82,10 +81,9 @@ func (p *Pod) Get(ctx context.Context, path string) (runtime.Object, error) {
 	if err != nil {
 		return o, err
 	}
-
-	u, ok := o.(*unstructured.Unstructured)
-	if !ok {
-		return nil, fmt.Errorf("expecting *unstructured.Unstructured but got `%T", o)
+	pod, err := client.ToPod(o)
+	if err != nil {
+		return nil, err
 	}
 
 	var pmx *mv1beta1.PodMetrics
@@ -93,7 +91,7 @@ func (p *Pod) Get(ctx context.Context, path string) (runtime.Object, error) {
 		pmx, _ = client.DialMetrics(p.Client()).FetchPodMetrics(ctx, path)
 	}
 
-	return &render.PodWithMetrics{Raw: u, MX: pmx}, nil
+	return &render.PodWithMetrics{Raw: pod, MX: pmx}, nil
 }
 
 // ListImages lists container images.
@@ -126,22 +124,12 @@ func (p *Pod) List(ctx context.Context, ns string) ([]runtime.Object, error) {
 
 	res := make([]runtime.Object, 0, len(oo))
 	for _, o := range oo {
-		u, ok := o.(*unstructured.Unstructured)
-		if !ok {
-			return res, fmt.Errorf("expecting *unstructured.Unstructured but got `%T", o)
+		pod, err := client.ToPod(o)
+		if err != nil {
+			return res, err
 		}
-		fqn := extractFQN(o)
-		if nodeName == "" {
-			res = append(res, &render.PodWithMetrics{Raw: u, MX: pmx[fqn]})
-			continue
-		}
-
-		spec, ok := u.Object["spec"].(map[string]any)
-		if !ok {
-			return res, fmt.Errorf("expecting interface map but got `%T", o)
-		}
-		if spec["nodeName"] == nodeName {
-			res = append(res, &render.PodWithMetrics{Raw: u, MX: pmx[fqn]})
+		if nodeName == "" || pod.Spec.NodeName == nodeName {
+			res = append(res, &render.PodWithMetrics{Raw: pod, MX: pmx[MetaFQN(&pod.ObjectMeta)]})
 		}
 	}
 
@@ -200,13 +188,7 @@ func (p *Pod) GetInstance(fqn string) (*v1.Pod, error) {
 		return nil, err
 	}
 
-	var pod v1.Pod
-	err = runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &pod)
-	if err != nil {
-		return nil, err
-	}
-
-	return &pod, nil
+	return client.ToPod(o)
 }
 
 // TailLogs tails a given container logs.
@@ -219,8 +201,8 @@ func (p *Pod) TailLogs(ctx context.Context, opts *LogOptions) ([]LogChan, error)
 	if err != nil {
 		return nil, err
 	}
-	var po v1.Pod
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &po); err != nil {
+	po, err := client.ToPod(o)
+	if err != nil {
 		return nil, err
 	}
 	coCounts := len(po.Spec.InitContainers) + len(po.Spec.Containers) + len(po.Spec.EphemeralContainers)
@@ -265,10 +247,9 @@ func (p *Pod) ScanSA(_ context.Context, fqn string, wait bool) (Refs, error) {
 
 	refs := make(Refs, 0, len(oo))
 	for _, o := range oo {
-		var pod v1.Pod
-		err = runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &pod)
+		pod, err := client.ToPod(o)
 		if err != nil {
-			return nil, errors.New("expecting Deployment resource")
+			return nil, err
 		}
 		// Just pick controller less pods...
 		if len(pod.OwnerReferences) > 0 {
@@ -295,10 +276,9 @@ func (p *Pod) Scan(_ context.Context, gvr *client.GVR, fqn string, wait bool) (R
 
 	refs := make(Refs, 0, len(oo))
 	for _, o := range oo {
-		var pod v1.Pod
-		err = runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &pod)
+		pod, err := client.ToPod(o)
 		if err != nil {
-			return nil, errors.New("expecting Pod resource")
+			return nil, err
 		}
 		// Just pick controller less pods...
 		if len(pod.OwnerReferences) > 0 {
@@ -620,17 +600,12 @@ func (p *Pod) Sanitize(ctx context.Context, ns string) (int, error) {
 
 	var count int
 	for _, o := range oo {
-		u, ok := o.(*unstructured.Unstructured)
-		if !ok {
-			continue
-		}
-		var pod v1.Pod
-		err = runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &pod)
+		pod, err := client.ToPod(o)
 		if err != nil {
 			continue
 		}
 
-		if toastPhases.Has(render.PodStatus(&pod)) {
+		if toastPhases.Has(render.PodStatus(pod)) {
 			// !!BOZO!! Might need to bump timeout otherwise rev limit if too many??
 			fqn := client.FQN(pod.Namespace, pod.Name)
 			slog.Debug("Sanitizing resource", slogs.FQN, fqn)

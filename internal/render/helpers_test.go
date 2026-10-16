@@ -49,7 +49,7 @@ func TestTableGenericHydrate(t *testing.T) {
 
 func TestTableHydrate(t *testing.T) {
 	oo := []runtime.Object{
-		&PodWithMetrics{Raw: load(t, "p1")},
+		&PodWithMetrics{Raw: loadPod(t, "p1")},
 	}
 	rr := make([]model1.Row, 1)
 

@@ -56,9 +56,13 @@ func filterByFieldSelector(ctx context.Context, oo []runtime.Object) ([]runtime.
 	for _, o := range oo {
 		u, ok := o.(*unstructured.Unstructured)
 		if !ok {
-			// Cannot evaluate a field selector on a non-unstructured object.
-			res = append(res, o)
-			continue
+			// Field selectors need the object contents; convert typed caches.
+			m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(o)
+			if err != nil {
+				res = append(res, o)
+				continue
+			}
+			u = &unstructured.Unstructured{Object: m}
 		}
 		set := make(fields.Set, len(fsel.Requirements()))
 		for _, req := range fsel.Requirements() {

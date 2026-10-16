@@ -78,8 +78,7 @@ func podFromSelector(f Factory, ns string, sel map[string]string) (string, error
 		return "", fmt.Errorf("no matching pods for %v", sel)
 	}
 
-	var pod v1.Pod
-	err = runtime.DefaultUnstructuredConverter.FromUnstructured(oo[0].(*unstructured.Unstructured).Object, &pod)
+	pod, err := client.ToPod(oo[0])
 	if err != nil {
 		return "", err
 	}

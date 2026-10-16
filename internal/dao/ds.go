@@ -94,12 +94,12 @@ func podLogs(ctx context.Context, sel map[string]string, opts *LogOptions) ([]Lo
 
 	outs := make([]LogChan, 0, len(oo))
 	for _, o := range oo {
-		u, ok := o.(*unstructured.Unstructured)
-		if !ok {
-			return nil, fmt.Errorf("expected unstructured got %t", o)
+		pod, err := client.ToPod(o)
+		if err != nil {
+			return nil, err
 		}
 		opts = opts.Clone()
-		opts.Path = client.FQN(u.GetNamespace(), u.GetName())
+		opts.Path = client.FQN(pod.Namespace, pod.Name)
 		cc, err := po.TailLogs(ctx, opts)
 		if err != nil {
 			return nil, err

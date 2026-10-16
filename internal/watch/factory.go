@@ -13,33 +13,41 @@ import (
 	"github.com/derailed/k9s/internal/client"
 	"github.com/derailed/k9s/internal/slogs"
 	v1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	di "k8s.io/client-go/dynamic/dynamicinformer"
 	"k8s.io/client-go/informers"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/cache"
 )
 
 const (
 	defaultResync   = 10 * time.Minute
 	defaultWaitTime = 500 * time.Millisecond
+	podAPIVersion   = "v1"
+	podKind         = "Pod"
 )
 
 // Factory tracks various resource informers.
 type Factory struct {
-	factories  map[string]di.DynamicSharedInformerFactory
-	client     client.Connection
-	stopChan   chan struct{}
-	forwarders Forwarders
-	mx         sync.RWMutex
+	factories    map[string]di.DynamicSharedInformerFactory
+	podFactories map[string]informers.SharedInformerFactory
+	client       client.Connection
+	podClient    kubernetes.Interface
+	stopChan     chan struct{}
+	forwarders   Forwarders
+	mx           sync.RWMutex
 }
 
 // NewFactory returns a new informers factory.
 func NewFactory(clt client.Connection) *Factory {
 	return &Factory{
-		client:     clt,
-		factories:  make(map[string]di.DynamicSharedInformerFactory),
-		forwarders: NewForwarders(),
+		client:       clt,
+		factories:    make(map[string]di.DynamicSharedInformerFactory),
+		podFactories: make(map[string]informers.SharedInformerFactory),
+		forwarders:   NewForwarders(),
 	}
 }
 
@@ -52,6 +60,10 @@ func (f *Factory) Start(ns string) {
 	f.stopChan = make(chan struct{})
 	for ns, fac := range f.factories {
 		slog.Debug("Starting factory for ns", slogs.Namespace, ns)
+		fac.Start(f.stopChan)
+	}
+	for ns, fac := range f.podFactories {
+		slog.Debug("Starting pod factory for ns", slogs.Namespace, ns)
 		fac.Start(f.stopChan)
 	}
 }
@@ -68,6 +80,10 @@ func (f *Factory) Terminate() {
 	for k := range f.factories {
 		delete(f.factories, k)
 	}
+	for k := range f.podFactories {
+		delete(f.podFactories, k)
+	}
+	f.podClient = nil
 	f.forwarders.DeleteAll()
 }
 
@@ -157,6 +173,15 @@ func (f *Factory) WaitForCacheSync() {
 			)
 		}
 	}
+	for ns, fac := range f.podFactories {
+		for k, v := range fac.WaitForCacheSync(f.stopChan) {
+			slog.Debug("CACHE `%q Loaded %t:%s",
+				slogs.Namespace, ns,
+				slogs.ResGrpVersion, v,
+				slogs.ResKind, k,
+			)
+		}
+	}
 }
 
 // Client return the factory connection.
@@ -236,6 +261,9 @@ func (f *Factory) CanForInstance(fqn string, gvr *client.GVR, verbs []string) (i
 
 // ForResource returns an informer for a given resource.
 func (f *Factory) ForResource(ns string, gvr *client.GVR) (informers.GenericInformer, error) {
+	if gvr == client.PodGVR {
+		return f.podForResource(ns)
+	}
 	fact, err := f.ensureFactory(ns)
 	if err != nil {
 		return nil, err
@@ -255,6 +283,104 @@ func (f *Factory) ForResource(ns string, gvr *client.GVR) (informers.GenericInfo
 	fact.Start(f.stopChan)
 
 	return inf, nil
+}
+
+// podForResource returns a typed informer serving cached *v1.Pod.
+func (f *Factory) podForResource(ns string) (informers.GenericInformer, error) {
+	fact, err := f.ensurePodFactory(ns)
+	if err != nil {
+		return nil, err
+	}
+	inf := fact.Core().V1().Pods().Informer()
+	_ = inf.SetTransform(typedPodTransform)
+
+	f.mx.RLock()
+	defer f.mx.RUnlock()
+	fact.Start(f.stopChan)
+
+	return &typedInformer{informer: inf}, nil
+}
+
+func (f *Factory) ensurePodFactory(ns string) (informers.SharedInformerFactory, error) {
+	if client.IsClusterWide(ns) {
+		ns = client.BlankNamespace
+	}
+	f.mx.Lock()
+	defer f.mx.Unlock()
+	if fac, ok := f.podFactories[ns]; ok {
+		return fac, nil
+	}
+
+	cs, err := f.podDial()
+	if err != nil {
+		return nil, err
+	}
+	f.podFactories[ns] = informers.NewSharedInformerFactoryWithOptions(
+		cs,
+		defaultResync,
+		informers.WithNamespace(ns),
+	)
+
+	return f.podFactories[ns], nil
+}
+
+// podDialer lets connections override the typed pod clientset (used in tests).
+type podDialer interface {
+	PodDial() (kubernetes.Interface, error)
+}
+
+// podDial returns a typed clientset tuned for protobuf exchanges.
+func (f *Factory) podDial() (kubernetes.Interface, error) {
+	if f.podClient != nil {
+		return f.podClient, nil
+	}
+	if pd, ok := f.client.(podDialer); ok {
+		cs, err := pd.PodDial()
+		if err != nil {
+			return nil, err
+		}
+		f.podClient = cs
+
+		return cs, nil
+	}
+	cfg, err := f.client.RestConfig()
+	if err != nil {
+		return nil, err
+	}
+	cfg.ContentType = runtime.ContentTypeProtobuf
+	cfg.AcceptContentTypes = runtime.ContentTypeProtobuf + "," + runtime.ContentTypeJSON
+	cs, err := kubernetes.NewForConfig(cfg)
+	if err != nil {
+		return nil, err
+	}
+	f.podClient = cs
+
+	return cs, nil
+}
+
+// typedInformer adapts a typed informer to a generic one.
+type typedInformer struct {
+	informer cache.SharedIndexInformer
+}
+
+var _ informers.GenericInformer = (*typedInformer)(nil)
+
+func (t *typedInformer) Informer() cache.SharedIndexInformer {
+	return t.informer
+}
+
+func (t *typedInformer) Lister() cache.GenericLister {
+	return cache.NewGenericLister(t.informer.GetIndexer(), *client.PodGVR.GR())
+}
+
+// typedPodTransform trims pods for caching and restores type meta.
+func typedPodTransform(o any) (any, error) {
+	if p, ok := o.(*v1.Pod); ok {
+		p.ManagedFields = nil
+		p.TypeMeta = metav1.TypeMeta{APIVersion: podAPIVersion, Kind: podKind}
+	}
+
+	return o, nil
 }
 
 func (f *Factory) ensureFactory(ns string) (di.DynamicSharedInformerFactory, error) {
@@ -343,8 +469,8 @@ func (f *Factory) ValidatePortForwards() {
 			delete(f.forwarders, k)
 			continue
 		}
-		var pod v1.Pod
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &pod); err != nil {
+		pod, err := client.ToPod(o)
+		if err != nil {
 			continue
 		}
 		if pod.GetCreationTimestamp().Unix() > fwd.Age().Unix() {

@@ -14,7 +14,6 @@ import (
 	"github.com/derailed/k9s/internal/render"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/apimachinery/pkg/runtime"
 )
 
 // Pod represents an xray renderer.
@@ -26,12 +25,7 @@ func (p *Pod) Render(ctx context.Context, ns string, o any) error {
 	if !ok {
 		return fmt.Errorf("expected PodWithMetrics, but got %T", o)
 	}
-
-	var po v1.Pod
-	err := runtime.DefaultUnstructuredConverter.FromUnstructured(pwm.Raw.Object, &po)
-	if err != nil {
-		return err
-	}
+	po := *pwm.Raw
 
 	f, ok := ctx.Value(internal.KeyFactory).(dao.Factory)
 	if !ok {

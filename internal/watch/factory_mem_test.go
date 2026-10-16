@@ -12,33 +12,30 @@ import (
 
 	"github.com/derailed/k9s/internal/client"
 	"github.com/stretchr/testify/require"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	kruntime "k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/dynamic/fake"
+	"k8s.io/client-go/kubernetes"
+	kubefake "k8s.io/client-go/kubernetes/fake"
 )
 
 const cachePods = 2_000
 
 func BenchmarkCachePods(b *testing.B) {
-	dyn := fakeDyn(b, cachePods)
+	conn := fakeConn(b, cachePods)
 	var heap uint64
 	for b.Loop() {
-		heap += cacheHeap(b, dyn)
+		heap += cacheHeap(b, conn)
 	}
 	b.ReportMetric(float64(heap)/float64(b.N*cachePods), "heap-B/pod")
 }
 
-func cacheHeap(b *testing.B, dyn dynamic.Interface) uint64 {
-	f := NewFactory(dynConn{dyn: dyn})
+func cacheHeap(b *testing.B, conn dynConn) uint64 {
+	f := NewFactory(conn)
 	f.Start(client.BlankNamespace)
-	defer func() {
-		fac := f.FactoryFor(client.BlankNamespace)
-		f.Terminate()
-		fac.Shutdown()
-	}()
+	defer f.Terminate()
 
 	before := heapInUse()
 	oo, err := f.List(client.PodGVR, client.BlankNamespace, true, labels.Everything())
@@ -58,28 +55,30 @@ func heapInUse() uint64 {
 	return m.HeapAlloc
 }
 
-func fakeDyn(tb testing.TB, n int) dynamic.Interface {
+func fakeConn(tb testing.TB, n int) dynConn {
 	raw, err := os.ReadFile("testdata/po_managed.json")
 	require.NoError(tb, err)
-	var po unstructured.Unstructured
-	require.NoError(tb, json.Unmarshal(raw, &po.Object))
+	var po v1.Pod
+	require.NoError(tb, json.Unmarshal(raw, &po))
 
 	oo := make([]kruntime.Object, 0, n)
 	for i := range n {
 		o := po.DeepCopy()
-		o.SetName(fmt.Sprintf("p-%d", i))
+		o.Name = fmt.Sprintf("p-%d", i)
 		oo = append(oo, o)
 	}
-	kinds := map[schema.GroupVersionResource]string{client.PodGVR.GVR(): "PodList"}
+	dyn := fake.NewSimpleDynamicClient(kruntime.NewScheme())
 
-	return fake.NewSimpleDynamicClientWithCustomListKinds(kruntime.NewScheme(), kinds, oo...)
+	return dynConn{dyn: dyn, pods: kubefake.NewSimpleClientset(oo...)}
 }
 
 type dynConn struct {
 	client.Connection
-	dyn dynamic.Interface
+	dyn  dynamic.Interface
+	pods kubernetes.Interface
 }
 
-func (c dynConn) DynDial() (dynamic.Interface, error) { return c.dyn, nil }
+func (c dynConn) DynDial() (dynamic.Interface, error)    { return c.dyn, nil }
+func (c dynConn) PodDial() (kubernetes.Interface, error) { return c.pods, nil }
 
 func (dynConn) CanI(string, *client.GVR, string, []string) (bool, error) { return true, nil }

@@ -12,7 +12,6 @@ import (
 	"github.com/derailed/k9s/internal/client"
 	"github.com/derailed/k9s/internal/render"
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	mv1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
@@ -137,7 +136,6 @@ func (c *Container) fetchPod(fqn string) (*v1.Pod, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to locate pod %q: %w", fqn, err)
 	}
-	var po v1.Pod
-	err = runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &po)
-	return &po, err
+
+	return client.ToPod(o)
 }

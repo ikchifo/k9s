@@ -18,6 +18,7 @@ import (
 	"github.com/derailed/k9s/internal/slogs"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
 // customJump handles custom jumps between CRDs based on user configuration.
@@ -115,12 +116,16 @@ func fetchResourceObject(app *App, gvr *client.GVR, path string) (map[string]any
 		return nil, err
 	}
 
-	u, ok := o.(*unstructured.Unstructured)
-	if !ok {
+	o = unwrapPod(o)
+	if u, ok := o.(*unstructured.Unstructured); ok {
+		return u.Object, nil
+	}
+	m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(o)
+	if err != nil {
 		return nil, fmt.Errorf("unexpected object type: %T", o)
 	}
 
-	return u.Object, nil
+	return m, nil
 }
 
 // determineTargetNamespace determines which namespace to use for the target resource.

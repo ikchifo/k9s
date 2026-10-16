@@ -11,15 +11,13 @@ import (
 	"github.com/derailed/k9s/internal"
 	"github.com/derailed/k9s/internal/client"
 	"github.com/derailed/k9s/internal/dao"
-	"github.com/derailed/k9s/internal/render"
 	"github.com/derailed/k9s/internal/slogs"
 	"github.com/derailed/k9s/internal/ui"
 	"github.com/derailed/k9s/internal/ui/dialog"
 	"github.com/derailed/tcell/v2"
 	"github.com/go-errors/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -67,13 +65,13 @@ func (v *OwnerExtender) findOwnerFor(path string) error {
 		return err
 	}
 
-	u, ok := v.asUnstructuredObject(o)
-	if !ok {
+	acc, err := meta.Accessor(unwrapPod(o))
+	if err != nil {
 		return errors.Errorf("unsupported object type: %t", o)
 	}
 
 	ns, _ := client.Namespaced(path)
-	ownerReferences := u.GetOwnerReferences()
+	ownerReferences := acc.GetOwnerReferences()
 	if len(ownerReferences) == 1 {
 		return v.jumpOwner(ns, &ownerReferences[0])
 	} else if len(ownerReferences) > 1 {
@@ -118,15 +116,4 @@ func (v *OwnerExtender) jumpOwner(ns string, owner *metav1.OwnerReference) error
 
 func (v *OwnerExtender) defaultCtx() context.Context {
 	return context.WithValue(context.Background(), internal.KeyFactory, v.App().factory)
-}
-
-func (*OwnerExtender) asUnstructuredObject(o runtime.Object) (*unstructured.Unstructured, bool) {
-	switch v := o.(type) {
-	case *unstructured.Unstructured:
-		return v, true
-	case *render.PodWithMetrics:
-		return v.Raw, true
-	default:
-		return nil, false
-	}
 }

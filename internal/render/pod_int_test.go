@@ -781,46 +781,33 @@ func Test_diagnose(t *testing.T) {
 func Test_podRowMatchesFullConversion(t *testing.T) {
 	for _, f := range []string{"po", "po_init", "po_sidecar", "po_full", "po_evicted"} {
 		t.Run(f, func(t *testing.T) {
-			u := loadPod(t, f)
-			pwm := &PodWithMetrics{Raw: u, MX: podMX("100m", "50Mi")}
+			pod := loadPod(t, f)
+			pwm := &PodWithMetrics{Raw: pod, MX: podMX("100m", "50Mi")}
 
 			p := NewPod()
 			var got model1.Row
 			require.NoError(t, p.Render(pwm, "", &got))
 
-			spec, _, err := podSpecStatus(u)
-			require.NoError(t, err)
-			fullSpec, fullSt := fullPodSpecStatus(t, u)
-
 			var want model1.Row
-			p.newPodState(u, fullSpec, fullSt).fill(pwm, &want)
+			p.newPodState(pod).fill(pwm, &want)
 
 			assert.Equal(t, want.ID, got.ID)
 			assert.Equal(t, want.Fields, got.Fields)
-			assert.Equal(t, ExtractImages(fullSpec), ExtractImages(spec))
 		})
 	}
 }
 
-func loadPod(t *testing.T, n string) *unstructured.Unstructured {
+func loadPod(t *testing.T, n string) *v1.Pod {
 	raw, err := os.ReadFile(fmt.Sprintf("testdata/%s.json", n))
 	require.NoError(t, err)
 
 	var u unstructured.Unstructured
 	require.NoError(t, json.Unmarshal(raw, &u))
 
-	return &u
-}
+	var pod v1.Pod
+	require.NoError(t, runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &pod))
 
-// fullPodSpecStatus converts whole spec/status objects, as rows did before
-// podSpecStatus started picking keys.
-func fullPodSpecStatus(t *testing.T, u *unstructured.Unstructured) (*v1.PodSpec, *v1.PodStatus) {
-	spec := new(v1.PodSpec)
-	require.NoError(t, runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object["spec"].(map[string]any), spec))
-	var st v1.PodStatus
-	require.NoError(t, runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object["status"].(map[string]any), &st))
-
-	return spec, &st
+	return &pod
 }
 
 func podMX(cpu, mem string) *mv1beta1.PodMetrics {

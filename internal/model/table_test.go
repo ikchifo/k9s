@@ -18,6 +18,7 @@ import (
 	"github.com/derailed/k9s/internal/watch"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -127,7 +128,7 @@ func makeTableFactory() tableFactory {
 	return tableFactory{}
 }
 
-func mustLoad(n string) *unstructured.Unstructured {
+func mustLoad(n string) *v1.Pod {
 	raw, err := os.ReadFile(fmt.Sprintf("testdata/%s.json", n))
 	if err != nil {
 		panic(err)
@@ -136,5 +137,9 @@ func mustLoad(n string) *unstructured.Unstructured {
 	if err = json.Unmarshal(raw, &o); err != nil {
 		panic(err)
 	}
-	return &o
+	var pod v1.Pod
+	if err = runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &pod); err != nil {
+		panic(err)
+	}
+	return &pod
 }

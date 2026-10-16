@@ -25,8 +25,8 @@ import (
 	"github.com/derailed/k9s/internal/ui/dialog"
 	"github.com/derailed/k9s/internal/view/cmd"
 	"github.com/derailed/tcell/v2"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
@@ -391,11 +391,11 @@ func (b *Browser) nsWarpCmd(*tcell.EventKey) *tcell.EventKey {
 	if err != nil {
 		return nil
 	}
-	u, ok := o.(*unstructured.Unstructured)
-	if !ok {
+	acc, err := meta.Accessor(o)
+	if err != nil {
 		return nil
 	}
-	b.App().gotoResource(b.GVR().String()+" "+u.GetNamespace(), "", true, true)
+	b.App().gotoResource(b.GVR().String()+" "+acc.GetNamespace(), "", true, true)
 
 	return nil
 }

@@ -18,9 +18,7 @@ import (
 	"github.com/derailed/k9s/internal/watch"
 	"github.com/derailed/tcell/v2"
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/tools/portforward"
 )
 
@@ -215,8 +213,7 @@ func fetchPodPorts(f *watch.Factory, path string) (ports map[string][]v1.Contain
 		return nil, nil, err
 	}
 
-	var pod v1.Pod
-	err = runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &pod)
+	pod, err := client.ToPod(o)
 	if err != nil {
 		return nil, nil, err
 	}

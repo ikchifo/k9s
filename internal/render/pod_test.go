@@ -154,7 +154,7 @@ func TestPodColorer(t *testing.T) {
 
 func TestPodRender(t *testing.T) {
 	pom := render.PodWithMetrics{
-		Raw: load(t, "po"),
+		Raw: loadPod(t, "po"),
 		MX:  makePodMX("nginx", "100m", "50Mi"),
 	}
 
@@ -170,7 +170,7 @@ func TestPodRender(t *testing.T) {
 
 func BenchmarkPodRender(b *testing.B) {
 	pom := render.PodWithMetrics{
-		Raw: load(b, "po"),
+		Raw: loadPod(b, "po"),
 		MX:  makePodMX("nginx", "10m", "10Mi"),
 	}
 	po := render.NewPod()
@@ -185,7 +185,7 @@ func BenchmarkPodRender(b *testing.B) {
 
 func TestPodInitRender(t *testing.T) {
 	pom := render.PodWithMetrics{
-		Raw: load(t, "po_init"),
+		Raw: loadPod(t, "po_init"),
 		MX:  makePodMX("nginx", "10m", "10Mi"),
 	}
 
@@ -201,7 +201,7 @@ func TestPodInitRender(t *testing.T) {
 
 func TestPodSidecarRender(t *testing.T) {
 	pom := render.PodWithMetrics{
-		Raw: load(t, "po_sidecar"),
+		Raw: loadPod(t, "po_sidecar"),
 		MX:  makePodMX("sleep", "100m", "40Mi"),
 	}
 

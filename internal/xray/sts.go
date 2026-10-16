@@ -43,9 +43,9 @@ func (s *StatefulSet) Render(ctx context.Context, ns string, o any) error {
 	ctx = context.WithValue(ctx, KeyParent, root)
 	var re Pod
 	for _, o := range oo {
-		p, ok := o.(*unstructured.Unstructured)
-		if !ok {
-			return fmt.Errorf("expecting *Unstructured but got %T", o)
+		p, err := client.ToPod(o)
+		if err != nil {
+			return err
 		}
 		if err := re.Render(ctx, ns, &render.PodWithMetrics{Raw: p}); err != nil {
 			return err

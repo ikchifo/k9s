@@ -13,11 +13,14 @@ import (
 	"github.com/derailed/k9s/internal/watch"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/dynamic/fake"
+	"k8s.io/client-go/kubernetes"
+	kubefake "k8s.io/client-go/kubernetes/fake"
 )
 
 func TestResourceToYAMLManagedFields(t *testing.T) {
@@ -29,7 +32,10 @@ func TestResourceToYAMLManagedFields(t *testing.T) {
 
 	kinds := map[schema.GroupVersionResource]string{client.PodGVR.GVR(): "PodList"}
 	dyn := fake.NewSimpleDynamicClientWithCustomListKinds(runtime.NewScheme(), kinds, &po)
-	f := watch.NewFactory(dynConn{conn: makeConn(), dyn: dyn})
+	var pod v1.Pod
+	require.NoError(t, json.Unmarshal(raw, &pod))
+	pcs := kubefake.NewSimpleClientset(&pod)
+	f := watch.NewFactory(dynConn{conn: makeConn(), dyn: dyn, pods: pcs})
 	f.Start(client.BlankNamespace)
 	t.Cleanup(f.Terminate)
 
@@ -39,7 +45,7 @@ func TestResourceToYAMLManagedFields(t *testing.T) {
 
 	cached, err := r.Get(t.Context(), path)
 	require.NoError(t, err)
-	assert.Empty(t, cached.(*unstructured.Unstructured).GetManagedFields())
+	assert.Empty(t, cached.(*v1.Pod).ManagedFields)
 
 	hidden, err := r.ToYAML(path, false)
 	require.NoError(t, err)
@@ -53,7 +59,9 @@ func TestResourceToYAMLManagedFields(t *testing.T) {
 
 type dynConn struct {
 	*conn
-	dyn dynamic.Interface
+	dyn  dynamic.Interface
+	pods kubernetes.Interface
 }
 
-func (c dynConn) DynDial() (dynamic.Interface, error) { return c.dyn, nil }
+func (c dynConn) DynDial() (dynamic.Interface, error)    { return c.dyn, nil }
+func (c dynConn) PodDial() (kubernetes.Interface, error) { return c.pods, nil }

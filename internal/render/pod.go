@@ -166,17 +166,18 @@ func (p *Pod) RenderCached(o any, _ string, prev any, row *model1.Row) (any, err
 	}
 	s, ok := prev.(*podState)
 	if !ok || !s.matches(pwm.Raw) {
-		spec, st, err := podSpecStatus(pwm.Raw)
-		if err != nil {
-			return nil, err
-		}
-		s = p.newPodState(pwm.Raw, spec, st)
+		s = p.newPodState(pwm.Raw)
 	}
 	s.fill(pwm, row)
 	if p.specs.isEmpty() {
 		return s, nil
 	}
-	cols, err := p.specs.realize(pwm.Raw.DeepCopy(), defaultPodHeader, row)
+
+	u, err := runtime.DefaultUnstructuredConverter.ToUnstructured(pwm.Raw)
+	if err != nil {
+		return s, err
+	}
+	cols, err := p.specs.realize(&unstructured.Unstructured{Object: u}, defaultPodHeader, row)
 	cols.hydrateRow(row)
 
 	return s, err
@@ -193,12 +194,13 @@ type podState struct {
 	created     metav1.Time
 }
 
-func (s *podState) matches(u *unstructured.Unstructured) bool {
-	return s.rv != "" && s.rv == u.GetResourceVersion() && s.uid == string(u.GetUID())
+func (s *podState) matches(pod *v1.Pod) bool {
+	return s.rv != "" && s.rv == pod.GetResourceVersion() && s.uid == string(pod.GetUID())
 }
 
-func (p *Pod) newPodState(u *unstructured.Unstructured, spec *v1.PodSpec, st *v1.PodStatus) *podState {
-	dt := u.GetDeletionTimestamp()
+func (p *Pod) newPodState(pod *v1.Pod) *podState {
+	spec, st := &pod.Spec, &pod.Status
+	dt := pod.GetDeletionTimestamp()
 	cReady, _, cRestarts, lastRestart := p.ContainerStats(st.ContainerStatuses)
 
 	iReady, iTotal, iRestarts := p.initContainerStats(spec.InitContainers, st.InitContainerStatuses)
@@ -209,19 +211,19 @@ func (p *Pod) newPodState(u *unstructured.Unstructured, spec *v1.PodSpec, st *v1
 
 	_, r := gatherPodMX(spec, nil)
 	phase := p.Phase(dt, spec, st)
-	labels := u.GetLabels()
+	labels := pod.GetLabels()
 
 	return &podState{
-		uid:         string(u.GetUID()),
-		rv:          u.GetResourceVersion(),
+		uid:         string(pod.GetUID()),
+		rv:          pod.GetResourceVersion(),
 		labels:      labels,
 		images:      ExtractImages(spec),
 		res:         r,
 		lastRestart: lastRestart,
-		created:     u.GetCreationTimestamp(),
+		created:     pod.GetCreationTimestamp(),
 		fields: model1.Fields{
-			u.GetNamespace(),
-			u.GetName(),
+			pod.GetNamespace(),
+			pod.GetName(),
 			"",
 			"●",
 			strconv.Itoa(cReady) + "/" + strconv.Itoa(allCounts),
@@ -280,12 +282,9 @@ func (p *Pod) Healthy(_ context.Context, o any) error {
 		slog.Error("Expected *PodWithMetrics", slogs.Type, fmt.Sprintf("%T", o))
 		return nil
 	}
-	spec, st, err := podSpecStatus(pwm.Raw)
-	if err != nil {
-		slog.Error("Failed to convert unstructured to pod spec/status", slogs.Error, err)
-		return nil
-	}
-	dt := pwm.Raw.GetDeletionTimestamp()
+	pod := pwm.Raw
+	spec, st := &pod.Spec, &pod.Status
+	dt := pod.GetDeletionTimestamp()
 	phase := p.Phase(dt, spec, st)
 	cr, _, _, _ := p.ContainerStats(st.ContainerStatuses)
 	ct := len(st.ContainerStatuses)
@@ -353,7 +352,7 @@ func asReadinessGate(spec *v1.PodSpec, st *v1.PodStatus) string {
 
 // PodWithMetrics represents a pod and its metrics.
 type PodWithMetrics struct {
-	Raw *unstructured.Unstructured
+	Raw *v1.Pod
 	MX  *mv1beta1.PodMetrics
 }
 
@@ -719,61 +718,6 @@ func initContainerStatus(pod *v1.Pod) (initializing bool, reason string) {
 	}
 
 	return false, ""
-}
-
-var (
-	podSpecKeys      = []string{"containers", "initContainers", "nodeName", "readinessGates", "serviceAccountName"}
-	podContainerKeys = []string{"name", "image", "resources", "restartPolicy"}
-	podStatusKeys    = []string{
-		"conditions", "containerStatuses", "initContainerStatuses",
-		"nominatedNodeName", "phase", "podIP", "qosClass", "reason",
-	}
-)
-
-// podSpecStatus converts only the pod fields the renderer reads.
-// Converting the full spec and status is the bulk of a refresh on big clusters.
-func podSpecStatus(u *unstructured.Unstructured) (*v1.PodSpec, *v1.PodStatus, error) {
-	rawSpec, _ := u.Object["spec"].(map[string]any)
-	spec := pick(rawSpec, podSpecKeys)
-	for _, k := range []string{"containers", "initContainers"} {
-		if cc, ok := spec[k].([]any); ok {
-			spec[k] = pickAll(cc, podContainerKeys)
-		}
-	}
-
-	var s v1.PodSpec
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(spec, &s); err != nil {
-		return nil, nil, err
-	}
-	rawStatus, _ := u.Object["status"].(map[string]any)
-	var st v1.PodStatus
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(pick(rawStatus, podStatusKeys), &st); err != nil {
-		return nil, nil, err
-	}
-
-	return &s, &st, nil
-}
-
-func pick(m map[string]any, keys []string) map[string]any {
-	out := make(map[string]any, len(keys))
-	for _, k := range keys {
-		if v, ok := m[k]; ok {
-			out[k] = v
-		}
-	}
-
-	return out
-}
-
-func pickAll(ii []any, keys []string) []any {
-	out := make([]any, 0, len(ii))
-	for _, i := range ii {
-		if m, ok := i.(map[string]any); ok {
-			out = append(out, pick(m, keys))
-		}
-	}
-
-	return out
 }
 
 func isSideCarContainer(p *v1.ContainerRestartPolicy) bool {

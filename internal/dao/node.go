@@ -215,15 +215,11 @@ func (n *Node) List(ctx context.Context, ns string) ([]runtime.Object, error) {
 func (*Node) CountPods(oo []runtime.Object, nodeName string) (int, error) {
 	var count int
 	for _, o := range oo {
-		u, ok := o.(*unstructured.Unstructured)
-		if !ok {
-			return count, fmt.Errorf("expecting *Unstructured but got `%T", o)
+		pod, err := client.ToPod(o)
+		if err != nil {
+			return count, err
 		}
-		spec, ok := u.Object["spec"].(map[string]any)
-		if !ok {
-			return count, fmt.Errorf("expecting spec interface map but got `%T", o)
-		}
-		if node, ok := spec["nodeName"]; ok && node == nodeName {
+		if pod.Spec.NodeName == nodeName {
 			count++
 		}
 	}
@@ -240,8 +236,8 @@ func (n *Node) GetPods(nodeName string) ([]*v1.Pod, error) {
 
 	pp := make([]*v1.Pod, 0, len(oo))
 	for _, o := range oo {
-		po := new(v1.Pod)
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, po); err != nil {
+		po, err := client.ToPod(o)
+		if err != nil {
 			return nil, err
 		}
 		if po.Spec.NodeName == nodeName {

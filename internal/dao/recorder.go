@@ -12,9 +12,7 @@ import (
 	"github.com/derailed/k9s/internal/client"
 	"github.com/derailed/k9s/internal/slogs"
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/cache"
 )
 
@@ -288,12 +286,11 @@ func FetchPods(_ context.Context, f Factory, ns string) (*v1.PodList, error) {
 	}
 	pp := make([]v1.Pod, 0, len(oo))
 	for _, o := range oo {
-		var pod v1.Pod
-		err = runtime.DefaultUnstructuredConverter.FromUnstructured(o.(*unstructured.Unstructured).Object, &pod)
+		pod, err := client.ToPod(o)
 		if err != nil {
 			return nil, err
 		}
-		pp = append(pp, pod)
+		pp = append(pp, *pod)
 	}
 
 	return &v1.PodList{Items: pp}, nil

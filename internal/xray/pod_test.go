@@ -45,7 +45,7 @@ func TestPodRender(t *testing.T) {
 	for k := range uu {
 		u := uu[k]
 		t.Run(k, func(t *testing.T) {
-			o := load(t, u.file)
+			o := loadPod(t, u.file)
 			root := xray.NewTreeNode(client.PodGVR, "pods")
 			ctx := context.WithValue(context.Background(), xray.KeyParent, root)
 			ctx = context.WithValue(ctx, internal.KeyFactory, makeFactory())

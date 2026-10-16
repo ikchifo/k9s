@@ -18,6 +18,7 @@ import (
 	"github.com/derailed/k9s/internal/watch"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -63,7 +64,7 @@ func TestTableGet(t *testing.T) {
 	row, err := ta.Get(ctx, "fred")
 	require.NoError(t, err)
 	assert.NotNil(t, row)
-	assert.Len(t, row.(*render.PodWithMetrics).Raw.Object, 5)
+	assert.Equal(t, "nginx-7fb78fb6d8-2w75j", row.(*render.PodWithMetrics).Raw.Name)
 }
 
 func TestTableMeta(t *testing.T) {
@@ -97,7 +98,7 @@ func TestTableMeta(t *testing.T) {
 // ----------------------------------------------------------------------------
 // Helpers...
 
-func mustLoad(n string) *unstructured.Unstructured {
+func mustLoad(n string) *v1.Pod {
 	raw, err := os.ReadFile(fmt.Sprintf("testdata/%s.json", n))
 	if err != nil {
 		panic(err)
@@ -106,16 +107,22 @@ func mustLoad(n string) *unstructured.Unstructured {
 	if err = json.Unmarshal(raw, &o); err != nil {
 		panic(err)
 	}
-	return &o
+	var pod v1.Pod
+	if err = runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &pod); err != nil {
+		panic(err)
+	}
+	return &pod
 }
 
-func load(t *testing.T, n string) *unstructured.Unstructured {
+func load(t *testing.T, n string) *v1.Pod {
 	raw, err := os.ReadFile(fmt.Sprintf("testdata/%s.json", n))
 	require.NoError(t, err)
 	var o unstructured.Unstructured
 	err = json.Unmarshal(raw, &o)
 	require.NoError(t, err)
-	return &o
+	var pod v1.Pod
+	require.NoError(t, runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &pod))
+	return &pod
 }
 
 // ----------------------------------------------------------------------------

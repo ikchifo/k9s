@@ -22,7 +22,7 @@ import (
 func BenchmarkPodRenderTick(b *testing.B) {
 	const count = 20_000
 
-	base := load(b, "po_full")
+	base := loadPod(b, "po_full")
 	oo := make([]runtime.Object, count)
 	for i := range oo {
 		u := base.DeepCopy()
@@ -45,7 +45,7 @@ func BenchmarkPodRenderTick(b *testing.B) {
 func TestPodRenderTick(t *testing.T) {
 	po := render.NewPod()
 	td := model1.NewTableData(client.PodGVR)
-	pod := load(t, "po_full")
+	pod := loadPod(t, "po_full")
 	pod.SetCreationTimestamp(metav1.NewTime(time.Now().Add(-3 * time.Second)))
 	pwm := &render.PodWithMetrics{Raw: pod, MX: makePodMX(pod.GetName(), "10m", "10Mi")}
 

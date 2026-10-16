@@ -27,6 +27,7 @@ import (
 	"github.com/sahilm/fuzzy"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -262,6 +263,14 @@ func decorateCpuMemHeaderRows(app *App, data *model1.TableData) {
 			return true
 		})
 	}
+}
+
+func unwrapPod(o runtime.Object) runtime.Object {
+	if pwm, ok := o.(*render.PodWithMetrics); ok {
+		return pwm.Raw
+	}
+
+	return o
 }
 
 func matchTag(i int, s string) string {
