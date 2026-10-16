@@ -107,12 +107,18 @@ func (c *ClusterInfo) fetchK9sLatestRev() string {
 		return rev.(string)
 	}
 
+	if rev, ok := loadRevCache(); ok {
+		c.cache.Add(k9sLatestRevKey, rev, cacheExpiry)
+		return rev
+	}
+
 	latestRev, err := fetchLatestRev()
 	if err != nil {
 		slog.Warn("k9s latest rev fetch failed", slogs.Error, err)
-	} else {
-		c.cache.Add(k9sLatestRevKey, latestRev, cacheExpiry)
+		return latestRev
 	}
+	c.cache.Add(k9sLatestRevKey, latestRev, cacheExpiry)
+	saveRevCache(latestRev)
 
 	return latestRev
 }
@@ -143,6 +149,22 @@ func (c *ClusterInfo) Refresh() {
 
 func (c *ClusterInfo) refresh() {
 	data := NewClusterMeta()
+
+	// Version, metrics, and latest-rev are independent fetches; run them
+	// concurrently so a slow GitHub probe can't delay the header draw.
+	var (
+		mx        client.ClusterMetrics
+		wg        sync.WaitGroup
+		latestRev string
+	)
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		if !c.cfg.SkipLatestRevCheck {
+			latestRev = c.fetchK9sLatestRev()
+		}
+	}()
+
 	if c.factory.Client().ConnectionOK() {
 		data.Context = c.cluster.ContextName()
 		data.Cluster = c.cluster.ClusterName()
@@ -150,11 +172,6 @@ func (c *ClusterInfo) refresh() {
 		ctx, cancel := context.WithTimeout(context.Background(), c.cluster.factory.Client().Config().CallTimeout())
 		defer cancel()
 
-		// Version and metrics are independent fetches; run them concurrently.
-		var (
-			mx client.ClusterMetrics
-			wg sync.WaitGroup
-		)
 		wg.Add(2)
 		go func() {
 			defer wg.Done()
@@ -166,15 +183,11 @@ func (c *ClusterInfo) refresh() {
 				data.Cpu, data.Mem, data.Ephemeral = mx.PercCPU, mx.PercMEM, mx.PercEphemeral
 			}
 		}()
-		wg.Wait()
 	}
+	wg.Wait()
+
 	data.K9sVer = c.version
 	v1 := NewSemVer(data.K9sVer)
-
-	var latestRev string
-	if !c.cfg.SkipLatestRevCheck {
-		latestRev = c.fetchK9sLatestRev()
-	}
 	v2 := NewSemVer(latestRev)
 
 	data.K9sVer, data.K9sLatest = v1.String(), v2.String()
