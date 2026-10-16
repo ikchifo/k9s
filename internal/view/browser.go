@@ -44,6 +44,7 @@ type Browser struct {
 	updating      bool
 	actionsLoaded atomic.Bool
 	firstView     atomic.Int32
+	spinner       *loadSpinner
 }
 
 // NewBrowser returns a new browser.
@@ -173,6 +174,7 @@ func (b *Browser) Start() {
 	}
 
 	b.Stop()
+	b.startSpinner()
 	b.firstView.Store(0) // Reset first view counter on each start
 	b.actionsLoaded.Store(false)
 	b.GetModel().AddListener(b)
@@ -196,9 +198,38 @@ func (b *Browser) Stop() {
 		b.cancelFn = nil
 	}
 	b.mx.Unlock()
+	b.endSpinner()
 	b.GetModel().RemoveListener(b)
 	b.CmdBuff().RemoveListener(b)
 	b.Table.Stop()
+}
+
+func (b *Browser) startSpinner() {
+	if !b.app.IsRunning() {
+		return
+	}
+
+	b.mx.Lock()
+	defer b.mx.Unlock()
+	b.spinner = newLoadSpinner(b.app, loadMsg(b.GVR(), b.GetModel().GetNamespace()))
+}
+
+func (b *Browser) hasSpinner() bool {
+	b.mx.RLock()
+	defer b.mx.RUnlock()
+
+	return b.spinner != nil
+}
+
+func (b *Browser) endSpinner() {
+	b.mx.Lock()
+	s := b.spinner
+	b.spinner = nil
+	b.mx.Unlock()
+
+	if s != nil {
+		s.end()
+	}
 }
 
 func (b *Browser) SetFilter(s string, wipe bool) {
@@ -304,6 +335,7 @@ func (b *Browser) TableNoData(mdata *model1.TableData) {
 	b.mx.RUnlock()
 
 	if !b.app.ConOK() || cancel == nil || !b.app.IsRunning() {
+		b.endSpinner()
 		return
 	}
 	// Skip warning on first view (likely during initialization)
@@ -317,7 +349,11 @@ func (b *Browser) TableNoData(mdata *model1.TableData) {
 	if synced, err := b.app.factory.HasSynced(b.GVR(), b.GetNamespace()); !synced {
 		b.app.QueueUpdateDraw(func() {
 			if err != nil {
+				b.endSpinner()
 				b.app.Flash().Warnf("Unable to sync %s: %s", b.GVR(), err)
+				return
+			}
+			if b.hasSpinner() {
 				return
 			}
 			b.app.Flash().Infof("Synchronizing %s in %q namespace...", b.GVR(), client.PrintNamespace(b.GetNamespace()))
@@ -327,6 +363,7 @@ func (b *Browser) TableNoData(mdata *model1.TableData) {
 
 	cdata := b.Update(mdata, b.app.Conn().HasMetrics())
 	b.app.QueueUpdateDraw(func() {
+		b.endSpinner()
 		if b.getUpdating() {
 			return
 		}
@@ -353,6 +390,7 @@ func (b *Browser) TableDataChanged(mdata *model1.TableData) {
 
 	cdata := b.Update(mdata, b.app.Conn().HasMetrics())
 	b.app.QueueUpdateDraw(func() {
+		b.endSpinner()
 		if b.getUpdating() {
 			return
 		}
@@ -373,6 +411,7 @@ func (b *Browser) TableDataChanged(mdata *model1.TableData) {
 // TableLoadFailed notifies view something went south.
 func (b *Browser) TableLoadFailed(err error) {
 	b.app.QueueUpdateDraw(func() {
+		b.endSpinner()
 		b.app.Flash().Err(err)
 		b.App().ClearStatus(false)
 	})
