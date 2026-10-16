@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -31,6 +32,18 @@ const (
 	// cannot be confirmed as kubelet is unresponsive on the node it is (was) running.
 	NodeUnreachablePodReason = "NodeLost" // k8s.io/kubernetes/pkg/util/node.NodeUnreachablePodReason
 	vulIdx                   = 2
+)
+
+// Pod columns that do not depend on the pod object alone.
+const (
+	podLastRestartIdx = 7
+	podCPUIdx         = 8
+	podCPUReqIdx      = 10
+	podCPULimIdx      = 11
+	podMEMIdx         = 12
+	podMEMReqIdx      = 14
+	podMEMLimIdx      = 15
+	podAgeIdx         = 25
 )
 
 const (
@@ -129,35 +142,63 @@ func (p *Pod) Header(string) model1.Header {
 }
 
 // Render renders a K8s resource to screen.
-func (p *Pod) Render(o any, _ string, row *model1.Row) error {
-	pwm, ok := o.(*PodWithMetrics)
-	if !ok {
-		return fmt.Errorf("expected PodWithMetrics, but got %T", o)
-	}
-	if err := p.defaultRow(pwm, row); err != nil {
-		return err
-	}
-	if p.specs.isEmpty() {
-		return nil
-	}
-	cols, err := p.specs.realize(pwm.Raw.DeepCopy(), defaultPodHeader, row)
-	cols.hydrateRow(row)
+func (p *Pod) Render(o any, ns string, row *model1.Row) error {
+	_, err := p.RenderCached(o, ns, nil, row)
 
 	return err
 }
 
-func (p *Pod) defaultRow(pwm *PodWithMetrics, row *model1.Row) error {
-	spec, st, err := podSpecStatus(pwm.Raw)
-	if err != nil {
-		return err
+// RowKey identifies a pod across refreshes.
+func (*Pod) RowKey(o any) string {
+	pwm, ok := o.(*PodWithMetrics)
+	if !ok {
+		return ""
 	}
 
-	return p.podRow(pwm, spec, st, row)
+	return client.FQN(pwm.Raw.GetNamespace(), pwm.Raw.GetName())
 }
 
-// podRow renders a row from an already converted spec and status.
-func (p *Pod) podRow(pwm *PodWithMetrics, spec *v1.PodSpec, st *v1.PodStatus, row *model1.Row) error {
-	dt := pwm.Raw.GetDeletionTimestamp()
+// RenderCached renders a pod, reusing the previous state when the pod is unchanged.
+func (p *Pod) RenderCached(o any, _ string, prev any, row *model1.Row) (any, error) {
+	pwm, ok := o.(*PodWithMetrics)
+	if !ok {
+		return nil, fmt.Errorf("expected PodWithMetrics, but got %T", o)
+	}
+	s, ok := prev.(*podState)
+	if !ok || !s.matches(pwm.Raw) {
+		spec, st, err := podSpecStatus(pwm.Raw)
+		if err != nil {
+			return nil, err
+		}
+		s = p.newPodState(pwm.Raw, spec, st)
+	}
+	s.fill(pwm, row)
+	if p.specs.isEmpty() {
+		return s, nil
+	}
+	cols, err := p.specs.realize(pwm.Raw.DeepCopy(), defaultPodHeader, row)
+	cols.hydrateRow(row)
+
+	return s, err
+}
+
+// podState holds the pod columns that only change with the pod itself.
+type podState struct {
+	uid, rv     string
+	fields      model1.Fields
+	labels      map[string]string
+	images      []string
+	res         metric
+	lastRestart metav1.Time
+	created     metav1.Time
+}
+
+func (s *podState) matches(u *unstructured.Unstructured) bool {
+	return s.rv != "" && s.rv == u.GetResourceVersion() && s.uid == string(u.GetUID())
+}
+
+func (p *Pod) newPodState(u *unstructured.Unstructured, spec *v1.PodSpec, st *v1.PodStatus) *podState {
+	dt := u.GetDeletionTimestamp()
 	cReady, _, cRestarts, lastRestart := p.ContainerStats(st.ContainerStatuses)
 
 	iReady, iTotal, iRestarts := p.initContainerStats(spec.InitContainers, st.InitContainerStatuses)
@@ -166,46 +207,70 @@ func (p *Pod) podRow(pwm *PodWithMetrics, spec *v1.PodSpec, st *v1.PodStatus, ro
 	rgr, rgt := p.readinessGateStats(spec, st)
 	ready := hasPodReadyCondition(st.Conditions)
 
-	var ccmx []mv1beta1.ContainerMetrics
-	if pwm.MX != nil {
-		ccmx = pwm.MX.Containers
-	}
-	c, r := gatherPodMX(spec, ccmx)
+	_, r := gatherPodMX(spec, nil)
 	phase := p.Phase(dt, spec, st)
+	labels := u.GetLabels()
 
-	ns, n := pwm.Raw.GetNamespace(), pwm.Raw.GetName()
+	return &podState{
+		uid:         string(u.GetUID()),
+		rv:          u.GetResourceVersion(),
+		labels:      labels,
+		images:      ExtractImages(spec),
+		res:         r,
+		lastRestart: lastRestart,
+		created:     u.GetCreationTimestamp(),
+		fields: model1.Fields{
+			u.GetNamespace(),
+			u.GetName(),
+			"",
+			"●",
+			strconv.Itoa(cReady) + "/" + strconv.Itoa(allCounts),
+			phase,
+			strconv.Itoa(cRestarts + iRestarts),
+			"",
+			"",
+			toMc(r.cpu) + ":" + toMc(r.lcpu),
+			"",
+			"",
+			"",
+			toMi(r.mem) + ":" + toMi(r.lmem),
+			"",
+			"",
+			toMc(r.gpu) + ":" + toMc(r.lgpu),
+			na(st.PodIP),
+			na(spec.NodeName),
+			na(spec.ServiceAccountName),
+			asNominated(st.NominatedNodeName),
+			asReadinessGate(spec, st),
+			p.mapQOS(st.QOSClass),
+			mapToStr(labels),
+			AsStatus(p.diagnose(phase, cReady, allCounts, ready, rgr, rgt)),
+			"",
+		},
+	}
+}
 
-	row.ID = client.FQN(ns, n)
-	row.Fields = model1.Fields{
-		ns,
-		n,
-		computeVulScore(ns, pwm.Raw.GetLabels(), spec),
-		"●",
-		strconv.Itoa(cReady) + "/" + strconv.Itoa(allCounts),
-		phase,
-		strconv.Itoa(cRestarts + iRestarts),
-		ToAge(lastRestart),
-		toMc(c.cpu),
-		toMc(r.cpu) + ":" + toMc(r.lcpu),
-		client.ToPercentageStr(c.cpu, r.cpu),
-		client.ToPercentageStr(c.cpu, r.lcpu),
-		toMi(c.mem),
-		toMi(r.mem) + ":" + toMi(r.lmem),
-		client.ToPercentageStr(c.mem, r.mem),
-		client.ToPercentageStr(c.mem, r.lmem),
-		toMc(r.gpu) + ":" + toMc(r.lgpu),
-		na(st.PodIP),
-		na(spec.NodeName),
-		na(spec.ServiceAccountName),
-		asNominated(st.NominatedNodeName),
-		asReadinessGate(spec, st),
-		p.mapQOS(st.QOSClass),
-		mapToStr(pwm.Raw.GetLabels()),
-		AsStatus(p.diagnose(phase, cReady, allCounts, ready, rgr, rgt)),
-		ToAge(pwm.Raw.GetCreationTimestamp()),
+// fill renders the row, recomputing the columns that depend on time, metrics or scans.
+func (s *podState) fill(pwm *PodWithMetrics, row *model1.Row) {
+	var c metric
+	if pwm.MX != nil {
+		ccpu, cmem := currentRes(pwm.MX.Containers)
+		c.cpu, c.mem = ccpu.MilliValue(), cmem.Value()
 	}
 
-	return nil
+	ff := slices.Clone(s.fields)
+	ff[vulIdx] = scoreImages(ff[0], s.labels, s.images)
+	ff[podLastRestartIdx] = ToAge(s.lastRestart)
+	ff[podCPUIdx] = toMc(c.cpu)
+	ff[podCPUReqIdx] = client.ToPercentageStr(c.cpu, s.res.cpu)
+	ff[podCPULimIdx] = client.ToPercentageStr(c.cpu, s.res.lcpu)
+	ff[podMEMIdx] = toMi(c.mem)
+	ff[podMEMReqIdx] = client.ToPercentageStr(c.mem, s.res.mem)
+	ff[podMEMLimIdx] = client.ToPercentageStr(c.mem, s.res.lmem)
+	ff[podAgeIdx] = ToAge(s.created)
+
+	row.ID = client.FQN(ff[0], ff[1])
+	row.Fields = ff
 }
 
 // Healthy checks component health.

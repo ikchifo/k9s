@@ -66,6 +66,26 @@ func Hydrate(ns string, oo []k8sruntime.Object, rr Rows, re Renderer) error {
 	})
 }
 
+func hydrateCached(ns string, oo []k8sruntime.Object, rr Rows, re CachedRenderer, prev map[string]any) (map[string]any, error) {
+	kk, ss := make([]string, len(oo)), make([]any, len(oo))
+	err := parallelRender(len(oo), func(i int) error {
+		var err error
+		kk[i] = re.RowKey(oo[i])
+		ss[i], err = re.RenderCached(oo[i], ns, prev[kk[i]], &rr[i])
+
+		return handleRenderErr(err)
+	})
+
+	next := make(map[string]any, len(oo))
+	for i, k := range kk {
+		if ss[i] != nil {
+			next[k] = ss[i]
+		}
+	}
+
+	return next, err
+}
+
 func GenericHydrate(ns string, table *metav1.Table, rr Rows, re Renderer) error {
 	gr, ok := re.(Generic)
 	if !ok {

@@ -35,10 +35,13 @@ func ExtractImages(spec *v1.PodSpec) []string {
 }
 
 func computeVulScore(ns string, lbls map[string]string, spec *v1.PodSpec) string {
+	return scoreImages(ns, lbls, ExtractImages(spec))
+}
+
+func scoreImages(ns string, lbls map[string]string, ii []string) string {
 	if vul.ImgScanner == nil || !vul.ImgScanner.IsInitialized() || vul.ImgScanner.ShouldExcludes(ns, lbls) {
 		return NAValue
 	}
-	ii := ExtractImages(spec)
 	vul.ImgScanner.Enqueue(context.Background(), ii...)
 	sc := vul.ImgScanner.Score(ii...)
 

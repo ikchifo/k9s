@@ -52,6 +52,7 @@ type TableData struct {
 	rowEvents *RowEvents
 	namespace string
 	gvr       *client.GVR
+	states    map[string]any
 	mx        sync.RWMutex
 }
 
@@ -337,7 +338,7 @@ func (t *TableData) Render(_ context.Context, r Renderer, oo []runtime.Object) e
 			}
 		} else {
 			rows = make(Rows, len(oo))
-			if err := Hydrate(t.namespace, oo, rows, r); err != nil {
+			if err := t.hydrate(oo, rows, r); err != nil {
 				return err
 			}
 		}
@@ -350,6 +351,26 @@ func (t *TableData) Render(_ context.Context, r Renderer, oo []runtime.Object) e
 	}
 
 	return nil
+}
+
+// hydrate renders rows, reusing the previous refresh state when the renderer supports it.
+func (t *TableData) hydrate(oo []runtime.Object, rows Rows, r Renderer) error {
+	cr, ok := r.(CachedRenderer)
+	if !ok {
+		return Hydrate(t.namespace, oo, rows, r)
+	}
+
+	t.mx.RLock()
+	prev := t.states
+	t.mx.RUnlock()
+
+	next, err := hydrateCached(t.namespace, oo, rows, cr, prev)
+
+	t.mx.Lock()
+	t.states = next
+	t.mx.Unlock()
+
+	return err
 }
 
 // Empty checks if there are no entries.

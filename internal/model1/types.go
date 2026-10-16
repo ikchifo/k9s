@@ -57,6 +57,15 @@ type Renderer interface {
 	Healthy(ctx context.Context, o any) error
 }
 
+// CachedRenderer renders rows reusing state kept from the previous refresh.
+type CachedRenderer interface {
+	// RowKey identifies an object across refreshes.
+	RowKey(o any) string
+
+	// RenderCached renders o given the state returned for it on the previous refresh.
+	RenderCached(o any, ns string, prev any, row *Row) (any, error)
+}
+
 // Generic represents a generic resource.
 type Generic interface {
 	// SetTable sets up the resource tabular definition.

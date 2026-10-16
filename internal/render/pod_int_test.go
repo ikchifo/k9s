@@ -793,7 +793,7 @@ func Test_podRowMatchesFullConversion(t *testing.T) {
 			fullSpec, fullSt := fullPodSpecStatus(t, u)
 
 			var want model1.Row
-			require.NoError(t, p.podRow(pwm, fullSpec, fullSt, &want))
+			p.newPodState(u, fullSpec, fullSt).fill(pwm, &want)
 
 			assert.Equal(t, want.ID, got.ID)
 			assert.Equal(t, want.Fields, got.Fields)
