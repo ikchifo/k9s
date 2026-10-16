@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log/slog"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	backoff "github.com/cenkalti/backoff/v4"
@@ -42,7 +41,7 @@ type Table struct {
 	gvr           *client.GVR
 	data          *model1.TableData
 	listeners     []TableListener
-	inUpdate      int32
+	updateMx      sync.Mutex
 	refreshRate   time.Duration
 	instance      string
 	labelSelector labels.Selector
@@ -119,12 +118,43 @@ func (t *Table) RemoveListener(l TableListener) {
 
 // Watch initiates model updates.
 func (t *Table) Watch(ctx context.Context) error {
+	synced := t.syncedChan(ctx)
 	if err := t.refresh(ctx); err != nil {
 		return err
 	}
-	go t.updater(ctx)
+	go t.updater(ctx, synced)
 
 	return nil
+}
+
+// syncedChan returns a channel closed once the resource informer is synced,
+// or nil when there is nothing to wait for.
+func (t *Table) syncedChan(ctx context.Context) <-chan struct{} {
+	if t.instance != "" {
+		return nil
+	}
+	if _, ok := resourceMeta(t.gvr).DAO.(*dao.Table); ok {
+		return nil
+	}
+	meta, err := dao.MetaAccess.MetaFor(t.gvr)
+	if err != nil || !dao.IsK8sMeta(meta) {
+		return nil
+	}
+	factory, ok := ctx.Value(internal.KeyFactory).(dao.Factory)
+	if !ok {
+		return nil
+	}
+
+	ns := client.CleanseNamespace(t.data.GetNamespace())
+	if client.IsClusterScoped(ns) {
+		ns = client.BlankNamespace
+	}
+	inf, err := factory.CanForResource(ns, t.gvr, client.ListAccess)
+	if err != nil || inf == nil || inf.Informer().HasSynced() {
+		return nil
+	}
+
+	return inf.Informer().HasSyncedChecker().Done()
 }
 
 // Refresh updates the table content.
@@ -200,7 +230,7 @@ func (t *Table) Peek() *model1.TableData {
 	return t.data.Clone()
 }
 
-func (t *Table) updater(ctx context.Context) {
+func (t *Table) updater(ctx context.Context, synced <-chan struct{}) {
 	bf := backoff.NewExponentialBackOff()
 	bf.InitialInterval, bf.MaxElapsedTime = initRefreshRate, maxReaderRetryInterval
 	rate := initRefreshRate
@@ -208,30 +238,40 @@ func (t *Table) updater(ctx context.Context) {
 		select {
 		case <-ctx.Done():
 			return
+		case <-synced:
+			synced = nil
+			t.awaitRefresh()
 		case <-time.After(rate):
-			rate = t.refreshRate
-			err := backoff.Retry(func() error {
-				if err := t.refresh(ctx); err != nil {
-					slog.Error("Refresh failed", slogs.GVR, t.gvr)
-					return err
-				}
-				return nil
-			}, backoff.WithContext(bf, ctx))
-			if err != nil {
-				slog.Warn("Reconciler exited", slogs.Error, err)
-				t.fireTableLoadFailed(err)
-				return
+		}
+
+		rate = t.refreshRate
+		err := backoff.Retry(func() error {
+			if err := t.refresh(ctx); err != nil {
+				slog.Error("Refresh failed", slogs.GVR, t.gvr)
+				return err
 			}
+			return nil
+		}, backoff.WithContext(bf, ctx))
+		if err != nil {
+			slog.Warn("Reconciler exited", slogs.Error, err)
+			t.fireTableLoadFailed(err)
+			return
 		}
 	}
 }
 
+// awaitRefresh hangs until any in-flight refresh completes.
+func (t *Table) awaitRefresh() {
+	t.updateMx.Lock()
+	t.updateMx.Unlock() //nolint:gocritic
+}
+
 func (t *Table) refresh(ctx context.Context) error {
-	if !atomic.CompareAndSwapInt32(&t.inUpdate, 0, 1) {
+	if !t.updateMx.TryLock() {
 		slog.Debug("Dropping update...")
 		return nil
 	}
-	defer atomic.StoreInt32(&t.inUpdate, 0)
+	defer t.updateMx.Unlock()
 
 	if err := t.reconcile(ctx); err != nil {
 		return err
