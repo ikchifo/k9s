@@ -135,13 +135,26 @@ func (c *ClusterInfo) Refresh() {
 		data.Context = c.cluster.ContextName()
 		data.Cluster = c.cluster.ClusterName()
 		data.User = c.cluster.UserName()
-		data.K8sVer = c.cluster.Version()
 		ctx, cancel := context.WithTimeout(context.Background(), c.cluster.factory.Client().Config().CallTimeout())
 		defer cancel()
-		var mx client.ClusterMetrics
-		if err := c.cluster.Metrics(ctx, &mx); err == nil {
-			data.Cpu, data.Mem, data.Ephemeral = mx.PercCPU, mx.PercMEM, mx.PercEphemeral
-		}
+
+		// Version and metrics are independent fetches; run them concurrently.
+		var (
+			mx client.ClusterMetrics
+			wg sync.WaitGroup
+		)
+		wg.Add(2)
+		go func() {
+			defer wg.Done()
+			data.K8sVer = c.cluster.Version()
+		}()
+		go func() {
+			defer wg.Done()
+			if err := c.cluster.Metrics(ctx, &mx); err == nil {
+				data.Cpu, data.Mem, data.Ephemeral = mx.PercCPU, mx.PercMEM, mx.PercEphemeral
+			}
+		}()
+		wg.Wait()
 	}
 	data.K9sVer = c.version
 	v1 := NewSemVer(data.K9sVer)

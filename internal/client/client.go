@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/derailed/k9s/internal/slogs"
+	"golang.org/x/sync/singleflight"
 	authorizationv1 "k8s.io/api/authorization/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/cache"
@@ -53,6 +54,7 @@ type APIClient struct {
 	config            *Config
 	mx                sync.RWMutex
 	cache             *cache.LRUExpireCache
+	inFlight          singleflight.Group
 	connOK            bool
 	log               *slog.Logger
 }
@@ -179,6 +181,29 @@ func (a *APIClient) CanI(ns string, gvr *GVR, name string, verbs []string) (auth
 		}
 	}
 
+	// Concurrent checks for the same access share a single review round trip.
+	v, err, _ := a.inFlight.Do("cani:"+key, func() (any, error) {
+		// The cache may have been populated while this call waited on the flight.
+		if v, ok := a.cache.Get(key); ok {
+			if cached, ok := v.(bool); ok {
+				return cached, nil
+			}
+		}
+
+		return a.reviewAccess(ns, gvr, name, verbs, key)
+	})
+	if err != nil {
+		return false, err
+	}
+	auth, ok := v.(bool)
+	if !ok {
+		return false, fmt.Errorf("access review returned unexpected payload %T", v)
+	}
+
+	return auth, nil
+}
+
+func (a *APIClient) reviewAccess(ns string, gvr *GVR, name string, verbs []string, key string) (bool, error) {
 	clog := a.log.With(slogs.Subsys, "can")
 
 	dial, err := a.Dial()
@@ -207,17 +232,18 @@ func (a *APIClient) CanI(ns string, gvr *GVR, name string, verbs []string) (auth
 		if err != nil {
 			clog.Warn("Auth request failed", slogs.Error, err)
 			a.cache.Add(key, false, cacheExpiry)
-			return auth, err
+
+			return false, err
 		}
 		if !resp.Status.Allowed {
 			a.cache.Add(key, false, cacheExpiry)
-			return auth, fmt.Errorf("(%s) access denied for user on resource %q:%s in namespace %q", v, name, gvr, ns)
+
+			return false, fmt.Errorf("(%s) access denied for user on resource %q:%s in namespace %q", v, name, gvr, ns)
 		}
 	}
-	auth = true
 	a.cache.Add(key, true, cacheExpiry)
 
-	return
+	return true, nil
 }
 
 // CurrentNamespaceName return namespace name set via either cli arg or cluster config.
@@ -232,16 +258,34 @@ func (a *APIClient) ServerVersion() (*version.Info, error) {
 			return vi, nil
 		}
 	}
-	dial, err := a.CachedDiscovery()
-	if err != nil {
-		return nil, err
-	}
 
-	info, err := dial.ServerVersion()
+	// Concurrent fetches share a single /version round trip.
+	v, err, _ := a.inFlight.Do(serverVersion, func() (any, error) {
+		// The cache may have been populated while this call waited on the flight.
+		if v, ok := a.cache.Get(serverVersion); ok {
+			if vi, ok := v.(*version.Info); ok {
+				return vi, nil
+			}
+		}
+		dial, err := a.CachedDiscovery()
+		if err != nil {
+			return nil, err
+		}
+		info, err := dial.ServerVersion()
+		if err != nil {
+			return nil, err
+		}
+		a.cache.Add(serverVersion, info, cacheExpiry)
+
+		return info, nil
+	})
 	if err != nil {
 		return nil, err
 	}
-	a.cache.Add(serverVersion, info, cacheExpiry)
+	info, ok := v.(*version.Info)
+	if !ok || info == nil {
+		return nil, fmt.Errorf("server version returned unexpected payload %T", v)
+	}
 
 	return info, nil
 }
@@ -339,7 +383,7 @@ func (a *APIClient) CheckConnectivity() bool {
 		}
 	}
 
-	if _, err := client.Discovery().ServerVersion(); err == nil {
+	if err := a.probeVersion(client); err == nil {
 		a.setClient(client)
 		if !a.getConnOK() {
 			a.reset()
@@ -350,6 +394,22 @@ func (a *APIClient) CheckConnectivity() bool {
 	}
 
 	return a.getConnOK()
+}
+
+// probeVersion hits the wire to verify api server liveness. Concurrent server
+// version fetches share the same round trip.
+func (a *APIClient) probeVersion(client kubernetes.Interface) error {
+	v, err, _ := a.inFlight.Do(serverVersion, func() (any, error) {
+		return client.Discovery().ServerVersion()
+	})
+	if err != nil {
+		return err
+	}
+	if _, ok := v.(*version.Info); !ok {
+		return fmt.Errorf("server version returned unexpected payload %T", v)
+	}
+
+	return nil
 }
 
 // Config return a kubernetes configuration.

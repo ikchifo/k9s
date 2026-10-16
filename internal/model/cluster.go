@@ -10,6 +10,7 @@ import (
 
 	"github.com/derailed/k9s/internal/client"
 	"github.com/derailed/k9s/internal/dao"
+	"golang.org/x/sync/errgroup"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/util/cache"
 	mv1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
@@ -95,26 +96,47 @@ func (c *Cluster) UserName() string {
 // Metrics gathers node level metrics and compute utilization percentages.
 func (c *Cluster) Metrics(ctx context.Context, mx *client.ClusterMetrics) error {
 	var (
-		nn  *v1.NodeList
-		err error
+		nn   *v1.NodeList
+		nerr error
 	)
-	if v, ok := c.cache.Get(clusterNodesKey); ok {
-		if nl, ok := v.(*v1.NodeList); ok {
-			nn = nl
+
+	// Nodes and node metrics are independent fetches; run them concurrently
+	// so the metrics-server access check overlaps the nodes round trip.
+	g, gctx := errgroup.WithContext(ctx)
+	g.Go(func() error {
+		if v, ok := c.cache.Get(clusterNodesKey); ok {
+			if nl, ok := v.(*v1.NodeList); ok {
+				nn = nl
+				return nil
+			}
 		}
-	} else {
-		if nn, err = dao.FetchNodes(ctx, c.factory, ""); err != nil {
+		if nn, nerr = dao.FetchNodes(gctx, c.factory, ""); nerr != nil {
+			return nerr
+		}
+		if nn == nil {
+			return errors.New("unable to fetch nodes list")
+		}
+		if len(nn.Items) > 0 {
+			c.cache.Add(clusterNodesKey, nn, clusterCacheExpiry)
+		}
+
+		return nil
+	})
+
+	var nmx *mv1beta1.NodeMetricsList
+	g.Go(func() error {
+		var err error
+		if nmx, err = c.mx.FetchNodesMetrics(gctx); err != nil {
 			return err
 		}
-	}
-	if nn == nil {
-		return errors.New("unable to fetch nodes list")
-	}
-	if len(nn.Items) > 0 {
-		c.cache.Add(clusterNodesKey, nn, clusterCacheExpiry)
-	}
-	var nmx *mv1beta1.NodeMetricsList
-	if nmx, err = c.mx.FetchNodesMetrics(ctx); err != nil {
+
+		return nil
+	})
+	if err := g.Wait(); err != nil {
+		if nerr != nil {
+			return nerr
+		}
+
 		return err
 	}
 
