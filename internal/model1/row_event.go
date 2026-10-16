@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"log/slog"
 	"sort"
+	"strings"
+
+	"github.com/fvbommel/sortorder"
 )
 
 type ReRangeFn func(int, RowEvent) bool
@@ -264,21 +267,28 @@ func (r *RowEvents) FindIndex(id string) (int, bool) {
 }
 
 // Sort rows based on column index and order.
-func (r *RowEvents) Sort(ns string, sortCol int, isDuration, numCol, isCapacity, asc bool) {
+func (r *RowEvents) Sort(_ string, sortCol int, isDuration, numCol, isCapacity, asc bool) {
 	if sortCol == -1 || r == nil {
 		return
 	}
 
-	t := RowEventSorter{
-		NS:         ns,
-		Events:     r,
-		Index:      sortCol,
-		Asc:        asc,
-		IsNumber:   numCol,
-		IsDuration: isDuration,
-		IsCapacity: isCapacity,
+	// Parse each row's sort key once instead of on every comparison.
+	kk := make([]rowSortKey, len(r.events))
+	for i := range r.events {
+		kk[i].id = r.events[i].Row.ID
+		v := r.events[i].Row.Fields[sortCol]
+		switch {
+		case numCol:
+			kk[i].raw, kk[i].num = v, strings.ReplaceAll(v, ",", "")
+		case isDuration:
+			kk[i].n = durationToSeconds(v)
+		case isCapacity:
+			kk[i].n = capacityToNumber(v)
+		default:
+			kk[i].raw = v
+		}
 	}
-	sort.Sort(t)
+	sort.Sort(rowSorter{events: r.events, keys: kk, isNumber: numCol, isDuration: isDuration, isCapacity: isCapacity, asc: asc})
 	r.reindex()
 }
 
@@ -291,33 +301,54 @@ func (re RowEvents) Dump(msg string) {
 }
 
 // ----------------------------------------------------------------------------
+// Sorting...
 
-// RowEventSorter sorts row events by a given colon.
-type RowEventSorter struct {
-	Events     *RowEvents
-	Index      int
-	NS         string
-	IsNumber   bool
-	IsDuration bool
-	IsCapacity bool
-	Asc        bool
+// rowSortKey caches a row's parsed sort value so a sort compares keys
+// instead of reparsing fields on every comparison.
+type rowSortKey struct {
+	id  string
+	raw string
+	num string
+	n   int64
 }
 
-func (r RowEventSorter) Len() int {
-	return len(r.Events.events)
+// rowSorter sorts row events against precomputed sort keys, swapping events
+// and keys in lockstep. Comparisons keep Less semantics, incl. the id
+// tie-break on equal values and ascending/descending order.
+type rowSorter struct {
+	events     []RowEvent
+	keys       []rowSortKey
+	isNumber   bool
+	isDuration bool
+	isCapacity bool
+	asc        bool
 }
 
-func (r RowEventSorter) Swap(i, j int) {
-	r.Events.events[i], r.Events.events[j] = r.Events.events[j], r.Events.events[i]
+func (s rowSorter) Len() int { return len(s.events) }
+
+func (s rowSorter) Swap(i, j int) {
+	s.events[i], s.events[j] = s.events[j], s.events[i]
+	s.keys[i], s.keys[j] = s.keys[j], s.keys[i]
 }
 
-func (r RowEventSorter) Less(i, j int) bool {
-	f1, f2 := r.Events.events[i].Row.Fields, r.Events.events[j].Row.Fields
-	id1, id2 := r.Events.events[i].Row.ID, r.Events.events[j].Row.ID
-	less := Less(r.IsNumber, r.IsDuration, r.IsCapacity, id1, id2, f1[r.Index], f2[r.Index])
-	if r.Asc {
-		return less
+func (s rowSorter) Less(i, j int) bool {
+	k1, k2 := &s.keys[i], &s.keys[j]
+
+	var less, tie bool
+	switch {
+	case s.isNumber:
+		less, tie = sortorder.NaturalLess(k1.num, k2.num), k1.raw == k2.raw
+	case s.isDuration, s.isCapacity:
+		less, tie = k1.n < k2.n, k1.n == k2.n
+	default:
+		less, tie = sortorder.NaturalLess(k1.raw, k2.raw), k1.raw == k2.raw
+	}
+	if tie {
+		less = sortorder.NaturalLess(k1.id, k2.id)
+	}
+	if !s.asc {
+		return !less
 	}
 
-	return !less
+	return less
 }
