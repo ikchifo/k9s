@@ -1,0 +1,882 @@
+[
+ {
+  "wall_ns": 1792104296653100000,
+  "what": "launch"
+ },
+ {
+  "wall_ns": 1792104299276722000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104299276722000,
+  "what": "row │ team-05 svc-50-549f7456ff-m7lsh ● 2/2 Running 0 10.244.13.234 kwok-node-13 62m │"
+ },
+ {
+  "wall_ns": 1792104299277366000,
+  "what": "done startup"
+ },
+ {
+  "wall_ns": 1792104299283030000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 67m │"
+ },
+ {
+  "wall_ns": 1792104315306866000,
+  "what": "fgprof idle start"
+ },
+ {
+  "wall_ns": 1792104325316264000,
+  "what": "fgprof idle end"
+ },
+ {
+  "wall_ns": 1792104326816458000,
+  "what": "flight idle"
+ },
+ {
+  "wall_ns": 1792104327699929000,
+  "what": "key echo-s"
+ },
+ {
+  "wall_ns": 1792104327712400000,
+  "what": "echo 0 12.5ms"
+ },
+ {
+  "wall_ns": 1792104327732835000,
+  "what": "title pods(all)[5,050] \u003c/s\u003e"
+ },
+ {
+  "wall_ns": 1792104327885640000,
+  "what": "key echo-sv"
+ },
+ {
+  "wall_ns": 1792104327895024000,
+  "what": "echo 1 9.4ms"
+ },
+ {
+  "wall_ns": 1792104327909191000,
+  "what": "title pods(all)[5,050] \u003c/sv\u003e"
+ },
+ {
+  "wall_ns": 1792104328068126000,
+  "what": "key echo-svc"
+ },
+ {
+  "wall_ns": 1792104328078229000,
+  "what": "echo 2 10.1ms"
+ },
+ {
+  "wall_ns": 1792104328091780000,
+  "what": "title pods(all)[5,050] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104328230553000,
+  "what": "title pods(all)[5,000] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104328230553000,
+  "what": "row │ team-01 svc-1-69b8c79db5-2mjts ● 2/2 Running 0 10.244.17.4 kwok-node-17 67m │"
+ },
+ {
+  "wall_ns": 1792104328251395000,
+  "what": "key echo-svc-"
+ },
+ {
+  "wall_ns": 1792104328255987000,
+  "what": "echo 3 4.6ms"
+ },
+ {
+  "wall_ns": 1792104328271248000,
+  "what": "title pods(all)[5,000] \u003c/svc-\u003e"
+ },
+ {
+  "wall_ns": 1792104328429206000,
+  "what": "key echo-svc-1"
+ },
+ {
+  "wall_ns": 1792104328434048000,
+  "what": "echo 4 4.8ms"
+ },
+ {
+  "wall_ns": 1792104328468529000,
+  "what": "title pods(all)[5,000] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104328607169000,
+  "what": "key echo-svc-1-"
+ },
+ {
+  "wall_ns": 1792104328612036000,
+  "what": "echo 5 4.9ms"
+ },
+ {
+  "wall_ns": 1792104328648258000,
+  "what": "title pods(all)[5,000] \u003c/svc-1-\u003e"
+ },
+ {
+  "wall_ns": 1792104328820480000,
+  "what": "title pods(all)[5,000] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104328864319000,
+  "what": "title pods(all)[5,000] \u003c/svc-\u003e"
+ },
+ {
+  "wall_ns": 1792104328917550000,
+  "what": "title pods(all)[5,000] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104328977956000,
+  "what": "title pods(all)[5,000] \u003c/sv\u003e"
+ },
+ {
+  "wall_ns": 1792104329038305000,
+  "what": "title pods(all)[5,000] \u003c/s\u003e"
+ },
+ {
+  "wall_ns": 1792104329094137000,
+  "what": "title pods(all)[5,000]"
+ },
+ {
+  "wall_ns": 1792104329596147000,
+  "what": "key echo-s"
+ },
+ {
+  "wall_ns": 1792104329606762000,
+  "what": "echo 6 10.6ms"
+ },
+ {
+  "wall_ns": 1792104329624180000,
+  "what": "title pods(all)[5,000] \u003c/s\u003e"
+ },
+ {
+  "wall_ns": 1792104329780027000,
+  "what": "key echo-sv"
+ },
+ {
+  "wall_ns": 1792104329787287000,
+  "what": "echo 7 7.3ms"
+ },
+ {
+  "wall_ns": 1792104329801917000,
+  "what": "title pods(all)[5,000] \u003c/sv\u003e"
+ },
+ {
+  "wall_ns": 1792104329960996000,
+  "what": "key echo-svc"
+ },
+ {
+  "wall_ns": 1792104329968895000,
+  "what": "echo 8 7.9ms"
+ },
+ {
+  "wall_ns": 1792104329983489000,
+  "what": "title pods(all)[5,000] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104330142156000,
+  "what": "key echo-svc-"
+ },
+ {
+  "wall_ns": 1792104330147346000,
+  "what": "echo 9 5.2ms"
+ },
+ {
+  "wall_ns": 1792104330160663000,
+  "what": "title pods(all)[5,000] \u003c/svc-\u003e"
+ },
+ {
+  "wall_ns": 1792104330320566000,
+  "what": "key echo-svc-1"
+ },
+ {
+  "wall_ns": 1792104330325507000,
+  "what": "echo 10 4.9ms"
+ },
+ {
+  "wall_ns": 1792104330355586000,
+  "what": "title pods(all)[5,000] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104330498625000,
+  "what": "key echo-svc-1-"
+ },
+ {
+  "wall_ns": 1792104330503421000,
+  "what": "echo 11 4.8ms"
+ },
+ {
+  "wall_ns": 1792104330539308000,
+  "what": "title pods(all)[5,000] \u003c/svc-1-\u003e"
+ },
+ {
+  "wall_ns": 1792104330710907000,
+  "what": "title pods(all)[5,000] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104330753574000,
+  "what": "title pods(all)[5,000] \u003c/svc-\u003e"
+ },
+ {
+  "wall_ns": 1792104330818309000,
+  "what": "title pods(all)[5,000] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104330869651000,
+  "what": "title pods(all)[5,000] \u003c/sv\u003e"
+ },
+ {
+  "wall_ns": 1792104330929824000,
+  "what": "title pods(all)[5,000] \u003c/s\u003e"
+ },
+ {
+  "wall_ns": 1792104330984559000,
+  "what": "title pods(all)[5,000]"
+ },
+ {
+  "wall_ns": 1792104331487781000,
+  "what": "key echo-s"
+ },
+ {
+  "wall_ns": 1792104331500847000,
+  "what": "echo 12 13.1ms"
+ },
+ {
+  "wall_ns": 1792104331517754000,
+  "what": "title pods(all)[5,000] \u003c/s\u003e"
+ },
+ {
+  "wall_ns": 1792104331674076000,
+  "what": "key echo-sv"
+ },
+ {
+  "wall_ns": 1792104331681827000,
+  "what": "echo 13 7.8ms"
+ },
+ {
+  "wall_ns": 1792104331697792000,
+  "what": "title pods(all)[5,000] \u003c/sv\u003e"
+ },
+ {
+  "wall_ns": 1792104331854922000,
+  "what": "key echo-svc"
+ },
+ {
+  "wall_ns": 1792104331862638000,
+  "what": "echo 14 7.7ms"
+ },
+ {
+  "wall_ns": 1792104331879286000,
+  "what": "title pods(all)[5,000] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104332035736000,
+  "what": "key echo-svc-"
+ },
+ {
+  "wall_ns": 1792104332043116000,
+  "what": "echo 15 7.4ms"
+ },
+ {
+  "wall_ns": 1792104332057716000,
+  "what": "title pods(all)[5,000] \u003c/svc-\u003e"
+ },
+ {
+  "wall_ns": 1792104332216244000,
+  "what": "key echo-svc-1"
+ },
+ {
+  "wall_ns": 1792104332226087000,
+  "what": "echo 16 9.8ms"
+ },
+ {
+  "wall_ns": 1792104332280155000,
+  "what": "title pods(all)[5,000] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104332354946000,
+  "what": "title pods(all)[1,100] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104332399264000,
+  "what": "key echo-svc-1-"
+ },
+ {
+  "wall_ns": 1792104332403752000,
+  "what": "echo 17 4.5ms"
+ },
+ {
+  "wall_ns": 1792104332440767000,
+  "what": "title pods(all)[1,100] \u003c/svc-1-\u003e"
+ },
+ {
+  "wall_ns": 1792104332612494000,
+  "what": "title pods(all)[1,100] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104332653869000,
+  "what": "title pods(all)[1,100] \u003c/svc-\u003e"
+ },
+ {
+  "wall_ns": 1792104332710176000,
+  "what": "title pods(all)[1,100] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104332770205000,
+  "what": "title pods(all)[1,100] \u003c/sv\u003e"
+ },
+ {
+  "wall_ns": 1792104332830434000,
+  "what": "title pods(all)[1,100] \u003c/s\u003e"
+ },
+ {
+  "wall_ns": 1792104332884558000,
+  "what": "title pods(all)[1,100]"
+ },
+ {
+  "wall_ns": 1792104333387678000,
+  "what": "key echo-s"
+ },
+ {
+  "wall_ns": 1792104333392562000,
+  "what": "echo 18 4.9ms"
+ },
+ {
+  "wall_ns": 1792104333403231000,
+  "what": "title pods(all)[1,100] \u003c/s\u003e"
+ },
+ {
+  "wall_ns": 1792104333565671000,
+  "what": "key echo-sv"
+ },
+ {
+  "wall_ns": 1792104333570541000,
+  "what": "echo 19 4.9ms"
+ },
+ {
+  "wall_ns": 1792104333584644000,
+  "what": "title pods(all)[1,100] \u003c/sv\u003e"
+ },
+ {
+  "wall_ns": 1792104333743745000,
+  "what": "key echo-svc"
+ },
+ {
+  "wall_ns": 1792104333753376000,
+  "what": "echo 20 9.6ms"
+ },
+ {
+  "wall_ns": 1792104333769221000,
+  "what": "title pods(all)[1,100] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104333926567000,
+  "what": "key echo-svc-"
+ },
+ {
+  "wall_ns": 1792104333934067000,
+  "what": "echo 21 7.5ms"
+ },
+ {
+  "wall_ns": 1792104333949308000,
+  "what": "title pods(all)[1,100] \u003c/svc-\u003e"
+ },
+ {
+  "wall_ns": 1792104334107263000,
+  "what": "key echo-svc-1"
+ },
+ {
+  "wall_ns": 1792104334116468000,
+  "what": "echo 22 9.2ms"
+ },
+ {
+  "wall_ns": 1792104334156273000,
+  "what": "title pods(all)[1,100] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104334289622000,
+  "what": "key echo-svc-1-"
+ },
+ {
+  "wall_ns": 1792104334294260000,
+  "what": "echo 23 4.6ms"
+ },
+ {
+  "wall_ns": 1792104334330234000,
+  "what": "title pods(all)[1,100] \u003c/svc-1-\u003e"
+ },
+ {
+  "wall_ns": 1792104334433425000,
+  "what": "title pods(all)[100] \u003c/svc-1-\u003e"
+ },
+ {
+  "wall_ns": 1792104334433425000,
+  "what": "row │ team-01 svc-1-69b8c79db5-2mjts ● 2/2 Running 0 10.244.17.4 kwok-node-17 67m │"
+ },
+ {
+  "wall_ns": 1792104334502973000,
+  "what": "title pods(all)[100] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104334601447000,
+  "what": "title pods(all)[100] \u003c/svc-\u003e"
+ },
+ {
+  "wall_ns": 1792104334621143000,
+  "what": "title pods(all)[100] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104334660428000,
+  "what": "title pods(all)[100] \u003c/sv\u003e"
+ },
+ {
+  "wall_ns": 1792104334720008000,
+  "what": "title pods(all)[100] \u003c/s\u003e"
+ },
+ {
+  "wall_ns": 1792104334795562000,
+  "what": "title pods(all)[100]"
+ },
+ {
+  "wall_ns": 1792104336489697000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104336489697000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104336779444000,
+  "what": "flight echo"
+ },
+ {
+  "wall_ns": 1792104339741011000,
+  "what": "key deploy-enter"
+ },
+ {
+  "wall_ns": 1792104339772280000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104339772280000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104340077697000,
+  "what": "title deployments(all)[52]"
+ },
+ {
+  "wall_ns": 1792104340077697000,
+  "what": "row │ team-02 svc-12 100/100 100 100 67m │"
+ },
+ {
+  "wall_ns": 1792104340077808000,
+  "what": "done deploy"
+ },
+ {
+  "wall_ns": 1792104340081622000,
+  "what": "row │ kube-system coredns 2/2 2 2 68m │"
+ },
+ {
+  "wall_ns": 1792104341577977000,
+  "what": "flight deploy"
+ },
+ {
+  "wall_ns": 1792104341580391000,
+  "what": "key pods-enter"
+ },
+ {
+  "wall_ns": 1792104341660452000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104341660452000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104341683037000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104341683037000,
+  "what": "row │ team-05 svc-50-549f7456ff-m7lsh ● 2/2 Running 0 10.244.13.234 kwok-node-13 63m │"
+ },
+ {
+  "wall_ns": 1792104341683957000,
+  "what": "done pods"
+ },
+ {
+  "wall_ns": 1792104341688104000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104343184070000,
+  "what": "flight pods"
+ },
+ {
+  "wall_ns": 1792104343221167000,
+  "what": "key filter-s"
+ },
+ {
+  "wall_ns": 1792104343247861000,
+  "what": "echo s"
+ },
+ {
+  "wall_ns": 1792104343247909000,
+  "what": "key filter-sv"
+ },
+ {
+  "wall_ns": 1792104343258828000,
+  "what": "title pods(all)[5,050] \u003c/s\u003e"
+ },
+ {
+  "wall_ns": 1792104343263687000,
+  "what": "echo sv"
+ },
+ {
+  "wall_ns": 1792104343263718000,
+  "what": "key filter-svc"
+ },
+ {
+  "wall_ns": 1792104343273565000,
+  "what": "title pods(all)[5,050] \u003c/sv\u003e"
+ },
+ {
+  "wall_ns": 1792104343279260000,
+  "what": "echo svc"
+ },
+ {
+  "wall_ns": 1792104343279302000,
+  "what": "key filter-svc-"
+ },
+ {
+  "wall_ns": 1792104343287530000,
+  "what": "title pods(all)[5,050] \u003c/svc\u003e"
+ },
+ {
+  "wall_ns": 1792104343292547000,
+  "what": "echo svc-"
+ },
+ {
+  "wall_ns": 1792104343292587000,
+  "what": "key filter-svc-1"
+ },
+ {
+  "wall_ns": 1792104343301081000,
+  "what": "title pods(all)[5,050] \u003c/svc-\u003e"
+ },
+ {
+  "wall_ns": 1792104343306636000,
+  "what": "echo svc-1"
+ },
+ {
+  "wall_ns": 1792104343306666000,
+  "what": "key filter-svc-1-"
+ },
+ {
+  "wall_ns": 1792104343336627000,
+  "what": "title pods(all)[5,050] \u003c/svc-1\u003e"
+ },
+ {
+  "wall_ns": 1792104343342133000,
+  "what": "echo svc-1-"
+ },
+ {
+  "wall_ns": 1792104343378269000,
+  "what": "title pods(all)[5,050] \u003c/svc-1-\u003e"
+ },
+ {
+  "wall_ns": 1792104344112962000,
+  "what": "title pods(all)[100] \u003c/svc-1-\u003e"
+ },
+ {
+  "wall_ns": 1792104344112962000,
+  "what": "row │ team-01 svc-1-69b8c79db5-2mjts ● 2/2 Running 0 10.244.17.4 kwok-node-17 67m │"
+ },
+ {
+  "wall_ns": 1792104344113094000,
+  "what": "done filter"
+ },
+ {
+  "wall_ns": 1792104345613261000,
+  "what": "flight filter"
+ },
+ {
+  "wall_ns": 1792104345799252000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104345799252000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104345804724000,
+  "what": "title pods(all)[100]"
+ },
+ {
+  "wall_ns": 1792104345804724000,
+  "what": "row │ team-01 svc-1-69b8c79db5-2mjts ● 2/2 Running 0 10.244.17.4 kwok-node-17 67m │"
+ },
+ {
+  "wall_ns": 1792104346178858000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104346178858000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104347700832000,
+  "what": "title pods(all)[5,050] ng                     0 10.244.0.3           kwok-k9s-m-control-plane        68m         │"
+ },
+ {
+  "wall_ns": 1792104347700832000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104347702190000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104347702190000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104347738001000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104347738001000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104347742941000,
+  "what": "title deployments(all)[52]"
+ },
+ {
+  "wall_ns": 1792104347742941000,
+  "what": "row │ team-02 svc-12 100/100 100 100 67m │"
+ },
+ {
+  "wall_ns": 1792104347746757000,
+  "what": "row │ kube-system coredns 2/2 2 2 68m │"
+ },
+ {
+  "wall_ns": 1792104348110586000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104348110586000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104348129466000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104348129466000,
+  "what": "row │ team-05 svc-50-549f7456ff-m7lsh ● 2/2 Running 0 10.244.13.234 kwok-node-13 63m │"
+ },
+ {
+  "wall_ns": 1792104348135328000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104348466022000,
+  "what": "row │ kube-system coredns-589f44dc88-lm ● 1/1 Running 0 192.168.97.3 kwok-node-5 67m │"
+ },
+ {
+  "wall_ns": 1792104348468941000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104348514538000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104348514538000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104348518309000,
+  "what": "title deployments(all)[52]"
+ },
+ {
+  "wall_ns": 1792104348518309000,
+  "what": "row │ team-02 svc-12 100/100 100 100 67m │"
+ },
+ {
+  "wall_ns": 1792104348522112000,
+  "what": "row │ kube-system coredns 2/2 2 2 68m │"
+ },
+ {
+  "wall_ns": 1792104348882997000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104348882997000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104348902648000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104348902648000,
+  "what": "row │ team-05 svc-50-549f7456ff-m7lsh ● 2/2 Running 0 10.244.13.234 kwok-node-13 63m │"
+ },
+ {
+  "wall_ns": 1792104348907626000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104349216272000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104349216272000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104349225196000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104349225196000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104349275011000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104349275011000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104349279347000,
+  "what": "title deployments(all)[52]"
+ },
+ {
+  "wall_ns": 1792104349279347000,
+  "what": "row │ team-02 svc-12 100/100 100 100 67m │"
+ },
+ {
+  "wall_ns": 1792104349283190000,
+  "what": "row │ kube-system coredns 2/2 2 2 68m │"
+ },
+ {
+  "wall_ns": 1792104349638460000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104349638460000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104349657375000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104349657375000,
+  "what": "row │ team-05 svc-50-549f7456ff-m7lsh ● 2/2 Running 0 10.244.13.234 kwok-node-13 63m │"
+ },
+ {
+  "wall_ns": 1792104349663668000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104349974287000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104349974287000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104349976110000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104349976110000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104350030525000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104350030525000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104350038065000,
+  "what": "title deployments(all)[52]"
+ },
+ {
+  "wall_ns": 1792104350038065000,
+  "what": "row │ team-02 svc-12 100/100 100 100 67m │"
+ },
+ {
+  "wall_ns": 1792104350049567000,
+  "what": "row │ kube-system coredns 2/2 2 2 68m │"
+ },
+ {
+  "wall_ns": 1792104350402729000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104350402729000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104350424841000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104350424841000,
+  "what": "row │ team-05 svc-50-549f7456ff-m7lsh ● 2/2 Running 0 10.244.13.234 kwok-node-13 63m │"
+ },
+ {
+  "wall_ns": 1792104350430174000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ },
+ {
+  "wall_ns": 1792104350787880000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104350787880000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104350792992000,
+  "what": "title deployments(all)[52]"
+ },
+ {
+  "wall_ns": 1792104350792992000,
+  "what": "row │ team-02 svc-12 100/100 100 100 67m │"
+ },
+ {
+  "wall_ns": 1792104350796734000,
+  "what": "row │ kube-system coredns 2/2 2 2 68m │"
+ },
+ {
+  "wall_ns": 1792104351156542000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104351156542000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104351175256000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104351175256000,
+  "what": "row │ team-05 svc-50-549f7456ff-m7lsh ● 2/2 Running 0 10.244.13.234 kwok-node-13 63m │"
+ },
+ {
+  "wall_ns": 1792104351181701000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 68m │"
+ }
+]

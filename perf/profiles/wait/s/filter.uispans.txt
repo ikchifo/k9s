@@ -1,0 +1,5 @@
+## UI goroutine running spans in [-10, 1000] ms (merged until it blocks; >= 1.0ms)
+    -13.3 +   28.7ms (cpu   28.6) woken-by: tview.(*Application).Run.func2:259 | 
+     56.7 +    7.3ms (cpu    7.2) woken-by: QUD from k9s/internal/view.(*Table).BufferCompleted:199 < k9s/internal/model.(*CmdBuff).fireBufferCompleted:231 < k9s/internal/model.(*CmdBuff).Add.func1:16
+    754.5 +    5.4ms (cpu    3.9) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | 
+UI busy total: 41.3ms (running 39.8ms) in 3 spans

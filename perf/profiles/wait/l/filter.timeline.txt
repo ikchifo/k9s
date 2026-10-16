@@ -1,0 +1,17 @@
+create      -4.9 g755 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Table).BufferCompleted:199 < k9s/internal/model.(*CmdBuff).fireBufferCompleted:231 < k9s/internal/model.(*CmdBuff).SetText:143
+create      66.4 g197 context.WithDeadlineCause.func2 <- ?
+create      66.5 g198 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Table).BufferCompleted:199 < k9s/internal/model.(*CmdBuff).fireBufferCompleted:231 < k9s/internal/model.(*CmdBuff).Add.func1:1
+create      76.4 g756 k9s/internal/model.(*CmdBuff).Add.func1 <- k9s/internal/model.(*CmdBuff).Add:158 < k9s/internal/model.(*FishBuff).Add:117 < k9s/internal/ui.(*Prompt).keyboard:161 < tview.(*Box).WrapInputHandler.func1:179
+create      76.4 g757 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Table).BufferCompleted:199 < k9s/internal/model.(*CmdBuff).fireBufferCompleted:231 < k9s/internal/model.(*CmdBuff).SetText:143
+create     177.1 g199 context.WithDeadlineCause.func2 <- ?
+create     177.2 g200 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Table).BufferCompleted:199 < k9s/internal/model.(*CmdBuff).fireBufferCompleted:231 < k9s/internal/model.(*CmdBuff).Add.func1:1
+create     882.5 g725 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243
+## UI goroutine running spans in [-10, 1000] ms (merged until it blocks; >= 1.0ms)
+   -147.7 +  649.9ms (cpu  648.9) woken-by: sync.(*Mutex).Unlock | blocks-at: k9s/internal/model1.Fields.Clone:37 < k9s/internal/model1.Row.Clone:52
+    502.2 +  323.0ms (cpu  318.6) woken-by: runtime.systemstack_switch | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+    882.5 +    6.2ms (cpu    4.2) woken-by: tview.(*Application).QueueUpdate:722 < tview.(*Application).QueueUpdateDraw:730 < k9s/internal/ui.(*App).QueueUpdateDraw.func1:80 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+UI busy total: 979.1ms (running 971.7ms) in 4 spans
+## goroutines created / exited in window
+created    1 k9s/internal/model.(*CmdBuff).Add.func1
+created    5 k9s/internal/ui.(*App).QueueUpdateDraw.func1
+created    2 context.WithDeadlineCause.func2

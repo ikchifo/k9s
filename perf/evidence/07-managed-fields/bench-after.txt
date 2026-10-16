@@ -1,0 +1,16 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/watch
+cpu: Apple M1 Max
+BenchmarkCachePods-4   	       3	  87615806 ns/op	     17406 heap-B/pod	61598272 B/op	  524437 allocs/op
+BenchmarkCachePods-4   	       3	  85208083 ns/op	     17405 heap-B/pod	61590354 B/op	  524407 allocs/op
+BenchmarkCachePods-4   	       3	  85643070 ns/op	     17405 heap-B/pod	61592986 B/op	  524412 allocs/op
+BenchmarkCachePods-4   	       3	  86624444 ns/op	     17406 heap-B/pod	61591621 B/op	  524408 allocs/op
+BenchmarkCachePods-4   	       3	  81644667 ns/op	     17405 heap-B/pod	61591520 B/op	  524408 allocs/op
+BenchmarkCachePods-4   	       3	  84016389 ns/op	     17404 heap-B/pod	61588448 B/op	  524403 allocs/op
+BenchmarkCachePods-4   	       3	  83338180 ns/op	     17404 heap-B/pod	61587728 B/op	  524402 allocs/op
+BenchmarkCachePods-4   	       3	  80552694 ns/op	     17405 heap-B/pod	61590357 B/op	  524403 allocs/op
+BenchmarkCachePods-4   	       3	  82030292 ns/op	     17404 heap-B/pod	61587472 B/op	  524403 allocs/op
+BenchmarkCachePods-4   	       3	  84696097 ns/op	     17405 heap-B/pod	61591226 B/op	  524407 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/watch	4.598s

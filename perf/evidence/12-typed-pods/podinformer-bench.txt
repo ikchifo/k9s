@@ -1,0 +1,66 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/client
+cpu: Apple M1 Max
+BenchmarkPodInformerSync/protobuf/5000-10         	      19	  62029711 ns/op	     80607 pods/s	88535050 B/op	  915674 allocs/op
+BenchmarkPodInformerSync/protobuf/5000-10         	      19	  58363329 ns/op	     85670 pods/s	88530906 B/op	  915668 allocs/op
+BenchmarkPodInformerSync/protobuf/5000-10         	      20	  60105548 ns/op	     83187 pods/s	88530707 B/op	  915667 allocs/op
+BenchmarkPodInformerSync/protobuf/5000-10         	      19	  60190371 ns/op	     83070 pods/s	88530976 B/op	  915667 allocs/op
+BenchmarkPodInformerSync/protobuf/5000-10         	      19	  59141270 ns/op	     84543 pods/s	88530535 B/op	  915666 allocs/op
+BenchmarkPodInformerSync/protobuf/5000-10         	      20	  57934906 ns/op	     86304 pods/s	88531480 B/op	  915668 allocs/op
+BenchmarkPodInformerSync/protobuf/5000-10         	      20	  59692000 ns/op	     83763 pods/s	88529764 B/op	  915665 allocs/op
+BenchmarkPodInformerSync/protobuf/5000-10         	      20	  60119654 ns/op	     83167 pods/s	88530002 B/op	  915665 allocs/op
+BenchmarkPodInformerSync/protobuf/5000-10         	      20	  57798654 ns/op	     86507 pods/s	88532080 B/op	  915666 allocs/op
+BenchmarkPodInformerSync/protobuf/5000-10         	      20	  58995102 ns/op	     84753 pods/s	88529787 B/op	  915665 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 460235292 ns/op	     10864 pods/s	154589490 B/op	 2860722 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 440059069 ns/op	     11362 pods/s	154592741 B/op	 2860728 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 458118681 ns/op	     10914 pods/s	154598125 B/op	 2860730 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 476645444 ns/op	     10490 pods/s	154592194 B/op	 2860712 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 466849320 ns/op	     10710 pods/s	154594090 B/op	 2860722 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 450968736 ns/op	     11087 pods/s	154592565 B/op	 2860723 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 475322639 ns/op	     10519 pods/s	154589805 B/op	 2860724 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 473244889 ns/op	     10565 pods/s	154588752 B/op	 2860721 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 461239444 ns/op	     10840 pods/s	154586368 B/op	 2860722 allocs/op
+BenchmarkPodInformerSync/json/5000-10             	       3	 451023236 ns/op	     11086 pods/s	154593496 B/op	 2860720 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       5	 254957425 ns/op	     78444 pods/s	353918982 B/op	 3661005 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       4	 256908823 ns/op	     77849 pods/s	353919608 B/op	 3661003 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       5	 233158592 ns/op	     85779 pods/s	353921801 B/op	 3661009 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       4	 257778354 ns/op	     77586 pods/s	353920316 B/op	 3661008 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       5	 248067658 ns/op	     80623 pods/s	353916526 B/op	 3661001 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       5	 236730783 ns/op	     84484 pods/s	353918819 B/op	 3661008 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       4	 257979166 ns/op	     77526 pods/s	353917234 B/op	 3661008 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       5	 223917425 ns/op	     89319 pods/s	353919176 B/op	 3661003 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       5	 237913250 ns/op	     84064 pods/s	353916443 B/op	 3661001 allocs/op
+BenchmarkPodInformerSync/protobuf/20000-10        	       5	 240261658 ns/op	     83243 pods/s	353914518 B/op	 3661001 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1916644458 ns/op	     10435 pods/s	618096704 B/op	11441051 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1839781167 ns/op	     10871 pods/s	618097320 B/op	11441063 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1794202375 ns/op	     11147 pods/s	618095784 B/op	11441052 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1802661792 ns/op	     11095 pods/s	618095448 B/op	11441051 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1887973666 ns/op	     10593 pods/s	618096936 B/op	11441061 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1838276750 ns/op	     10880 pods/s	618095656 B/op	11441052 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1872072208 ns/op	     10683 pods/s	618088424 B/op	11441025 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1800556500 ns/op	     11108 pods/s	618079128 B/op	11441015 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1817492791 ns/op	     11004 pods/s	618095992 B/op	11441054 allocs/op
+BenchmarkPodInformerSync/json/20000-10            	       1	1794476959 ns/op	     11145 pods/s	618095320 B/op	11441050 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      31	  37127414 ns/op	 271.38 MB/s	    134672 pods/s	85606473 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      31	  39679676 ns/op	 253.92 MB/s	    126009 pods/s	85606472 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      30	  36892817 ns/op	 273.10 MB/s	    135528 pods/s	85606477 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      31	  37296820 ns/op	 270.15 MB/s	    134060 pods/s	85606477 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      30	  37200906 ns/op	 270.84 MB/s	    134405 pods/s	85606477 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      31	  36716148 ns/op	 274.42 MB/s	    136180 pods/s	85606474 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      32	  37081361 ns/op	 271.71 MB/s	    134839 pods/s	85606479 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      32	  37269027 ns/op	 270.35 MB/s	    134160 pods/s	85606474 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      27	  37491633 ns/op	 268.74 MB/s	    133363 pods/s	85606480 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/protobuf-10            	      31	  37207328 ns/op	 270.80 MB/s	    134382 pods/s	85606477 B/op	  885014 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 411910889 ns/op	  45.34 MB/s	     12139 pods/s	151669176 B/op	 2830080 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 415217792 ns/op	  44.98 MB/s	     12042 pods/s	151669554 B/op	 2830082 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 414775333 ns/op	  45.03 MB/s	     12055 pods/s	151669597 B/op	 2830083 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 412159805 ns/op	  45.31 MB/s	     12131 pods/s	151669618 B/op	 2830083 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 411951264 ns/op	  45.33 MB/s	     12137 pods/s	151668952 B/op	 2830079 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 419120847 ns/op	  44.56 MB/s	     11930 pods/s	151668893 B/op	 2830078 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 411615736 ns/op	  45.37 MB/s	     12147 pods/s	151669005 B/op	 2830079 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 416039875 ns/op	  44.89 MB/s	     12018 pods/s	151669416 B/op	 2830081 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 413242375 ns/op	  45.19 MB/s	     12099 pods/s	151669165 B/op	 2830080 allocs/op
+BenchmarkWatchStreamDecode/fastjson-10            	       3	 441516000 ns/op	  42.30 MB/s	     11325 pods/s	151668882 B/op	 2830078 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/client	123.180s

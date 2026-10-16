@@ -1,0 +1,26 @@
+goos: darwin
+goarch: arm64
+pkg: gobench
+cpu: Apple M1 Max
+BenchmarkGoDecode/value-4         	       1	 687074292 ns/op	 115.62 MB/s	495610736 B/op	10600040 allocs/op
+BenchmarkGoDecode/value-4         	       1	 660993834 ns/op	 120.18 MB/s	495608816 B/op	10600004 allocs/op
+BenchmarkGoDecode/value-4         	       1	 660582041 ns/op	 120.26 MB/s	495608800 B/op	10600004 allocs/op
+BenchmarkGoDecode/value-4         	       1	 662883417 ns/op	 119.84 MB/s	495608704 B/op	10600002 allocs/op
+BenchmarkGoDecode/value-4         	       1	 712021750 ns/op	 111.57 MB/s	495608832 B/op	10600003 allocs/op
+BenchmarkGoDecode/value-4         	       1	 654387458 ns/op	 121.40 MB/s	495608688 B/op	10600002 allocs/op
+BenchmarkGoDecode/value-4         	       1	 656256542 ns/op	 121.05 MB/s	495608688 B/op	10600002 allocs/op
+BenchmarkGoDecode/value-4         	       1	 666057250 ns/op	 119.27 MB/s	495608816 B/op	10600003 allocs/op
+BenchmarkGoDecode/value-4         	       1	 667789500 ns/op	 118.96 MB/s	495608720 B/op	10600002 allocs/op
+BenchmarkGoDecode/value-4         	       1	 664633791 ns/op	 119.52 MB/s	495608672 B/op	10600002 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 940151042 ns/op	  84.50 MB/s	325616912 B/op	 4347393 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 911109208 ns/op	  87.19 MB/s	325082240 B/op	 4340066 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 877337916 ns/op	  90.55 MB/s	325077184 B/op	 4340049 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 877939375 ns/op	  90.48 MB/s	325079296 B/op	 4340062 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 877059167 ns/op	  90.58 MB/s	325068680 B/op	 4340044 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 876238542 ns/op	  90.66 MB/s	325073840 B/op	 4340050 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 878941791 ns/op	  90.38 MB/s	325088936 B/op	 4340082 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 887782500 ns/op	  89.48 MB/s	325061928 B/op	 4340028 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 878728125 ns/op	  90.40 MB/s	325072656 B/op	 4340047 allocs/op
+BenchmarkGoDecode/typed-4         	       1	 875178167 ns/op	  90.77 MB/s	325084704 B/op	 4340071 allocs/op
+PASS
+ok  	gobench	16.310s

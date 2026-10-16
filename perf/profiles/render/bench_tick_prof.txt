@@ -1,0 +1,9 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+BenchmarkTick-10    	      60	  52911810 ns/op	46207986 B/op	  480214 allocs/op
+--- BENCH: BenchmarkTick-10
+    zz_render_bench_test.go:82: rows=20000 cols=26
+PASS
+ok  	github.com/derailed/k9s/internal/ui	6.650s

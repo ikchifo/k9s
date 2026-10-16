@@ -1,0 +1,34 @@
+Total: 15.13s
+ROUTINE ======================== github.com/derailed/k9s/internal/model1.Less in /Users/ikennao/repos/OSS/k9s/internal/model1/helpers.go
+      50ms      1.07s (flat, cum)  7.07% of Total
+         .          .    187:func Less(isNumber, isDuration, isCapacity bool, id1, id2, v1, v2 string) bool {
+         .          .    188:	var less, equal bool
+      30ms       30ms    189:	switch {
+         .          .    190:	case isNumber:
+         .          .    191:		less = lessNumber(v1, v2)
+         .          .    192:	case isDuration:
+         .      430ms    193:		less, equal = lessDuration(v1, v2)
+         .          .    194:	case isCapacity:
+         .          .    195:		less, equal = lessCapacity(v1, v2)
+         .          .    196:	default:
+         .          .    197:		less = sortorder.NaturalLess(v1, v2)
+         .          .    198:	}
+      10ms       60ms    199:	if v1 == v2 || equal {
+      10ms      550ms    200:		return sortorder.NaturalLess(id1, id2)
+         .          .    201:	}
+         .          .    202:
+         .          .    203:	return less
+         .          .    204:}
+         .          .    205:
+ROUTINE ======================== github.com/derailed/k9s/internal/model1.RowEventSorter.Less in /Users/ikennao/repos/OSS/k9s/internal/model1/row_event.go
+      70ms      1.14s (flat, cum)  7.53% of Total
+         .          .    314:func (r RowEventSorter) Less(i, j int) bool {
+      20ms       20ms    315:	f1, f2 := r.Events.events[i].Row.Fields, r.Events.events[j].Row.Fields
+      10ms       10ms    316:	id1, id2 := r.Events.events[i].Row.ID, r.Events.events[j].Row.ID
+      30ms      1.10s    317:	less := Less(r.IsNumber, r.IsDuration, r.IsCapacity, id1, id2, f1[r.Index], f2[r.Index])
+      10ms       10ms    318:	if r.Asc {
+         .          .    319:		return less
+         .          .    320:	}
+         .          .    321:
+         .          .    322:	return !less
+         .          .    323:}

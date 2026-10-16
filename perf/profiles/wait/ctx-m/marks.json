@@ -1,0 +1,50 @@
+[
+ {
+  "wall_ns": 1792104854198327000,
+  "what": "launch"
+ },
+ {
+  "wall_ns": 1792104854747894000,
+  "what": "title pods(all)[514]"
+ },
+ {
+  "wall_ns": 1792104854747894000,
+  "what": "row │ team-01 svc-5-6b8d8b9785-n42zb ● 2/2 Running 0 10.244.2.220 kwok-node-2 77m │"
+ },
+ {
+  "wall_ns": 1792104854754507000,
+  "what": "row │ kube-system coredns-589f44dc88-27dqb ● 1/1 Running 0 10.244.0.4 kwok-k9s-s-control-plane 81m │"
+ },
+ {
+  "wall_ns": 1792104865961367000,
+  "what": "key ctx-enter"
+ },
+ {
+  "wall_ns": 1792104866214960000,
+  "what": "title "
+ },
+ {
+  "wall_ns": 1792104866214960000,
+  "what": "row "
+ },
+ {
+  "wall_ns": 1792104868617766000,
+  "what": "title pods(all)[5,050]"
+ },
+ {
+  "wall_ns": 1792104868617766000,
+  "what": "row │ team-05 svc-50-549f7456ff-m7lsh ● 2/2 Running 0 10.244.13.234 kwok-node-13 72m │"
+ },
+ {
+  "wall_ns": 1792104868617892000,
+  "what": "done ctx"
+ },
+ {
+  "wall_ns": 1792104868623338000,
+  "what": "row │ kube-system coredns-589f44dc88-lmmzx ● 1/1 Running 0 10.244.0.4 kwok-k9s-m-control-plane 76m │"
+ },
+ {
+  "wall_ns": 1792104870118577000,
+  "what": "flight ctx"
+ }
+]

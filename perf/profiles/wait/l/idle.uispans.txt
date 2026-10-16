@@ -1,0 +1,88 @@
+# clock snapshot: trace 995941644111488 wall 18:46:26.461; anchor "fgprof idle end" at 18:46:35.161
+
+## UI goroutine running spans in [-12000, 1000] ms (merged until it blocks; >= 1.0ms)
+  -8634.3 +   87.1ms (cpu   85.2) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+  -6690.9 +  230.6ms (cpu    0.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: ?
+  -6460.4 +   68.4ms (cpu   67.5) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+  -4673.4 +  420.9ms (cpu    0.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: ?
+  -4252.5 +   83.7ms (cpu   82.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+  -2666.3 +  559.0ms (cpu    0.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: ?
+  -2107.3 +   64.1ms (cpu   63.4) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+   -660.8 +   53.3ms (cpu    0.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: ?
+   -607.5 +   24.0ms (cpu   23.3) woken-by: tview.(*Application).QueueUpdate:722 < k9s/internal/ui.(*App).QueueUpdate.func1:70 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+     98.3 +   91.5ms (cpu   91.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+UI busy total: 1682.5ms (running 412.4ms) in 10 spans
+
+## UI goroutine event stacks (preempt/block/syscall sample, count)
+   35 k9s/internal/model1.(*RowEvents).Sort:281 < k9s/internal/model1.(*TableData).Sort:112 < k9s/internal/ui.(*Table).UpdateUI:475 < k9s/internal/view.(*Browser).TableDataChanged.func1:369
+   16 tview.(*Application).draw:605 < tview.(*Application).QueueUpdateDraw.1:732 < tview.(*Application).Run:376 < k9s/internal/view.(*App).Run:569
+   12 k9s/internal/model1.Less:200 < k9s/internal/model1.RowEventSorter.Less:317 < k9s/internal/model1.(*RowEvents).Sort:281 < k9s/internal/model1.(*TableData).Sort:112
+    8 tview.NewTableCell:62 < k9s/internal/ui.(*Table).buildRow:534 < k9s/internal/ui.(*Table).UpdateUI.func1:485 < k9s/internal/model1.(*RowEvents).Range:244
+    6 k9s/internal/ui.(*Table).shouldExcludeColumn:465 < k9s/internal/ui.(*Table).buildRow:512 < k9s/internal/ui.(*Table).UpdateUI.func1:485 < k9s/internal/model1.(*RowEvents).Range:244
+    6 tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+    5 k9s/internal/ui.Pad:59 < k9s/internal/ui.formatCell:111 < k9s/internal/ui.(*Table).buildRow:531 < k9s/internal/ui.(*Table).UpdateUI.func1:485
+    4 k9s/internal/model1.IsValid:103 < k9s/internal/model1.DefaultColorer:36 < k9s/internal/render.(*Pod).ColorerFunc.func1:98 < k9s/internal/ui.(*Table).buildRow:537
+    4 k9s/internal/render.(*Pod).ColorerFunc.func1:97 < k9s/internal/ui.(*Table).buildRow:537 < k9s/internal/ui.(*Table).UpdateUI.func1:485 < k9s/internal/model1.(*RowEvents).Range:244
+    3 k9s/internal/render.(*Pod).ColorerFunc.func1:104 < k9s/internal/ui.(*Table).buildRow:537 < k9s/internal/ui.(*Table).UpdateUI.func1:485 < k9s/internal/model1.(*RowEvents).Range:244
+    2 k9s/internal/ui.Pad:52 < k9s/internal/ui.formatCell:111 < k9s/internal/ui.(*Table).buildRow:531 < k9s/internal/ui.(*Table).UpdateUI.func1:485
+    2 tview.stringWidth:441 < tview.decomposeString:211 < tview.printWithStyle:243 < tview.(*Table).Draw:903
+    2 tview.stringWidth:441 < tview.decomposeString:211 < tview.(*Table).Draw:810 < tview.(*Pages).Draw:300
+    2 tview.decomposeString:163 < tview.(*Table).Draw:810 < tview.(*Pages).Draw:300 < tview.(*Flex).Draw:211
+    1 k9s/internal/model1.(*TableData).GetNamespace:241 < k9s/internal/model.(*Table).GetNamespace:162 < k9s/internal/ui.(*Table).buildRow:502 < k9s/internal/ui.(*Table).UpdateUI.func1:485
+
+## per goroutine family (creator fn): ms in window
+run= 4770.5 runnable= 161.3 sys=   0.0 wait{=6283 select=7665 sync=581 system goroutine wait=4652}  k9s/internal/model1.parallelRender.func1
+run= 2224.9 runnable=   3.4 sys=   0.0 wait{=59731 GC background sweeper wait=4178 system goroutine wait=39327}  runtime.gcBgMarkWorker
+run=  412.4 runnable=   6.1 sys=   0.2 wait{=1264 select=7952}  ** UI event loop (tview.Application.Run)
+run=  396.5 runnable=  68.4 sys=   0.0 wait{chan receive=9673 select=8258}  runtime.(*traceAdvancerState).start.func1
+run=   10.5 runnable=   0.0 sys=   0.0 wait{=6499 select=2186}  klog/v2.(*flushDaemon).run.func1
+run=    3.4 runnable=  13.5 sys=  10.7 wait{}  client-go/discovery.fetchGroupVersionResources.func1
+run=    1.6 runnable=   1.4 sys=   0.0 wait{chan receive=9650}  runtime.traceStartReadCPU.func1
+run=    1.3 runnable=   0.0 sys=   0.1 wait{=7693 network=1002}  net/http.(*conn).serve
+run=    1.1 runnable=   0.2 sys=   0.5 wait{sync=2}  k9s/internal/view.(*App).refreshCluster.func1
+
+## top waiting sites (sum of goroutine-ms in window)
+ 215496.2ms n=232   @ runtime.gopark
+  39327.3ms n=258  system goroutine wait @ runtime.gopark
+  26088.4ms n=27    @ client-go/tools/cache.(*sharedProcessor).run:1283
+  26088.4ms n=27    @ client-go/tools/cache.(*controller).RunWithContext.func1:175
+  26088.4ms n=27    @ client-go/tools/cache.handleAnyWatch:1001 < client-go/tools/cache.handleWatch:958 < client-go/tools/cache.(*Reflector).watch:620
+  26088.3ms n=27    @ client-go/tools/cache.(*RealFIFO).PopBatch:498 < client-go/tools/cache.(*controller).processLoop:251 < client-go/tools/cache.(*controller).RunWithContext:209
+  26088.3ms n=27    @ client-go/tools/cache.(*Reflector).startResync:521 < client-go/tools/cache.(*Reflector).watchWithResync.func2:551
+  26088.3ms n=27    @ client-go/rest/watch.(*Decoder).Decode:49
+  19323.5ms n=106  chan receive @ runtime.chanrecv1
+  10449.7ms n=837  select @ runtime.selectgo
+   9698.2ms n=23   system goroutine wait @ runtime/trace.(*traceMultiplexer).startLocked.func1
+   8696.1ms n=9     @ k9s/internal/view.(*App).initSignals.func1:190
+   8696.1ms n=9     @ tview.(*Application).Run.func2:267
+   7951.8ms n=6    select @ tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124
+   7665.0ms n=5    select @ k9s/internal/model.(*Table).updater:208
+   7088.7ms n=8     @ k9s/internal/ui.(*Flash).Watch:60
+   7085.2ms n=8     @ k9s/internal/view.(*App).clusterUpdater:376
+   4651.9ms n=6    system goroutine wait @ runtime.(*scavengerState).park
+   4178.5ms n=3    GC background sweeper wait @ runtime.goparkunlock
+   2609.6ms n=2    network @ internal/poll.(*FD).Read
+   1607.5ms n=1    select @ k9s/internal/view.(*App).clusterUpdater:376
+   1607.4ms n=1    select @ k9s/internal/ui.(*Flash).Watch:60
+   1263.8ms n=4     @ tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124
+   1238.7ms n=4     @ k9s/internal/model.(*Table).updater:208
+    510.0ms n=4    sync @ k9s/internal/model1.parallelRender:58 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266
+
+## goroutines created / exited in window
+created    8 k9s/internal/ui.(*App).QueueUpdateDraw.func1
+created   40 k9s/internal/model1.parallelRender.func1
+created    1 net/http.setRequestCancel.func4
+created    1 net/http/internal/http2.(*clientStream).doRequest
+created    1 k9s/internal/ui.(*App).QueueUpdate.func1
+created    1 k9s/internal/view.(*App).refreshCluster.func1
+created   22 client-go/discovery.fetchGroupVersionResources.func1
+exited    22 client-go/discovery.fetchGroupVersionResources.func1
+exited     1 k9s/internal/view.(*App).refreshCluster.func1
+exited     1 net/http.(*connReader).backgroundRead
+exited     1 runtime.(*traceAdvancerState).start.func1
+exited     1 
+exited    48 k9s/internal/model1.parallelRender.func1
+exited     8 k9s/internal/ui.(*App).QueueUpdateDraw.func1
+exited     1 net/http/internal/http2.(*clientStream).doRequest
+exited     1 net/http.setRequestCancel.func4
+exited     1 k9s/internal/ui.(*App).QueueUpdate.func1

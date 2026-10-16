@@ -1,0 +1,48 @@
+File: k9s-prof-cpu
+Type: cpu
+Time: 2026-10-15 18:25:16 EDT
+Duration: 30.03s, Total samples = 14.86s (49.49%)
+Showing nodes accounting for 9.30s, 62.58% of 14.86s total
+Dropped 347 nodes (cum <= 0.07s)
+Showing top 40 nodes out of 214
+      flat  flat%   sum%        cum   cum%
+     0.83s  5.59%  5.59%      0.83s  5.59%  internal/runtime/maps.memHashAES
+     0.81s  5.45% 11.04%      0.81s  5.45%  runtime.kevent
+     0.77s  5.18% 16.22%      0.77s  5.18%  runtime.usleep
+     0.58s  3.90% 20.12%      0.93s  6.26%  runtime.tryDeferToSpanScan
+     0.55s  3.70% 23.82%      1.10s  7.40%  runtime.scanObjectsSmall
+     0.48s  3.23% 27.05%      1.11s  7.47%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+     0.38s  2.56% 29.61%      2.03s 13.66%  runtime.mapaccess2_faststr
+     0.34s  2.29% 31.90%      8.36s 56.26%  k8s.io/apimachinery/pkg/runtime.structFromUnstructured
+     0.26s  1.75% 33.65%      0.39s  2.62%  runtime.mallocgcSmallScanNoHeaderSC2
+     0.25s  1.68% 35.33%      1.48s  9.96%  runtime.mapaccess2
+     0.22s  1.48% 36.81%      0.22s  1.48%  runtime.memequal
+     0.22s  1.48% 38.29%      0.22s  1.48%  runtime.pthread_cond_wait
+     0.21s  1.41% 39.70%      0.21s  1.41%  runtime.pthread_cond_signal
+     0.20s  1.35% 41.05%      0.20s  1.35%  runtime.spanSetScans
+     0.19s  1.28% 42.33%      0.30s  2.02%  github.com/fvbommel/sortorder.NaturalCompare
+     0.19s  1.28% 43.61%      0.26s  1.75%  internal/runtime/maps.MemHash64
+     0.19s  1.28% 44.89%      0.24s  1.62%  reflect.Value.Field
+     0.18s  1.21% 46.10%      0.18s  1.21%  runtime.(*spanScanOwnership).or (inline)
+     0.16s  1.08% 47.17%      8.43s 56.73%  k8s.io/apimachinery/pkg/runtime.fromUnstructured
+     0.15s  1.01% 48.18%      0.15s  1.01%  runtime.memclrNoHeapPointers
+     0.15s  1.01% 49.19%      0.25s  1.68%  type:.eq.IM8
+     0.13s  0.87% 50.07%      0.25s  1.68%  runtime.concatstrings
+     0.13s  0.87% 50.94%      0.44s  2.96%  runtime.interhash
+     0.12s  0.81% 51.75%      0.12s  0.81%  internal/runtime/maps.(*groupReference).ctrls (inline)
+     0.12s  0.81% 52.56%      0.59s  3.97%  reflect.Value.Set
+     0.12s  0.81% 53.36%      0.59s  3.97%  type:.hash.IM8
+     0.11s  0.74% 54.10%      1.30s  8.75%  k8s.io/apimachinery/pkg/runtime.fieldInfoFromField
+     0.11s  0.74% 54.85%      1.43s  9.62%  runtime.mallocgc
+     0.11s  0.74% 55.59%      0.32s  2.15%  runtime.scanObject
+     0.10s  0.67% 56.26%      0.12s  0.81%  internal/runtime/maps.(*Iter).Next
+     0.10s  0.67% 56.93%      0.10s  0.67%  reflect.flag.kind (inline)
+     0.10s  0.67% 57.60%      0.10s  0.67%  reflect.flag.ro (inline)
+     0.10s  0.67% 58.28%      0.12s  0.81%  runtime.ifaceeq
+     0.10s  0.67% 58.95%      0.10s  0.67%  runtime.memmove
+     0.10s  0.67% 59.62%      0.30s  2.02%  runtime.scanObjectSmall
+     0.09s  0.61% 60.23%      0.09s  0.61%  reflect.(*rtype).Kind (partial-inline)
+     0.09s  0.61% 60.83%      0.18s  1.21%  reflect.Value.Elem
+     0.09s  0.61% 61.44%      2.40s 16.15%  reflect.Value.MapIndex
+     0.09s  0.61% 62.05%      0.09s  0.61%  reflect.Value.Type (inline)
+     0.08s  0.54% 62.58%      0.08s  0.54%  internal/runtime/atomic.(*Int64).Add

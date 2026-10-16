@@ -1,0 +1,64 @@
+Total: 14.86s
+ROUTINE ======================== github.com/derailed/k9s/internal/render.(*Pod).defaultRow in /Users/ikennao/repos/OSS/k9s/internal/render/pod.go
+         0      9.20s (flat, cum) 61.91% of Total
+         .          .    149:func (p *Pod) defaultRow(pwm *PodWithMetrics, row *model1.Row) error {
+         .       40ms    150:	var st v1.PodStatus
+         .      2.70s    151:	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(pwm.Raw.Object["status"].(map[string]any), &st); err != nil {
+         .          .    152:		return err
+         .          .    153:	}
+         .          .    154:	spec := new(v1.PodSpec)
+         .      5.78s    155:	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(pwm.Raw.Object["spec"].(map[string]any), spec); err != nil {
+         .          .    156:		return err
+         .          .    157:	}
+         .          .    158:
+         .       10ms    159:	dt := pwm.Raw.GetDeletionTimestamp()
+         .          .    160:	cReady, _, cRestarts, lastRestart := p.ContainerStats(st.ContainerStatuses)
+         .          .    161:
+         .          .    162:	iReady, iTotal, iRestarts := p.initContainerStats(spec.InitContainers, st.InitContainerStatuses)
+         .          .    163:	cReady += iReady
+         .          .    164:	allCounts := len(spec.Containers) + iTotal
+         .          .    165:	rgr, rgt := p.readinessGateStats(spec, &st)
+         .          .    166:	ready := hasPodReadyCondition(st.Conditions)
+         .          .    167:
+         .          .    168:	var ccmx []mv1beta1.ContainerMetrics
+         .          .    169:	if pwm.MX != nil {
+         .          .    170:		ccmx = pwm.MX.Containers
+         .          .    171:	}
+         .      180ms    172:	c, r := gatherPodMX(spec, ccmx)
+         .          .    173:	phase := p.Phase(dt, spec, &st)
+         .          .    174:
+         .       30ms    175:	ns, n := pwm.Raw.GetNamespace(), pwm.Raw.GetName()
+         .          .    176:
+         .       10ms    177:	row.ID = client.FQN(ns, n)
+         .       30ms    178:	row.Fields = model1.Fields{
+         .          .    179:		ns,
+         .          .    180:		n,
+         .      110ms    181:		computeVulScore(ns, pwm.Raw.GetLabels(), spec),
+         .          .    182:		"●",
+         .       30ms    183:		strconv.Itoa(cReady) + "/" + strconv.Itoa(allCounts),
+         .          .    184:		phase,
+         .       10ms    185:		strconv.Itoa(cRestarts + iRestarts),
+         .          .    186:		ToAge(lastRestart),
+         .          .    187:		toMc(c.cpu),
+         .       20ms    188:		toMc(r.cpu) + ":" + toMc(r.lcpu),
+         .       20ms    189:		client.ToPercentageStr(c.cpu, r.cpu),
+         .          .    190:		client.ToPercentageStr(c.cpu, r.lcpu),
+         .          .    191:		toMi(c.mem),
+         .       10ms    192:		toMi(r.mem) + ":" + toMi(r.lmem),
+         .       10ms    193:		client.ToPercentageStr(c.mem, r.mem),
+         .          .    194:		client.ToPercentageStr(c.mem, r.lmem),
+         .       10ms    195:		toMc(r.gpu) + ":" + toMc(r.lgpu),
+         .          .    196:		na(st.PodIP),
+         .          .    197:		na(spec.NodeName),
+         .          .    198:		na(spec.ServiceAccountName),
+         .          .    199:		asNominated(st.NominatedNodeName),
+         .          .    200:		asReadinessGate(spec, &st),
+         .          .    201:		p.mapQOS(st.QOSClass),
+         .      150ms    202:		mapToStr(pwm.Raw.GetLabels()),
+         .          .    203:		AsStatus(p.diagnose(phase, cReady, allCounts, ready, rgr, rgt)),
+         .       50ms    204:		ToAge(pwm.Raw.GetCreationTimestamp()),
+         .          .    205:	}
+         .          .    206:
+         .          .    207:	return nil
+         .          .    208:}
+         .          .    209:

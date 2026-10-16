@@ -1,0 +1,21 @@
+    table_sync_int_test.go:31: refreshed 2.342375ms after sync
+    table_sync_int_test.go:43: refreshed 480.625µs after sync
+    table_sync_int_test.go:31: refreshed 157.916µs after sync
+    table_sync_int_test.go:43: refreshed 505.333µs after sync
+    table_sync_int_test.go:31: refreshed 233.958µs after sync
+    table_sync_int_test.go:43: refreshed 392.708µs after sync
+    table_sync_int_test.go:31: refreshed 171.834µs after sync
+    table_sync_int_test.go:43: refreshed 362.417µs after sync
+    table_sync_int_test.go:31: refreshed 183.834µs after sync
+    table_sync_int_test.go:43: refreshed 439µs after sync
+    table_sync_int_test.go:31: refreshed 241.542µs after sync
+    table_sync_int_test.go:43: refreshed 1.756459ms after sync
+    table_sync_int_test.go:31: refreshed 440.5µs after sync
+    table_sync_int_test.go:43: refreshed 2.623625ms after sync
+    table_sync_int_test.go:31: refreshed 957.875µs after sync
+    table_sync_int_test.go:43: refreshed 1.548292ms after sync
+    table_sync_int_test.go:31: refreshed 586.875µs after sync
+    table_sync_int_test.go:43: refreshed 3.652709ms after sync
+    table_sync_int_test.go:31: refreshed 527.458µs after sync
+    table_sync_int_test.go:43: refreshed 1.002917ms after sync
+ok  	github.com/derailed/k9s/internal/model	2.157s

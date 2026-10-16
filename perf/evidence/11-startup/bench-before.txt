@@ -1,0 +1,10 @@
+BenchmarkWatchDecode-4         	       5	 239729192 ns/op	  33.14 MB/s	60549985 B/op	 1108112 allocs/op
+BenchmarkWatchDecode-4         	       5	 239729125 ns/op	  33.14 MB/s	60550148 B/op	 1108099 allocs/op
+BenchmarkWatchDecode-4         	       5	 233041375 ns/op	  34.09 MB/s	60544702 B/op	 1108086 allocs/op
+BenchmarkWatchDecode-4         	       5	 230085808 ns/op	  34.53 MB/s	60543404 B/op	 1108082 allocs/op
+BenchmarkWatchDecode-4         	       5	 230823508 ns/op	  34.42 MB/s	60544662 B/op	 1108086 allocs/op
+BenchmarkWatchDecode-4         	       5	 231390058 ns/op	  34.33 MB/s	60547854 B/op	 1108092 allocs/op
+BenchmarkWatchDecode-4         	       5	 228918075 ns/op	  34.70 MB/s	60542526 B/op	 1108081 allocs/op
+BenchmarkWatchDecode-4         	       5	 229492842 ns/op	  34.62 MB/s	60549246 B/op	 1108098 allocs/op
+BenchmarkWatchDecode-4         	       5	 236044775 ns/op	  33.65 MB/s	60549012 B/op	 1108095 allocs/op
+BenchmarkWatchDecode-4         	       5	 231457658 ns/op	  34.32 MB/s	60548993 B/op	 1108095 allocs/op

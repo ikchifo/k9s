@@ -1,0 +1,15 @@
+s idle 40
+s before-switch 40
+s after-switch1 48
+s after-switch6 48
+m idle 40
+m before-switch 40
+m after-switch1 49
+m after-switch6 48
+l idle 40
+l before-switch 40
+l after-switch1 49
+l after-switch6 48
+ctx-s before 40 after 48
+ctx-m before 40 after 48
+ctx-l before 40 after 48

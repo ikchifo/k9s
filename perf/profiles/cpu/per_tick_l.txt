@@ -1,0 +1,1 @@
+ticks=13.73 cpu/tick=1.082s render/tick=670ms fromU=614ms spec=421 status=197 gc=212 malloc=104 updateui=52 sort=28 buildrow=20 refresh=33 clone=6.6 alloc/tick=334MB render alloc/pod/tick=13.7KB objs/tick=5.84M cells/tick=196k

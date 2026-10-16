@@ -1,0 +1,182 @@
+[
+  {
+    "size": "s",
+    "metric": "startup_first_frame",
+    "median": 301.6
+  },
+  {
+    "size": "s",
+    "metric": "startup_full_table",
+    "median": 301.8
+  },
+  {
+    "size": "s",
+    "metric": "idle_cpu_pct",
+    "median": 1.2
+  },
+  {
+    "size": "s",
+    "metric": "idle_rss",
+    "median": 159.4
+  },
+  {
+    "size": "s",
+    "metric": "refresh_cpu",
+    "median": 23.4
+  },
+  {
+    "size": "s",
+    "metric": "switch_to_deploy",
+    "median": 84.8
+  },
+  {
+    "size": "s",
+    "metric": "switch_to_pods",
+    "median": 60.5
+  },
+  {
+    "size": "s",
+    "metric": "filter_key_echo",
+    "median": 9.8
+  },
+  {
+    "size": "s",
+    "metric": "filter_apply",
+    "median": 238.1
+  },
+  {
+    "size": "s",
+    "metric": "scroll_page_down",
+    "median": 18
+  },
+  {
+    "size": "s",
+    "metric": "sort_toggle",
+    "median": 15.6
+  },
+  {
+    "size": "s",
+    "metric": "context_switch",
+    "median": 280.3
+  },
+  {
+    "size": "m",
+    "metric": "startup_first_frame",
+    "median": 1146.8
+  },
+  {
+    "size": "m",
+    "metric": "startup_full_table",
+    "median": 1147
+  },
+  {
+    "size": "m",
+    "metric": "idle_cpu_pct",
+    "median": 4
+  },
+  {
+    "size": "m",
+    "metric": "idle_rss",
+    "median": 437.9
+  },
+  {
+    "size": "m",
+    "metric": "refresh_cpu",
+    "median": 80.4
+  },
+  {
+    "size": "m",
+    "metric": "switch_to_deploy",
+    "median": 78
+  },
+  {
+    "size": "m",
+    "metric": "switch_to_pods",
+    "median": 121.4
+  },
+  {
+    "size": "m",
+    "metric": "filter_key_echo",
+    "median": 9.5
+  },
+  {
+    "size": "m",
+    "metric": "filter_apply",
+    "median": 240.7
+  },
+  {
+    "size": "m",
+    "metric": "scroll_page_down",
+    "median": 13.8
+  },
+  {
+    "size": "m",
+    "metric": "sort_toggle",
+    "median": 38.4
+  },
+  {
+    "size": "m",
+    "metric": "context_switch",
+    "median": 1175.4
+  },
+  {
+    "size": "l",
+    "metric": "startup_first_frame",
+    "median": 3947.8
+  },
+  {
+    "size": "l",
+    "metric": "startup_full_table",
+    "median": 3947.9
+  },
+  {
+    "size": "l",
+    "metric": "idle_cpu_pct",
+    "median": 12.2
+  },
+  {
+    "size": "l",
+    "metric": "idle_rss",
+    "median": 1369.6
+  },
+  {
+    "size": "l",
+    "metric": "refresh_cpu",
+    "median": 243.5
+  },
+  {
+    "size": "l",
+    "metric": "switch_to_deploy",
+    "median": 104.8
+  },
+  {
+    "size": "l",
+    "metric": "switch_to_pods",
+    "median": 366.4
+  },
+  {
+    "size": "l",
+    "metric": "filter_key_echo",
+    "median": 9.6
+  },
+  {
+    "size": "l",
+    "metric": "filter_apply",
+    "median": 260.5
+  },
+  {
+    "size": "l",
+    "metric": "scroll_page_down",
+    "median": 12.7
+  },
+  {
+    "size": "l",
+    "metric": "sort_toggle",
+    "median": 112.9
+  },
+  {
+    "size": "l",
+    "metric": "context_switch",
+    "median": 4067.9
+  }
+]

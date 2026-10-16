@@ -1,0 +1,78 @@
+File: k9s-prof-cpu
+Type: cpu
+Time: 2026-10-15 18:24:47 EDT
+Duration: 8.01s, Total samples = 8.96s (111.92%)
+Showing nodes accounting for 7.18s, 80.13% of 8.96s total
+Dropped 242 nodes (cum <= 0.04s)
+Showing top 70 nodes out of 185
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%      6.56s 73.21%  runtime.systemstack
+         0     0%     0%      4.57s 51.00%  runtime.(*mheap).alloc.func1
+         0     0%     0%      4.57s 51.00%  runtime.(*mheap).allocSpan
+     4.42s 49.33% 49.33%      4.42s 49.33%  runtime.madvise
+         0     0% 49.33%      4.42s 49.33%  runtime.sysUsed (inline)
+         0     0% 49.33%      4.42s 49.33%  runtime.sysUsedOS (inline)
+         0     0% 49.33%      1.50s 16.74%  runtime.gcBgMarkWorker.func2
+         0     0% 49.33%      1.50s 16.74%  runtime.gcDrain
+         0     0% 49.33%      1.08s 12.05%  runtime.gcBgMarkWorker
+         0     0% 49.33%      0.82s  9.15%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 49.33%      0.81s  9.04%  k8s.io/apimachinery/pkg/watch.(*StreamWatcher).receive
+         0     0% 49.33%      0.81s  9.04%  k8s.io/client-go/rest/watch.(*Decoder).Decode
+     0.01s  0.11% 49.44%      0.80s  8.93%  runtime.scanSpan
+         0     0% 49.44%      0.75s  8.37%  k8s.io/apimachinery/pkg/runtime/serializer/json.(*Serializer).Decode
+     0.69s  7.70% 57.14%      0.74s  8.26%  runtime.tryDeferToSpanScan
+     0.01s  0.11% 57.25%      0.72s  8.04%  runtime.mallocgc
+         0     0% 57.25%      0.68s  7.59%  runtime.gcDrainMarkWorkerDedicated (inline)
+     0.67s  7.48% 64.73%      0.67s  7.48%  runtime.kevent
+         0     0% 64.73%      0.67s  7.48%  runtime.netpoll
+         0     0% 64.73%      0.64s  7.14%  k8s.io/apimachinery/pkg/runtime/serializer/json.(*Serializer).unmarshal
+         0     0% 64.73%      0.64s  7.14%  sigs.k8s.io/json.UnmarshalCaseSensitivePreserveInts (inline)
+         0     0% 64.73%      0.64s  7.14%  sigs.k8s.io/json/internal/golang/encoding/json.Unmarshal
+         0     0% 64.73%      0.62s  6.92%  github.com/derailed/k9s/internal/model1.Hydrate.func1
+         0     0% 64.73%      0.62s  6.92%  github.com/derailed/k9s/internal/model1.parallelRender.func1
+         0     0% 64.73%      0.62s  6.92%  github.com/derailed/k9s/internal/render.(*Pod).Render
+         0     0% 64.73%      0.62s  6.92%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+         0     0% 64.73%      0.62s  6.92%  runtime.mcall
+         0     0% 64.73%      0.62s  6.92%  runtime.schedule
+         0     0% 64.73%      0.61s  6.81%  runtime.park_m
+         0     0% 64.73%      0.59s  6.58%  runtime.findRunnable
+     0.12s  1.34% 66.07%      0.59s  6.58%  runtime.scanObjectsSmall
+         0     0% 66.07%      0.57s  6.36%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).object
+         0     0% 66.07%      0.57s  6.36%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).unmarshal
+         0     0% 66.07%      0.57s  6.36%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).value
+         0     0% 66.07%      0.54s  6.03%  runtime.(*mcache).nextFree
+         0     0% 66.07%      0.53s  5.92%  runtime.(*mcache).refill
+         0     0% 66.07%      0.52s  5.80%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructured (inline)
+         0     0% 66.07%      0.52s  5.80%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructuredWithValidation
+         0     0% 66.07%      0.52s  5.80%  k8s.io/apimachinery/pkg/runtime.Decode (inline)
+         0     0% 66.07%      0.52s  5.80%  k8s.io/apimachinery/pkg/runtime.fromUnstructured
+     0.01s  0.11% 66.18%      0.52s  5.80%  k8s.io/apimachinery/pkg/runtime.structFromUnstructured
+         0     0% 66.18%      0.51s  5.69%  runtime.(*mcentral).cacheSpan
+         0     0% 66.18%      0.51s  5.69%  runtime.(*mcentral).grow
+     0.51s  5.69% 71.88%      0.51s  5.69%  runtime.pthread_cond_signal
+         0     0% 71.88%      0.51s  5.69%  runtime.semawakeup
+         0     0% 71.88%      0.50s  5.58%  runtime.notewakeup
+         0     0% 71.88%      0.50s  5.58%  runtime.startm
+         0     0% 71.88%      0.50s  5.58%  runtime.wakep
+     0.48s  5.36% 77.23%      0.48s  5.36%  runtime.memclrNoHeapPointers
+         0     0% 77.23%      0.45s  5.02%  _.goready.func1
+         0     0% 77.23%      0.45s  5.02%  runtime.ready
+         0     0% 77.23%      0.44s  4.91%  k8s.io/apimachinery/pkg/runtime.sliceFromUnstructured
+         0     0% 77.23%      0.42s  4.69%  runtime.pollWork
+         0     0% 77.23%      0.40s  4.46%  runtime.(*mspan).initHeapBits
+         0     0% 77.23%      0.37s  4.13%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.(*Unstructured).UnmarshalJSON
+         0     0% 77.23%      0.37s  4.13%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.Decode
+         0     0% 77.23%      0.36s  4.02%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.decodeInto
+         0     0% 77.23%      0.36s  4.02%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.unstructuredJSONScheme.decodeToUnstructured
+         0     0% 77.23%      0.36s  4.02%  k8s.io/apimachinery/pkg/util/json.Unmarshal (inline)
+         0     0% 77.23%      0.29s  3.24%  k8s.io/apimachinery/pkg/runtime/serializer/streaming.(*decoder).Decode
+         0     0% 77.23%      0.29s  3.24%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).objectInterface
+         0     0% 77.23%      0.26s  2.90%  runtime.newarray
+     0.02s  0.22% 77.46%      0.26s  2.90%  runtime.scanObject
+         0     0% 77.46%      0.26s  2.90%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).valueInterface
+         0     0% 77.46%      0.25s  2.79%  sigs.k8s.io/json/internal/golang/encoding/json.(*decodeState).arrayInterface
+         0     0% 77.46%      0.24s  2.68%  runtime.mPark (inline)
+         0     0% 77.46%      0.24s  2.68%  runtime.notesleep
+     0.24s  2.68% 80.13%      0.24s  2.68%  runtime.pthread_cond_wait
+         0     0% 80.13%      0.24s  2.68%  runtime.semasleep
+         0     0% 80.13%      0.24s  2.68%  runtime.stopm

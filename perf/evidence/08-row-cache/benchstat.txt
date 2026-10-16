@@ -1,0 +1,15 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/render
+cpu: Apple M1 Max
+                │ perf/evidence/08-row-cache/bench-before.txt │ perf/evidence/08-row-cache/bench-after.txt │
+                │                   sec/op                    │       sec/op        vs base                │
+PodRenderTick-4                                  307.76m ± 1%          16.52m ± 2%  -94.63% (p=0.000 n=10)
+
+                │ perf/evidence/08-row-cache/bench-before.txt │ perf/evidence/08-row-cache/bench-after.txt │
+                │                    B/op                     │        B/op         vs base                │
+PodRenderTick-4                                 426.18Mi ± 0%         23.53Mi ± 0%  -94.48% (p=0.000 n=10)
+
+                │ perf/evidence/08-row-cache/bench-before.txt │ perf/evidence/08-row-cache/bench-after.txt │
+                │                  allocs/op                  │     allocs/op       vs base                │
+PodRenderTick-4                                  6610.2k ± 0%          160.2k ± 0%  -97.58% (p=0.000 n=10)

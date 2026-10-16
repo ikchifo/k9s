@@ -1,0 +1,21 @@
+    factory_int_test.go:39: synced 5000 pods in 29.320333ms
+    factory_int_test.go:51: gave up after 501.071417ms
+    factory_int_test.go:39: synced 5000 pods in 41.633792ms
+    factory_int_test.go:51: gave up after 501.039166ms
+    factory_int_test.go:39: synced 5000 pods in 36.208ms
+    factory_int_test.go:51: gave up after 500.736292ms
+    factory_int_test.go:39: synced 5000 pods in 27.920208ms
+    factory_int_test.go:51: gave up after 501.060459ms
+    factory_int_test.go:39: synced 5000 pods in 31.178584ms
+    factory_int_test.go:51: gave up after 501.049333ms
+    factory_int_test.go:39: synced 5000 pods in 30.385166ms
+    factory_int_test.go:51: gave up after 501.064417ms
+    factory_int_test.go:39: synced 5000 pods in 34.462209ms
+    factory_int_test.go:51: gave up after 501.013792ms
+    factory_int_test.go:39: synced 5000 pods in 33.289125ms
+    factory_int_test.go:51: gave up after 501.071417ms
+    factory_int_test.go:39: synced 5000 pods in 30.52925ms
+    factory_int_test.go:51: gave up after 501.051291ms
+    factory_int_test.go:39: synced 5000 pods in 29.431542ms
+    factory_int_test.go:51: gave up after 501.044875ms
+ok  	github.com/derailed/k9s/internal/watch	6.035s

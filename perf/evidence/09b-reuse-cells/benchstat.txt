@@ -1,0 +1,21 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+                  │ perf/evidence/09b-reuse-cells/bench-before.txt │ perf/evidence/09b-reuse-cells/bench-after.txt │
+                  │                     sec/op                     │        sec/op          vs base                │
+TableRefresh-4                                         57.64m ± 4%             48.14m ± 1%  -16.48% (p=0.000 n=10)
+TableSortToggle-4                                      52.48m ± 2%             43.29m ± 4%  -17.51% (p=0.000 n=10)
+geomean                                                55.00m                  45.65m       -17.00%
+
+                  │ perf/evidence/09b-reuse-cells/bench-before.txt │ perf/evidence/09b-reuse-cells/bench-after.txt │
+                  │                      B/op                      │         B/op           vs base                │
+TableRefresh-4                                        44.73Mi ± 0%            15.85Mi ± 0%  -64.56% (p=0.000 n=10)
+TableSortToggle-4                                     57.05Mi ± 0%            28.17Mi ± 0%  -50.62% (p=0.000 n=10)
+geomean                                               50.52Mi                 21.13Mi       -58.17%
+
+                  │ perf/evidence/09b-reuse-cells/bench-before.txt │ perf/evidence/09b-reuse-cells/bench-after.txt │
+                  │                   allocs/op                    │       allocs/op        vs base                │
+TableRefresh-4                                         503.9k ± 0%             223.9k ± 0%  -55.57% (p=0.000 n=10)
+TableSortToggle-4                                      526.0k ± 0%             246.0k ± 0%  -53.24% (p=0.000 n=10)
+geomean                                                514.9k                  234.7k       -54.42%

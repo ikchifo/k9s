@@ -1,0 +1,15 @@
+label,size,metric,unit,n,median,p90,min,max
+baseline,l,startup_first_byte,ms,5,205.0,272.8,197.6,318.0
+baseline,l,startup_first_frame,ms,5,9126.3,10362.5,9054.8,11094.6
+baseline,l,startup_full_table,ms,5,9126.8,10362.7,9055.0,11094.8
+baseline,l,idle_cpu_pct,%,5,130.4,137.8,126.8,142.3
+baseline,l,idle_rss,MiB,5,1751.8,1764.4,1738.9,1770.8
+baseline,l,refresh_cpu,ms,5,2608.0,2755.9,2537.0,2845.9
+baseline,l,refresh_bytes,B,5,69.1,72.8,23.5,72.9
+baseline,l,switch_to_deploy,ms,5,393.8,407.0,389.5,413.1
+baseline,l,switch_to_pods,ms,5,435.8,467.4,388.3,487.2
+baseline,l,filter_key_echo,ms,30,75.5,194.5,13.0,372.3
+baseline,l,filter_apply,ms,5,1435.4,2410.3,962.8,2977.9
+baseline,l,scroll_page_down,ms,50,9.7,10.3,7.3,27.1
+baseline,l,sort_toggle,ms,10,160.0,237.3,148.7,241.0
+baseline,l,context_switch,ms,5,9063.9,11031.9,8948.8,11038.8

@@ -1,0 +1,49 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/client
+cpu: Apple M1 Max
+                                  │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podinformer-bench.txt │
+                                  │                                                     sec/op                                                      │
+PodInformerSync/protobuf/5000-10                                                                                                        59.42m ± 2%
+PodInformerSync/json/5000-10                                                                                                            460.7m ± 3%
+PodInformerSync/protobuf/20000-10                                                                                                       244.2m ± 6%
+PodInformerSync/json/20000-10                                                                                                            1.828 ± 3%
+WatchStreamDecode/protobuf-10                                                                                                           37.20m ± 1%
+WatchStreamDecode/fastjson-10                                                                                                           414.0m ± 1%
+geomean                                                                                                                                 239.4m
+
+                                  │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podinformer-bench.txt │
+                                  │                                                     pods/s                                                      │
+PodInformerSync/protobuf/5000-10                                                                                                        84.15k ± 3%
+PodInformerSync/json/5000-10                                                                                                            10.85k ± 3%
+PodInformerSync/protobuf/20000-10                                                                                                       81.93k ± 5%
+PodInformerSync/json/20000-10                                                                                                           10.94k ± 3%
+WatchStreamDecode/protobuf-10                                                                                                           134.4k ± 1%
+WatchStreamDecode/fastjson-10                                                                                                           12.08k ± 1%
+geomean                                                                                                                                 33.16k
+
+                                  │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podinformer-bench.txt │
+                                  │                                                      B/op                                                       │
+PodInformerSync/protobuf/5000-10                                                                                                       84.43Mi ± 0%
+PodInformerSync/json/5000-10                                                                                                           147.4Mi ± 0%
+PodInformerSync/protobuf/20000-10                                                                                                      337.5Mi ± 0%
+PodInformerSync/json/20000-10                                                                                                          589.5Mi ± 0%
+WatchStreamDecode/protobuf-10                                                                                                          81.64Mi ± 0%
+WatchStreamDecode/fastjson-10                                                                                                          144.6Mi ± 0%
+geomean                                                                                                                                175.5Mi
+
+                                  │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podinformer-bench.txt │
+                                  │                                                    allocs/op                                                    │
+PodInformerSync/protobuf/5000-10                                                                                                        915.7k ± 0%
+PodInformerSync/json/5000-10                                                                                                            2.861M ± 0%
+PodInformerSync/protobuf/20000-10                                                                                                       3.661M ± 0%
+PodInformerSync/json/20000-10                                                                                                           11.44M ± 0%
+WatchStreamDecode/protobuf-10                                                                                                           885.0k ± 0%
+WatchStreamDecode/fastjson-10                                                                                                           2.830M ± 0%
+geomean                                                                                                                                 2.550M
+
+                              │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podinformer-bench.txt │
+                              │                                                       B/s                                                       │
+WatchStreamDecode/protobuf-10                                                                                                      258.3Mi ± 1%
+WatchStreamDecode/fastjson-10                                                                                                      43.02Mi ± 1%
+geomean                                                                                                                            105.4Mi

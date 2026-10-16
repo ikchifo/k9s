@@ -1,0 +1,12 @@
+File: k9s-prof-cpu
+Type: cpu
+Time: 2026-10-15 18:25:16 EDT
+Duration: 30.03s, Total samples = 14.86s (49.49%)
+Showing nodes accounting for 14.86s, 100% of 14.86s total
+----------------------------------------------------------+-------------
+      flat  flat%   sum%        cum   cum%   calls calls% + context 	 	 
+----------------------------------------------------------+-------------
+                                             0.53s   100% |   sigs.k8s.io/structured-merge-diff/v6/value.TypeReflectCacheEntry.FromUnstructured (inline)
+         0     0%     0%      0.53s  3.57%                | encoding/json.Marshal
+                                             0.53s   100% |   encoding/json/v2.Marshal
+----------------------------------------------------------+-------------

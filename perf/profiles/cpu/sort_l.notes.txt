@@ -1,0 +1,1 @@
+50 x 'A' at 400ms interval during 20s profile

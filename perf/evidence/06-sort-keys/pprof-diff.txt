@@ -1,0 +1,48 @@
+File: model1.test
+Type: cpu
+Time: 2026-10-15 21:27:18 EDT
+Duration: 11.25s, Total samples = 4.47s (39.72%)
+Showing nodes accounting for 0.19s, 4.25% of 4.47s total
+Dropped 3 nodes (cum <= 0.02s)
+      flat  flat%   sum%        cum   cum%
+     0.31s  6.94%  6.94%      2.31s 51.68%  github.com/derailed/k9s/internal/model1.rowSorter.Less
+     0.29s  6.49% 13.42%      0.38s  8.50%  github.com/fvbommel/sortorder.NaturalCompare
+     0.17s  3.80% 17.23%      0.26s  5.82%  runtime.mapassign_faststr
+     0.17s  3.80% 21.03%     -0.20s  4.47%  sort.partition
+    -0.15s  3.36% 17.67%     -0.15s  3.36%  runtime.pthread_cond_wait
+     0.14s  3.13% 20.81%      0.14s  3.13%  github.com/derailed/k9s/internal/model1.rowSorter.Swap
+    -0.12s  2.68% 18.12%     -0.17s  3.80%  github.com/derailed/k9s/internal/model1.durationToSeconds
+    -0.12s  2.68% 15.44%     -0.12s  2.68%  runtime.pthread_kill
+    -0.11s  2.46% 12.98%     -2.48s 55.48%  github.com/derailed/k9s/internal/model1.Less
+    -0.11s  2.46% 10.51%     -2.59s 57.94%  github.com/derailed/k9s/internal/model1.RowEventSorter.Less
+    -0.09s  2.01%  8.50%     -0.14s  3.13%  strings.Count
+     0.06s  1.34%  9.84%      0.08s  1.79%  cmp.Compare[go.shape.string] (inline)
+     0.05s  1.12% 10.96%      0.31s  6.94%  github.com/derailed/k9s/internal/model1.(*RowEvents).reindex (inline)
+    -0.05s  1.12%  9.84%     -0.05s  1.12%  github.com/derailed/k9s/internal/model1.RowEventSorter.Swap
+    -0.05s  1.12%  8.72%     -0.05s  1.12%  github.com/derailed/k9s/internal/model1.runesToNum (inline)
+    -0.05s  1.12%  7.61%     -0.05s  1.12%  internal/bytealg.CountString
+    -0.05s  1.12%  6.49%     -0.05s  1.12%  runtime.madvise
+    -0.04s  0.89%  5.59%     -0.04s  0.89%  internal/bytealg.IndexByteString
+    -0.04s  0.89%  4.70%     -0.04s  0.89%  runtime.kevent
+    -0.03s  0.67%  4.03%     -0.03s  0.67%  cmp.Compare[go.shape.int] (inline)
+     0.03s  0.67%  4.70%      0.03s  0.67%  cmpbody
+     0.03s  0.67%  5.37%      0.03s  0.67%  github.com/fvbommel/sortorder.isDigit (inline)
+     0.03s  0.67%  6.04%      0.03s  0.67%  internal/runtime/maps.(*groupsReference).group (inline)
+File: model1.test
+Type: cpu
+Time: 2026-10-15 21:29:31 EDT
+Duration: 5.38s, Total samples = 4.68s (87.05%)
+Showing nodes accounting for 4.47s, 95.51% of 4.68s total
+Dropped 100 nodes (cum <= 0.02s)
+      flat  flat%   sum%        cum   cum%
+     1.36s 29.06% 29.06%      1.91s 40.81%  github.com/fvbommel/sortorder.NaturalCompare
+     0.42s  8.97% 38.03%      0.42s  8.97%  runtime.kevent
+     0.33s  7.05% 45.09%      0.33s  7.05%  runtime.memequal
+     0.33s  7.05% 52.14%      1.95s 41.67%  sort.partition
+     0.31s  6.62% 58.76%      2.31s 49.36%  github.com/derailed/k9s/internal/model1.rowSorter.Less
+     0.26s  5.56% 64.32%      0.26s  5.56%  runtime.pthread_cond_signal
+     0.20s  4.27% 68.59%      0.30s  6.41%  runtime.mapassign_faststr
+     0.14s  2.99% 71.58%      0.14s  2.99%  github.com/derailed/k9s/internal/model1.rowSorter.Swap
+     0.13s  2.78% 74.36%      0.22s  4.70%  cmp.Compare[go.shape.string] (inline)
+     0.13s  2.78% 77.14%      0.13s  2.78%  runtime.usleep
+     0.10s  2.14% 79.27%      0.10s  2.14%  github.com/fvbommel/sortorder.isDigit (inline)

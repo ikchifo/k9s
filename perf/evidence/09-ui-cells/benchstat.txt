@@ -1,0 +1,29 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+                   │ perf/evidence/09-ui-cells/bench-before.txt │ perf/evidence/09-ui-cells/bench-after.txt │
+                   │                   sec/op                   │      sec/op        vs base                │
+TableRefresh-4                                      64.56m ± 2%        91.29m ± 32%        ~ (p=0.123 n=10)
+TableSortToggle-4                                   59.81m ± 3%        41.23m ± 11%  -31.07% (p=0.000 n=10)
+TableSelectedRow-4                                  3.279m ± 2%        4.056m ± 15%  +23.68% (p=0.000 n=10)
+TableColumnMove-4                                3282.783µ ± 1%        3.177µ ±  7%  -99.90% (p=0.000 n=10)
+geomean                                             14.28m             2.639m        -81.52%
+
+                   │ perf/evidence/09-ui-cells/bench-before.txt │ perf/evidence/09-ui-cells/bench-after.txt │
+                   │                    B/op                    │      B/op        vs base                  │
+TableRefresh-4                                     44.73Mi ± 0%      15.85Mi ± 0%  -64.56% (p=0.000 n=10)
+TableSortToggle-4                                  57.05Mi ± 0%      15.85Mi ± 0%  -72.21% (p=0.000 n=10)
+TableSelectedRow-4                                 12.31Mi ± 0%      12.31Mi ± 0%        ~ (p=1.000 n=10) ¹
+TableColumnMove-4                              12611.613Ki ± 0%      1.875Ki ± 0%  -99.99% (p=0.000 n=10)
+geomean                                            24.94Mi           1.543Mi       -93.81%
+¹ all samples are equal
+
+                   │ perf/evidence/09-ui-cells/bench-before.txt │ perf/evidence/09-ui-cells/bench-after.txt │
+                   │                 allocs/op                  │    allocs/op     vs base                  │
+TableRefresh-4                                      503.9k ± 0%       223.9k ± 0%  -55.57% (p=0.000 n=10)
+TableSortToggle-4                                   526.0k ± 0%       223.9k ± 0%  -57.44% (p=0.000 n=10)
+TableSelectedRow-4                                  22.07k ± 0%       22.07k ± 0%        ~ (p=1.000 n=10) ¹
+TableColumnMove-4                                 22141.00 ± 0%        60.00 ± 0%  -99.73% (p=0.000 n=10)
+geomean                                             106.7k            16.05k       -84.95%
+¹ all samples are equal

@@ -1,0 +1,15 @@
+label,size,metric,unit,n,median,p90,min,max
+05-filter-cpu,m,startup_first_byte,ms,5,202.0,204.1,198.4,205.2
+05-filter-cpu,m,startup_first_frame,ms,5,2659.5,2671.3,2625.0,2678.9
+05-filter-cpu,m,startup_full_table,ms,5,2659.7,2671.6,2625.3,2679.2
+05-filter-cpu,m,idle_cpu_pct,%,5,37.2,39.9,36.3,40.7
+05-filter-cpu,m,idle_rss,MiB,5,504.1,513.8,479.5,517.9
+05-filter-cpu,m,refresh_cpu,ms,5,745.0,797.2,726.0,814.0
+05-filter-cpu,m,refresh_bytes,B,5,23.0,68.6,23.0,68.6
+05-filter-cpu,m,switch_to_deploy,ms,5,356.3,363.6,349.1,365.0
+05-filter-cpu,m,switch_to_pods,ms,5,125.5,125.8,105.3,126.0
+05-filter-cpu,m,filter_key_echo,ms,30,8.0,10.7,5.3,13.8
+05-filter-cpu,m,filter_apply,ms,5,184.8,188.8,181.1,190.1
+05-filter-cpu,m,scroll_page_down,ms,50,7.8,8.6,5.3,10.8
+05-filter-cpu,m,sort_toggle,ms,10,38.1,40.4,31.4,40.7
+05-filter-cpu,m,context_switch,ms,5,2635.1,2645.7,2608.0,2645.7

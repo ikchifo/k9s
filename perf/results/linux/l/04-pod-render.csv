@@ -1,0 +1,15 @@
+label,size,metric,unit,n,median,p90,min,max
+04-pod-render,l,startup_first_byte,ms,5,201.3,205.5,201.0,207.9
+04-pod-render,l,startup_first_frame,ms,5,8923.2,9021.4,8891.5,9083.5
+04-pod-render,l,startup_full_table,ms,5,8923.4,9021.9,8891.8,9084.1
+04-pod-render,l,idle_cpu_pct,%,5,103.6,108.9,96.2,111.4
+04-pod-render,l,idle_rss,MiB,5,1627.3,1676.6,1562.4,1705.2
+04-pod-render,l,refresh_cpu,ms,5,2072.9,2177.4,1923.9,2227.8
+04-pod-render,l,refresh_bytes,B,5,19.9,19.9,19.9,19.9
+04-pod-render,l,switch_to_deploy,ms,5,387.4,593.8,374.8,717.8
+04-pod-render,l,switch_to_pods,ms,5,316.8,367.2,309.2,375.6
+04-pod-render,l,filter_key_echo,ms,30,7.7,15.0,7.3,15.7
+04-pod-render,l,filter_apply,ms,5,380.2,384.4,369.1,386.8
+04-pod-render,l,scroll_page_down,ms,50,8.2,10.2,7.7,12.7
+04-pod-render,l,sort_toggle,ms,10,154.1,178.2,141.6,208.2
+04-pod-render,l,context_switch,ms,5,8883.4,10166.4,8844.6,10977.3

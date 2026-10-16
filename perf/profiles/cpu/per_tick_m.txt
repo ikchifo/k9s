@@ -1,0 +1,1 @@
+m (assumes l tick period 2.187s): ticks~13.8 cpu/tick=337ms render/tick=189ms alloc/tick=86MB

@@ -1,0 +1,26 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+BenchmarkTableRefresh-4      	      19	  59137623 ns/op	46905042 B/op	  503928 allocs/op
+BenchmarkTableRefresh-4      	      20	  59222012 ns/op	46905274 B/op	  503931 allocs/op
+BenchmarkTableRefresh-4      	      21	  58245502 ns/op	46904876 B/op	  503928 allocs/op
+BenchmarkTableRefresh-4      	      21	  57748103 ns/op	46905243 B/op	  503930 allocs/op
+BenchmarkTableRefresh-4      	      20	  57269571 ns/op	46905154 B/op	  503930 allocs/op
+BenchmarkTableRefresh-4      	      20	  57248065 ns/op	46904987 B/op	  503929 allocs/op
+BenchmarkTableRefresh-4      	      20	  57713308 ns/op	46905104 B/op	  503929 allocs/op
+BenchmarkTableRefresh-4      	      20	  65673762 ns/op	46904989 B/op	  503928 allocs/op
+BenchmarkTableRefresh-4      	      19	  62428579 ns/op	46905275 B/op	  503930 allocs/op
+BenchmarkTableRefresh-4      	      19	  58311581 ns/op	46905049 B/op	  503928 allocs/op
+BenchmarkTableSortToggle-4   	      21	  55132798 ns/op	59817622 B/op	  526010 allocs/op
+BenchmarkTableSortToggle-4   	      24	  53657227 ns/op	59817572 B/op	  526010 allocs/op
+BenchmarkTableSortToggle-4   	      21	  53517085 ns/op	59817568 B/op	  526010 allocs/op
+BenchmarkTableSortToggle-4   	      25	  52339802 ns/op	59817594 B/op	  526010 allocs/op
+BenchmarkTableSortToggle-4   	      24	  52885545 ns/op	59817549 B/op	  526010 allocs/op
+BenchmarkTableSortToggle-4   	      19	  54277873 ns/op	59817604 B/op	  526010 allocs/op
+BenchmarkTableSortToggle-4   	      24	  52058988 ns/op	59817572 B/op	  526010 allocs/op
+BenchmarkTableSortToggle-4   	      24	  52838885 ns/op	59817633 B/op	  526010 allocs/op
+BenchmarkTableSortToggle-4   	      24	  52799793 ns/op	59817518 B/op	  526009 allocs/op
+BenchmarkTableSortToggle-4   	      24	  52174503 ns/op	59817616 B/op	  526010 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/ui	29.179s

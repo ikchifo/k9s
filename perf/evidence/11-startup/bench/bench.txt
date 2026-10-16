@@ -1,0 +1,15 @@
+goos: darwin
+goarch: arm64
+pkg: startup-bench
+cpu: Apple M1 Max
+BenchmarkJSONToUnstructured-4       	       1	2086554083 ns/op	809854520 B/op	15249351 allocs/op
+BenchmarkJSONToUnstructured-4       	       1	1777535375 ns/op	809853136 B/op	15249328 allocs/op
+BenchmarkJSONToUnstructured-4       	       1	1739847209 ns/op	809853152 B/op	15249328 allocs/op
+BenchmarkProtobufTyped-4            	       9	 122698597 ns/op	422813760 B/op	 3314239 allocs/op
+BenchmarkProtobufTyped-4            	      10	 115478192 ns/op	422813724 B/op	 3314239 allocs/op
+BenchmarkProtobufTyped-4            	      10	 120730100 ns/op	422813732 B/op	 3314239 allocs/op
+BenchmarkProtobufToUnstructured-4   	       1	1845664583 ns/op	1499266736 B/op	20720648 allocs/op
+BenchmarkProtobufToUnstructured-4   	       1	3339073833 ns/op	1491735504 B/op	20713373 allocs/op
+BenchmarkProtobufToUnstructured-4   	       1	1969799875 ns/op	1491741088 B/op	20713412 allocs/op
+PASS
+ok  	startup-bench	22.294s

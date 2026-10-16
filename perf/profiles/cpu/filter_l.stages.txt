@@ -1,0 +1,31 @@
+Duration: 20.09s, Total samples = 19.90s (99.06%)
+Pod.Render total                                 4.13s 20.75%
+  FromUnstructured anywhere                      3.63s 18.24%
+model1.Hydrate (all)                             4.13s 20.75%
+informer/lister List (watch.Factory.List)        0 0%
+dao List (dao.*List)                             0.07s 0.35%
+model.Table.refresh/reconcile                    0.52s 2.61%
+TableData.Update / delta                         0.07s 0.35%
+TableData.Clone / Peek                           0.26s 1.31%
+TableData.Filter                                 5.58s 28.04%
+ui.Table.UpdateUI                                0.29s 1.46%
+  Sort (model1)                                  0.12s 0.6%
+  ComputeMaxColumns                              0 0%
+  buildRow                                       0.16s 0.8%
+  tview SetCell                                  0 0%
+  UpdateTitle/AsThousands                        0.01s 0.05%
+tcell/tview draw (Draw)                          0.96s 4.82%
+GC bg mark (gcBgMarkWorker)                      3.66s 18.39%
+mallocgc (all)                                   1.13s 5.68%
+GC assist (gcAssistAlloc)                        0.03s 0.15%
+json (encoding/json any)                         0.34s 1.71%
+netpoll/scheduler idle (kevent/usleep)           0.68s 3.42%
+  FromUnstructured under Pod.Render              0 0%
+parallelRender goroutines (all)                  4.14s 20.80%
+tview event loop (Application.Run)               6.74s 33.87%
+ui.Table.SortColCmd/sort handlers                0 0%
+TableData.Filter rx/fuzzy                        5.58s 28.04%
+regexp                                           3.48s 17.49%
+ui.Table.Refresh/doUpdate (non-tick)             0 0%
+AsThousands/message.NewPrinter                   0.01s 0.05%
+Peek (model.Table.Peek)                          0.26s 1.31%

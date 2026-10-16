@@ -1,0 +1,53 @@
+File: ui.test
+Type: cpu
+Time: 2026-10-15 18:38:12 EDT
+Duration: 4.05s, Total samples = 6.30s (155.67%)
+Showing nodes accounting for 3.76s, 59.68% of 6.30s total
+Dropped 153 nodes (cum <= 0.03s)
+Showing top 45 nodes out of 143
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%      3.07s 48.73%  runtime.systemstack
+         0     0%     0%      2.29s 36.35%  github.com/derailed/k9s/internal/ui.BenchmarkTick
+         0     0%     0%      2.29s 36.35%  testing.(*B).run1.func1
+         0     0%     0%      2.29s 36.35%  testing.(*B).runN
+         0     0%     0%      2.13s 33.81%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI
+         0     0%     0%      2.05s 32.54%  runtime.(*mheap).alloc.func1
+         0     0%     0%      2.05s 32.54%  runtime.(*mheap).allocSpan
+     1.94s 30.79% 30.79%      1.94s 30.79%  runtime.madvise
+         0     0% 30.79%      1.94s 30.79%  runtime.sysUsed (inline)
+         0     0% 30.79%      1.94s 30.79%  runtime.sysUsedOS (inline)
+     0.02s  0.32% 31.11%      1.16s 18.41%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+         0     0% 31.11%      1.16s 18.41%  github.com/derailed/k9s/internal/model1.(*TableData).RowsRange (inline)
+         0     0% 31.11%      1.09s 17.30%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI.func1 (inline)
+     0.14s  2.22% 33.33%      1.09s 17.30%  github.com/derailed/k9s/internal/ui.(*Table).buildRow
+         0     0% 33.33%      0.96s 15.24%  github.com/derailed/k9s/internal/model1.(*RowEvents).Sort
+         0     0% 33.33%      0.96s 15.24%  github.com/derailed/k9s/internal/model1.(*TableData).Sort
+         0     0% 33.33%      0.94s 14.92%  sort.Sort
+         0     0% 33.33%      0.94s 14.92%  sort.pdqsort
+     0.10s  1.59% 34.92%      0.90s 14.29%  github.com/derailed/k9s/internal/model1.RowEventSorter.Less
+         0     0% 34.92%      0.90s 14.29%  runtime.gcBgMarkWorker.func2
+         0     0% 34.92%      0.89s 14.13%  runtime.gcBgMarkWorker
+     0.01s  0.16% 35.08%      0.89s 14.13%  runtime.gcDrain
+         0     0% 35.08%      0.80s 12.70%  github.com/derailed/k9s/internal/model1.Less
+     0.56s  8.89% 43.97%      0.74s 11.75%  github.com/fvbommel/sortorder.NaturalCompare
+         0     0% 43.97%      0.74s 11.75%  github.com/fvbommel/sortorder.NaturalLess (inline)
+     0.02s  0.32% 44.29%      0.63s 10.00%  sort.partition
+     0.01s  0.16% 44.44%      0.61s  9.68%  runtime.mallocgc
+     0.02s  0.32% 44.76%      0.54s  8.57%  runtime.scanSpan
+         0     0% 44.76%      0.51s  8.10%  runtime.gcDrainMarkWorkerDedicated (inline)
+     0.16s  2.54% 47.30%      0.49s  7.78%  runtime.scanObjectsSmall
+     0.40s  6.35% 53.65%      0.46s  7.30%  runtime.tryDeferToSpanScan
+         0     0% 53.65%      0.38s  6.03%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 53.65%      0.37s  5.87%  runtime.findRunnable
+         0     0% 53.65%      0.37s  5.87%  runtime.mcall
+         0     0% 53.65%      0.37s  5.87%  runtime.park_m
+         0     0% 53.65%      0.37s  5.87%  runtime.schedule
+         0     0% 53.65%      0.36s  5.71%  runtime.(*mcache).nextFree
+         0     0% 53.65%      0.36s  5.71%  runtime.(*mcache).refill
+     0.01s  0.16% 53.81%      0.36s  5.71%  runtime.(*mcentral).cacheSpan
+     0.07s  1.11% 54.92%      0.33s  5.24%  runtime.scanObject
+         0     0% 54.92%      0.32s  5.08%  github.com/derailed/k9s/internal/model1.Hydrate.func1
+         0     0% 54.92%      0.32s  5.08%  github.com/derailed/k9s/internal/model1.parallelRender.func1
+         0     0% 54.92%      0.32s  5.08%  github.com/derailed/k9s/internal/render.(*Pod).Render
+         0     0% 54.92%      0.32s  5.08%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+     0.30s  4.76% 59.68%      0.30s  4.76%  runtime.memclrNoHeapPointers

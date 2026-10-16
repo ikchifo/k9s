@@ -1,0 +1,22 @@
+File: k9s-prof-wait
+Type: delay
+Time: 2026-10-15 18:46:25 EDT
+Showing nodes accounting for 313.33ms, 121.90% of 257.04ms total
+Dropped 34 nodes (cum <= 1.29ms)
+Showing top 15 nodes out of 86
+      flat  flat%   sum%        cum   cum%
+  313.33ms 121.90% 121.90%   313.33ms 121.90%  runtime.unlock (inline)
+         0     0% 121.90%     4.46ms  1.73%  encoding/json.Marshal (inline)
+         0     0% 121.90%     4.46ms  1.73%  encoding/json/v2.Marshal
+         0     0% 121.90%     2.34ms  0.91%  encoding/json/v2.marshalEncode
+         0     0% 121.90%   114.80ms 44.66%  github.com/derailed/k9s/internal/model1.Hydrate.func1
+         0     0% 121.90%   114.80ms 44.66%  github.com/derailed/k9s/internal/model1.parallelRender.func1
+         0     0% 121.90%   114.80ms 44.66%  github.com/derailed/k9s/internal/render.(*Pod).Render
+         0     0% 121.90%   114.80ms 44.66%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+         0     0% 121.90%    14.69ms  5.71%  github.com/derailed/k9s/internal/render.cosLimits
+         0     0% 121.90%     1.93ms  0.75%  github.com/derailed/k9s/internal/render.currentRes
+         0     0% 121.90%     2.72ms  1.06%  github.com/derailed/k9s/internal/render.extractGPU (inline)
+         0     0% 121.90%    20.79ms  8.09%  github.com/derailed/k9s/internal/render.gatherPodMX
+         0     0% 121.90%     2.13ms  0.83%  github.com/derailed/k9s/internal/render.mapToStr
+         0     0% 121.90%    19.96ms  7.77%  github.com/felixge/fgprof.(*profiler).GoroutineProfile
+         0     0% 121.90%    19.96ms  7.77%  github.com/felixge/fgprof.Start.func1

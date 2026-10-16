@@ -1,0 +1,21 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+                  │ perf/evidence/09a-row-colorer/bench-before.txt │ perf/evidence/09a-row-colorer/bench-after.txt │
+                  │                     sec/op                     │        sec/op          vs base                │
+TableRefresh-4                                         64.88m ± 2%             58.28m ± 7%  -10.17% (p=0.000 n=10)
+TableSortToggle-4                                      60.02m ± 1%             52.86m ± 3%  -11.93% (p=0.000 n=10)
+geomean                                                62.40m                  55.50m       -11.05%
+
+                  │ perf/evidence/09a-row-colorer/bench-before.txt │ perf/evidence/09a-row-colorer/bench-after.txt │
+                  │                      B/op                      │          B/op           vs base               │
+TableRefresh-4                                        44.73Mi ± 0%             44.73Mi ± 0%       ~ (p=0.631 n=10)
+TableSortToggle-4                                     57.05Mi ± 0%             57.05Mi ± 0%       ~ (p=0.288 n=10)
+geomean                                               50.52Mi                  50.52Mi       -0.00%
+
+                  │ perf/evidence/09a-row-colorer/bench-before.txt │ perf/evidence/09a-row-colorer/bench-after.txt │
+                  │                   allocs/op                    │       allocs/op         vs base               │
+TableRefresh-4                                         503.9k ± 0%              503.9k ± 0%       ~ (p=0.458 n=10)
+TableSortToggle-4                                      526.0k ± 0%              526.0k ± 0%       ~ (p=0.697 n=10)
+geomean                                                514.9k                   514.9k       -0.00%

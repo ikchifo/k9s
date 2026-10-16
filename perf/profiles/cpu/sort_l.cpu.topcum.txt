@@ -1,0 +1,68 @@
+File: k9s-prof-cpu
+Type: cpu
+Time: 2026-10-15 18:25:52 EDT
+Duration: 20.12s, Total samples = 15.13s (75.20%)
+Showing nodes accounting for 4.15s, 27.43% of 15.13s total
+Dropped 419 nodes (cum <= 0.08s)
+Showing top 60 nodes out of 233
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%      5.59s 36.95%  runtime.systemstack
+     0.01s 0.066% 0.066%      5.40s 35.69%  github.com/derailed/k9s/internal/model1.parallelRender.func1
+         0     0% 0.066%      5.39s 35.62%  github.com/derailed/k9s/internal/model1.Hydrate.func1
+     0.01s 0.066%  0.13%      5.39s 35.62%  github.com/derailed/k9s/internal/render.(*Pod).Render
+         0     0%  0.13%      5.38s 35.56%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+         0     0%  0.13%      4.88s 32.25%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructured (inline)
+         0     0%  0.13%      4.88s 32.25%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructuredWithValidation
+     0.11s  0.73%  0.86%      4.86s 32.12%  k8s.io/apimachinery/pkg/runtime.fromUnstructured
+     0.18s  1.19%  2.05%      4.80s 31.73%  k8s.io/apimachinery/pkg/runtime.structFromUnstructured
+         0     0%  2.05%      3.78s 24.98%  k8s.io/apimachinery/pkg/runtime.sliceFromUnstructured
+         0     0%  2.05%      3.67s 24.26%  github.com/derailed/k9s/cmd.Execute
+         0     0%  2.05%      3.67s 24.26%  github.com/derailed/k9s/cmd.run
+         0     0%  2.05%      3.67s 24.26%  github.com/derailed/k9s/internal/view.(*App).Run
+         0     0%  2.05%      3.67s 24.26%  github.com/derailed/tview.(*Application).Run
+         0     0%  2.05%      3.67s 24.26%  github.com/spf13/cobra.(*Command).Execute (inline)
+         0     0%  2.05%      3.67s 24.26%  github.com/spf13/cobra.(*Command).ExecuteC
+         0     0%  2.05%      3.67s 24.26%  github.com/spf13/cobra.(*Command).execute
+         0     0%  2.05%      3.67s 24.26%  main.main
+         0     0%  2.05%      3.67s 24.26%  runtime.main
+         0     0%  2.05%      3.45s 22.80%  runtime.gcBgMarkWorker.func2
+     0.05s  0.33%  2.38%      3.45s 22.80%  runtime.gcDrain
+         0     0%  2.38%      2.96s 19.56%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI
+         0     0%  2.38%      2.93s 19.37%  github.com/derailed/k9s/internal/ui.(*Table).SortColCmd.func1
+         0     0%  2.38%      2.93s 19.37%  github.com/derailed/k9s/internal/view.(*Table).keyboard
+         0     0%  2.38%      2.93s 19.37%  github.com/derailed/tview.(*Box).WrapInputHandler.func1
+         0     0%  2.38%      2.93s 19.37%  github.com/derailed/tview.(*Flex).InputHandler.func1
+         0     0%  2.38%      2.93s 19.37%  github.com/derailed/tview.(*Pages).InputHandler.func1
+         0     0%  2.38%      2.93s 19.37%  runtime.gcBgMarkWorker
+         0     0%  2.38%      2.79s 18.44%  github.com/derailed/k9s/internal/ui.(*Table).Refresh
+     0.09s  0.59%  2.97%      2.35s 15.53%  runtime.scanSpan
+         0     0%  2.97%      1.86s 12.29%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0%  2.97%      1.82s 12.03%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+         0     0%  2.97%      1.82s 12.03%  github.com/derailed/k9s/internal/model1.(*TableData).RowsRange (inline)
+     0.02s  0.13%  3.11%      1.74s 11.50%  runtime.(*mheap).alloc.func1
+     0.01s 0.066%  3.17%      1.71s 11.30%  runtime.(*mheap).allocSpan
+     0.71s  4.69%  7.87%      1.66s 10.97%  runtime.scanObjectsSmall
+         0     0%  7.87%      1.59s 10.51%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI.func1 (inline)
+         0     0%  7.87%      1.59s 10.51%  runtime.gcDrainMarkWorkerDedicated (inline)
+     0.10s  0.66%  8.53%      1.55s 10.24%  github.com/derailed/k9s/internal/ui.(*Table).buildRow
+     0.18s  1.19%  9.72%      1.36s  8.99%  runtime.mallocgc
+         0     0%  9.72%      1.32s  8.72%  github.com/derailed/k9s/internal/model1.(*RowEvents).Sort
+         0     0%  9.72%      1.32s  8.72%  github.com/derailed/k9s/internal/model1.(*TableData).Sort
+     0.81s  5.35% 15.07%      1.29s  8.53%  runtime.tryDeferToSpanScan
+         0     0% 15.07%      1.28s  8.46%  sort.Sort
+         0     0% 15.07%      1.28s  8.46%  sort.pdqsort
+     0.05s  0.33% 15.40%      1.25s  8.26%  reflect.Value.MapIndex
+     0.38s  2.51% 17.91%      1.20s  7.93%  runtime.mapaccess2_faststr
+     0.07s  0.46% 18.37%      1.14s  7.53%  github.com/derailed/k9s/internal/model1.RowEventSorter.Less
+     0.05s  0.33% 18.70%      1.07s  7.07%  github.com/derailed/k9s/internal/model1.Less
+     0.19s  1.26% 19.96%      0.99s  6.54%  runtime.mapaccess2
+     0.09s  0.59% 20.56%      0.97s  6.41%  sort.partition
+     0.02s  0.13% 20.69%      0.96s  6.35%  k8s.io/apimachinery/pkg/runtime.pointerFromUnstructured
+     0.90s  5.95% 26.64%      0.90s  5.95%  runtime.madvise
+         0     0% 26.64%      0.90s  5.95%  runtime.sysUsed (inline)
+         0     0% 26.64%      0.90s  5.95%  runtime.sysUsedOS (inline)
+     0.04s  0.26% 26.90%      0.89s  5.88%  reflect.mapaccess_faststr
+     0.08s  0.53% 27.43%      0.87s  5.75%  k8s.io/apimachinery/pkg/runtime.fieldInfoFromField
+         0     0% 27.43%      0.76s  5.02%  runtime.lock (partial-inline)
+         0     0% 27.43%      0.76s  5.02%  runtime.lock2
+         0     0% 27.43%      0.76s  5.02%  runtime.lockWithRank (inline)

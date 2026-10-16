@@ -1,0 +1,207 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+BenchmarkMaxColumn-10                   	      20	       114.5 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10                   	      20	       197.9 ns/op	      32 B/op	       1 allocs/op
+BenchmarkMaxColumn-10                   	      20	        85.40 ns/op	      32 B/op	       1 allocs/op
+BenchmarkTick-10                        	      20	  52159348 ns/op	46206776 B/op	  480213 allocs/op
+--- BENCH: BenchmarkTick-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkTick-10                        	      20	  54031665 ns/op	46207575 B/op	  480216 allocs/op
+--- BENCH: BenchmarkTick-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkTick-10                        	      20	  52901992 ns/op	46207550 B/op	  480215 allocs/op
+--- BENCH: BenchmarkTick-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkUpdateUI-10                    	      20	  33282696 ns/op	34126496 B/op	  460133 allocs/op
+--- BENCH: BenchmarkUpdateUI-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkUpdateUI-10                    	      20	  33802550 ns/op	34126384 B/op	  460132 allocs/op
+--- BENCH: BenchmarkUpdateUI-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkUpdateUI-10                    	      20	  33516873 ns/op	34126434 B/op	  460133 allocs/op
+--- BENCH: BenchmarkUpdateUI-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkUpdateUIVisibleOnly-10         	      20	     81229 ns/op	   85376 B/op	    1235 allocs/op
+--- BENCH: BenchmarkUpdateUIVisibleOnly-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkUpdateUIVisibleOnly-10         	      20	     81265 ns/op	   85328 B/op	    1235 allocs/op
+--- BENCH: BenchmarkUpdateUIVisibleOnly-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkUpdateUIVisibleOnly-10         	      20	     83131 ns/op	   85376 B/op	    1235 allocs/op
+--- BENCH: BenchmarkUpdateUIVisibleOnly-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkClear-10                       	      20	  32906188 ns/op	34127926 B/op	  460142 allocs/op
+--- BENCH: BenchmarkClear-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkClear-10                       	      20	  32699290 ns/op	34127876 B/op	  460142 allocs/op
+--- BENCH: BenchmarkClear-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkClear-10                       	      20	  32923292 ns/op	34127867 B/op	  460142 allocs/op
+--- BENCH: BenchmarkClear-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkBuildRowsOnly-10               	      20	  23353046 ns/op	27241976 B/op	  365001 allocs/op
+--- BENCH: BenchmarkBuildRowsOnly-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkBuildRowsOnly-10               	      20	  23640446 ns/op	27241977 B/op	  365001 allocs/op
+--- BENCH: BenchmarkBuildRowsOnly-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkBuildRowsOnly-10               	      20	  23767296 ns/op	27241986 B/op	  365001 allocs/op
+--- BENCH: BenchmarkBuildRowsOnly-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkComputeMaxColumns-10           	      20	    635967 ns/op	     416 B/op	       1 allocs/op
+--- BENCH: BenchmarkComputeMaxColumns-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkComputeMaxColumns-10           	      20	    625027 ns/op	     416 B/op	       1 allocs/op
+--- BENCH: BenchmarkComputeMaxColumns-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkComputeMaxColumns-10           	      20	    627396 ns/op	     416 B/op	       1 allocs/op
+--- BENCH: BenchmarkComputeMaxColumns-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkPeekClone-10                   	      20	   3710462 ns/op	12078752 B/op	   20071 allocs/op
+--- BENCH: BenchmarkPeekClone-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkPeekClone-10                   	      20	   3556344 ns/op	12078752 B/op	   20071 allocs/op
+--- BENCH: BenchmarkPeekClone-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkPeekClone-10                   	      20	   3683498 ns/op	12078752 B/op	   20071 allocs/op
+--- BENCH: BenchmarkPeekClone-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkFilterNone-10                  	      20	       518.8 ns/op	    1384 B/op	       7 allocs/op
+--- BENCH: BenchmarkFilterNone-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkFilterNone-10                  	      20	       777.1 ns/op	    1384 B/op	       7 allocs/op
+--- BENCH: BenchmarkFilterNone-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkFilterNone-10                  	      20	      1558 ns/op	    1384 B/op	       7 allocs/op
+--- BENCH: BenchmarkFilterNone-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkFilterRx-10                    	      20	 119970400 ns/op	14577881 B/op	   40075 allocs/op
+--- BENCH: BenchmarkFilterRx-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkFilterRx-10                    	      20	 130188169 ns/op	14583284 B/op	   40075 allocs/op
+--- BENCH: BenchmarkFilterRx-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkFilterRx-10                    	      20	 128672569 ns/op	14575876 B/op	   40074 allocs/op
+--- BENCH: BenchmarkFilterRx-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkFilterFuzzy-10                 	      20	   9398802 ns/op	13462164 B/op	   20149 allocs/op
+--- BENCH: BenchmarkFilterFuzzy-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkFilterFuzzy-10                 	      20	   8623029 ns/op	13464161 B/op	   20149 allocs/op
+--- BENCH: BenchmarkFilterFuzzy-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkFilterFuzzy-10                 	      20	   8761571 ns/op	13464019 B/op	   20149 allocs/op
+--- BENCH: BenchmarkFilterFuzzy-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortAge-10                     	      20	   4869756 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortAge-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortAge-10                     	      20	   5377017 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortAge-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortAge-10                     	      20	   4580196 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortAge-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortNamespace-10               	      20	   4130342 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortNamespace-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortNamespace-10               	      20	   4285398 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortNamespace-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortNamespace-10               	      20	   4010246 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortNamespace-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortName-10                    	      20	   3910102 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortName-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortName-10                    	      20	   3951585 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortName-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortName-10                    	      20	   4030248 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortName-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortRestarts-10                	      20	   3717227 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortRestarts-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortRestarts-10                	      20	   3756248 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortRestarts-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortRestarts-10                	      20	   4106104 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortRestarts-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortNamespaceSorted-10         	      20	   3225783 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortNamespaceSorted-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortNamespaceSorted-10         	      20	   3127260 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortNamespaceSorted-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortNamespaceSorted-10         	      20	   3312442 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortNamespaceSorted-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortAgeSorted-10               	      20	   3233277 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortAgeSorted-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortAgeSorted-10               	      20	   3439275 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortAgeSorted-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkSortAgeSorted-10               	      20	   3272608 ns/op	      48 B/op	       1 allocs/op
+--- BENCH: BenchmarkSortAgeSorted-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkLessCalls-10                   	      20	        22.90 ns/op
+--- BENCH: BenchmarkLessCalls-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+    zz_render_bench_test.go:260: col=NAMESPACE less_calls_unsorted->sorted=281449
+    zz_render_bench_test.go:263: col=NAMESPACE less_calls_already_sorted=20011
+    zz_render_bench_test.go:260: col=AGE less_calls_unsorted->sorted=306298
+    zz_render_bench_test.go:263: col=AGE less_calls_already_sorted=20011
+BenchmarkLessCalls-10                   	      20	        22.90 ns/op
+--- BENCH: BenchmarkLessCalls-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+    zz_render_bench_test.go:260: col=NAMESPACE less_calls_unsorted->sorted=281449
+    zz_render_bench_test.go:263: col=NAMESPACE less_calls_already_sorted=20011
+    zz_render_bench_test.go:260: col=AGE less_calls_unsorted->sorted=306298
+    zz_render_bench_test.go:263: col=AGE less_calls_already_sorted=20011
+BenchmarkLessCalls-10                   	      20	        16.65 ns/op
+--- BENCH: BenchmarkLessCalls-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+    zz_render_bench_test.go:260: col=NAMESPACE less_calls_unsorted->sorted=281449
+    zz_render_bench_test.go:263: col=NAMESPACE less_calls_already_sorted=20011
+    zz_render_bench_test.go:260: col=AGE less_calls_unsorted->sorted=306298
+    zz_render_bench_test.go:263: col=AGE less_calls_already_sorted=20011
+BenchmarkAsThousands-10                 	      20	      1767 ns/op	     568 B/op	      10 allocs/op
+BenchmarkAsThousands-10                 	      20	      1592 ns/op	     568 B/op	      10 allocs/op
+BenchmarkAsThousands-10                 	      20	      1329 ns/op	     542 B/op	      10 allocs/op
+BenchmarkAsThousandsCachedPrinter-10    	      20	      2612 ns/op	     384 B/op	       7 allocs/op
+BenchmarkAsThousandsCachedPrinter-10    	      20	      1033 ns/op	     384 B/op	       7 allocs/op
+BenchmarkAsThousandsCachedPrinter-10    	      20	      2054 ns/op	     384 B/op	       7 allocs/op
+BenchmarkStyleTitle-10                  	      20	      2965 ns/op	    1376 B/op	      33 allocs/op
+--- BENCH: BenchmarkStyleTitle-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkStyleTitle-10                  	      20	      2660 ns/op	    1376 B/op	      33 allocs/op
+--- BENCH: BenchmarkStyleTitle-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkStyleTitle-10                  	      20	      3719 ns/op	    1376 B/op	      33 allocs/op
+--- BENCH: BenchmarkStyleTitle-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkDrawShow-10                    	      20	   2696265 ns/op	  164148 B/op	    9492 allocs/op
+--- BENCH: BenchmarkDrawShow-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkDrawShow-10                    	      20	   2605060 ns/op	  163465 B/op	    9491 allocs/op
+--- BENCH: BenchmarkDrawShow-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkDrawShow-10                    	      20	   2792756 ns/op	  163444 B/op	    9491 allocs/op
+--- BENCH: BenchmarkDrawShow-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkDrawShowVisibleOnly-10         	      20	   2521977 ns/op	  160748 B/op	    9299 allocs/op
+--- BENCH: BenchmarkDrawShowVisibleOnly-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkDrawShowVisibleOnly-10         	      20	   2507094 ns/op	  158888 B/op	    9299 allocs/op
+--- BENCH: BenchmarkDrawShowVisibleOnly-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+BenchmarkDrawShowVisibleOnly-10         	      20	   2492685 ns/op	  158888 B/op	    9299 allocs/op
+--- BENCH: BenchmarkDrawShowVisibleOnly-10
+    zz_render_bench_test.go:81: rows=20000 cols=26
+PASS
+ok  	github.com/derailed/k9s/internal/ui	22.401s

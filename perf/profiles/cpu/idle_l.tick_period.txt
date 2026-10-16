@@ -1,0 +1,1 @@
+mean tick period 2.187s over 8 intervals

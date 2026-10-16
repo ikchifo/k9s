@@ -1,0 +1,60 @@
+{
+  "label": "base",
+  "binary": "/private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/k9s-11-base",
+  "started": "2026-10-16T04:03:30.848201Z",
+  "host": "darwin/arm64 ncpu=10",
+  "runs": 5,
+  "stats": [
+    {
+      "size": "l",
+      "metric": "startup_first_byte",
+      "unit": "ms",
+      "n": 5,
+      "median": 113.751,
+      "p90": 125.60340000000001,
+      "min": 107.792,
+      "max": 128.035,
+      "raw": [
+        128.035,
+        121.956,
+        113.751,
+        107.792,
+        113.544
+      ]
+    },
+    {
+      "size": "l",
+      "metric": "startup_first_frame",
+      "unit": "ms",
+      "n": 5,
+      "median": 4507.689,
+      "p90": 4596.9582,
+      "min": 4464.359,
+      "max": 4649.709,
+      "raw": [
+        4502.07,
+        4517.832,
+        4464.359,
+        4649.709,
+        4507.689
+      ]
+    },
+    {
+      "size": "l",
+      "metric": "startup_full_table",
+      "unit": "ms",
+      "n": 5,
+      "median": 4508.066,
+      "p90": 4597.0606,
+      "min": 4464.459,
+      "max": 4649.809,
+      "raw": [
+        4502.179,
+        4517.938,
+        4464.459,
+        4649.809,
+        4508.066
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+== Informer sync CPU: typed protobuf (top) ==
+File: client.test
+Type: cpu
+Time: 2026-10-16 12:36:03 EDT
+Duration: 2.72s, Total samples = 3210ms (118.23%)
+Showing nodes accounting for 2240ms, 69.78% of 3210ms total
+Dropped 113 nodes (cum <= 16.05ms)
+Showing top 12 nodes out of 199
+      flat  flat%   sum%        cum   cum%
+     470ms 14.64% 14.64%      470ms 14.64%  runtime.pthread_cond_signal
+     370ms 11.53% 26.17%      370ms 11.53%  syscall.rawsyscalln
+     350ms 10.90% 37.07%      350ms 10.90%  runtime.madvise
+     220ms  6.85% 43.93%      220ms  6.85%  runtime.usleep
+     170ms  5.30% 49.22%      170ms  5.30%  runtime.pthread_cond_wait
+     140ms  4.36% 53.58%      730ms 22.74%  encoding/json/v2.makeStructArshaler.func2
+     130ms  4.05% 57.63%      130ms  4.05%  runtime.kevent
+      90ms  2.80% 60.44%       90ms  2.80%  runtime.memmove
+      90ms  2.80% 63.24%      180ms  5.61%  runtime.scanObjectsSmall
+      80ms  2.49% 65.73%       80ms  2.49%  runtime.tryDeferToSpanScan
+      70ms  2.18% 67.91%      100ms  3.12%  encoding/json/internal/jsonwire.AppendQuote
+      60ms  1.87% 69.78%       60ms  1.87%  runtime.(*gcBits).bytep
+
+== Informer sync CPU: dynamic JSON fast codec (top) ==
+File: client.test
+Type: cpu
+Time: 2026-10-16 12:36:08 EDT
+Duration: 8.92s, Total samples = 11.41s (127.93%)
+Showing nodes accounting for 9.62s, 84.31% of 11.41s total
+Dropped 236 nodes (cum <= 0.06s)
+Showing top 12 nodes out of 169
+      flat  flat%   sum%        cum   cum%
+     4.63s 40.58% 40.58%      4.63s 40.58%  runtime.pthread_cond_signal
+     1.46s 12.80% 53.37%      1.46s 12.80%  runtime.madvise
+     0.87s  7.62% 61.00%      0.87s  7.62%  runtime.pthread_cond_wait
+     0.82s  7.19% 68.19%      0.82s  7.19%  runtime.kevent
+     0.63s  5.52% 73.71%      0.63s  5.52%  syscall.rawsyscalln
+     0.38s  3.33% 77.04%      0.38s  3.33%  runtime.usleep
+     0.22s  1.93% 78.97%      0.44s  3.86%  runtime.scanObjectsSmall
+     0.19s  1.67% 80.63%      0.30s  2.63%  runtime.tryDeferToSpanScan
+     0.12s  1.05% 81.68%      0.12s  1.05%  runtime.(*mspan).init
+     0.11s  0.96% 82.65%      0.11s  0.96%  runtime.memmove
+     0.10s  0.88% 83.52%      0.58s  5.08%  encoding/json/v2.makeStructArshaler.func2
+     0.09s  0.79% 84.31%      0.09s  0.79%  runtime.mmap
+
+== Diff (protobuf relative to JSON) ==
+File: client.test
+Type: cpu
+Time: 2026-10-16 12:36:03 EDT
+Duration: 11.63s, Total samples = 11.41s (98.08%)
+Showing nodes accounting for -7.64s, 66.96% of 11.41s total
+Dropped 287 nodes (cum <= 0.06s)
+Showing top 15 nodes out of 149
+      flat  flat%   sum%        cum   cum%
+    -4.16s 36.46% 36.46%     -4.16s 36.46%  runtime.pthread_cond_signal
+    -1.11s  9.73% 46.19%     -1.11s  9.73%  runtime.madvise
+    -0.70s  6.13% 52.32%     -0.70s  6.13%  runtime.pthread_cond_wait
+    -0.69s  6.05% 58.37%     -0.69s  6.05%  runtime.kevent
+    -0.26s  2.28% 60.65%     -0.26s  2.28%  syscall.rawsyscalln
+    -0.16s  1.40% 62.05%     -0.16s  1.40%  runtime.usleep
+    -0.13s  1.14% 63.19%     -0.26s  2.28%  runtime.scanObjectsSmall
+    -0.11s  0.96% 64.15%     -0.22s  1.93%  runtime.tryDeferToSpanScan
+    -0.07s  0.61% 64.77%     -0.07s  0.61%  runtime.(*mspan).init
+    -0.07s  0.61% 65.38%     -0.07s  0.61%  sigs.k8s.io/json/internal/golang/encoding/json.stateInString
+    -0.06s  0.53% 65.91%     -0.09s  0.79%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+    -0.06s  0.53% 66.43%     -0.06s  0.53%  runtime.(*spanScanOwnership).or (inline)
+    -0.05s  0.44% 66.87%     -0.05s  0.44%  runtime.mmap
+    -0.05s  0.44% 67.31%     -0.05s  0.44%  runtime.spanSetScans
+     0.04s  0.35% 66.96%      0.15s  1.31%  encoding/json/v2.makeStructArshaler.func2
+
+== Non-runtime hot nodes: typed protobuf sync ==
+      flat  flat%   sum%        cum   cum%
+     0.37s 11.53% 26.17%      0.37s 11.53%  syscall.rawsyscalln
+     0.14s  4.36% 53.58%      0.73s 22.74%  encoding/json/v2.makeStructArshaler.func2
+     0.07s  2.18% 67.91%      0.10s  3.12%  encoding/json/internal/jsonwire.AppendQuote
+     0.04s  1.25% 74.45%      0.04s  1.25%  encoding/json/internal/jsonflags.Flags.Get
+     0.04s  1.25% 75.70%      0.04s  1.25%  encoding/json/internal/jsonwire.ConsumeSimpleString (inline)
+     0.04s  1.25% 76.95%      0.04s  1.25%  internal/runtime/atomic.(*Int64).Add
+     0.03s  0.93% 80.37%      0.09s  2.80%  encoding/json/v2.isLegacyEmpty
+     0.03s  0.93% 81.31%      0.03s  0.93%  reflect.Value.IsNil (inline)
+     0.03s  0.93% 82.24%      0.03s  0.93%  reflect.Value.Len (inline)
+     0.02s  0.62% 84.74%      0.03s  0.93%  encoding/json/jsontext.(*encoderState).WriteToken
+     0.02s  0.62% 85.36%      0.02s  0.62%  encoding/json/v2.addressableValue.fieldByIndex
+     0.02s  0.62% 85.98%      0.11s  3.43%  encoding/json/v2.makeMapArshaler.func2
+     0.02s  0.62% 86.60%      0.13s  4.05%  encoding/json/v2.makeStringArshaler.func1
+     0.02s  0.62% 87.23%      0.02s  0.62%  k8s.io/api/core/v1.encodeVarintGenerated (inline)
+     0.02s  0.62% 87.85%      0.04s  1.25%  reflect.Value.Field
+
+== Non-runtime hot nodes: dynamic JSON sync ==
+      flat  flat%   sum%        cum   cum%
+     0.63s  5.52% 73.71%      0.63s  5.52%  syscall.rawsyscalln
+     0.10s  0.88% 83.52%      0.58s  5.08%  encoding/json/v2.makeStructArshaler.func2
+     0.07s  0.61% 84.93%      0.07s  0.61%  encoding/json/internal/jsonwire.ConsumeSimpleString (inline)
+     0.07s  0.61% 85.54%      0.07s  0.61%  sigs.k8s.io/json/internal/golang/encoding/json.stateInString
+     0.06s  0.53% 86.06%      0.10s  0.88%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+     0.05s  0.44% 87.55%      0.09s  0.79%  encoding/json/internal/jsonwire.AppendQuote
+     0.04s  0.35% 87.91%      0.15s  1.31%  sigs.k8s.io/json/internal/golang/encoding/json.checkValid
+     0.02s  0.18% 88.08%      0.09s  0.79%  encoding/json/v2.makePointerArshaler.func2
+     0.01s 0.088% 88.52%      0.12s  1.05%  encoding/json/v2.makeMapArshaler.func2
+     0.01s 0.088% 88.61%      0.51s  4.47%  encoding/json/v2.makeSliceArshaler.func2
+     0.01s 0.088% 88.69%      0.11s  0.96%  encoding/json/v2.makeStringArshaler.func1
+     0.01s 0.088% 88.78%      0.06s  0.53%  k8s.io/api/core/v1.(*PodSpec).Size
+         0     0% 89.40%      4.35s 38.12%  _.goready.func1
+         0     0% 89.40%      0.59s  5.17%  bufio.(*Reader).Read
+         0     0% 89.40%      0.63s  5.52%  encoding/json.(*Decoder).Decode

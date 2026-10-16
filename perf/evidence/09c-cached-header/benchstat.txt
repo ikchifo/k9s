@@ -1,0 +1,21 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/ui
+cpu: Apple M1 Max
+                  │ perf/evidence/09c-cached-header/bench-before.txt │ perf/evidence/09c-cached-header/bench-after.txt │
+                  │                      sec/op                      │         sec/op           vs base                │
+TableSortToggle-4                                        45.81m ± 6%               42.30m ± 6%   -7.66% (p=0.001 n=10)
+TableColumnMove-4                                     3577.171µ ± 8%               3.229µ ± 4%  -99.91% (p=0.000 n=10)
+geomean                                                  12.80m                    369.6µ       -97.11%
+
+                  │ perf/evidence/09c-cached-header/bench-before.txt │ perf/evidence/09c-cached-header/bench-after.txt │
+                  │                       B/op                       │          B/op            vs base                │
+TableSortToggle-4                                       28.17Mi ± 0%              15.85Mi ± 0%  -43.72% (p=0.000 n=10)
+TableColumnMove-4                                   12611.611Ki ± 0%              1.875Ki ± 0%  -99.99% (p=0.000 n=10)
+geomean                                                 18.63Mi                   174.5Ki       -99.09%
+
+                  │ perf/evidence/09c-cached-header/bench-before.txt │ perf/evidence/09c-cached-header/bench-after.txt │
+                  │                    allocs/op                     │        allocs/op         vs base                │
+TableSortToggle-4                                        246.0k ± 0%               223.9k ± 0%   -8.98% (p=0.000 n=10)
+TableColumnMove-4                                      22140.00 ± 0%                60.00 ± 0%  -99.73% (p=0.000 n=10)
+geomean                                                  73.80k                    3.665k       -95.03%

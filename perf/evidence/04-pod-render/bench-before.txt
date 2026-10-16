@@ -1,0 +1,15 @@
+cpu: Apple M1 Max
+BenchmarkPodRender-4   	    2000	     25994 ns/op	    8921 B/op	     178 allocs/op
+BenchmarkPodRender-4   	    2000	     25425 ns/op	    8918 B/op	     178 allocs/op
+BenchmarkPodRender-4   	    2000	     25802 ns/op	    8918 B/op	     178 allocs/op
+BenchmarkPodRender-4   	    2000	     25311 ns/op	    8918 B/op	     178 allocs/op
+cpu: Apple M1 Max
+BenchmarkPodRender-4   	    2000	     26104 ns/op	    8924 B/op	     178 allocs/op
+BenchmarkPodRender-4   	    2000	     26816 ns/op	    8921 B/op	     178 allocs/op
+BenchmarkPodRender-4   	    2000	     26491 ns/op	    8921 B/op	     178 allocs/op
+BenchmarkPodRender-4   	    2000	     26757 ns/op	    8921 B/op	     178 allocs/op
+cpu: Apple M1 Max
+BenchmarkPodRender-4   	    2000	     26092 ns/op	    8921 B/op	     178 allocs/op
+BenchmarkPodRender-4   	    2000	     25691 ns/op	    8921 B/op	     178 allocs/op
+BenchmarkPodRender-4   	    2000	     25532 ns/op	    8918 B/op	     178 allocs/op
+BenchmarkPodRender-4   	    2000	     25768 ns/op	    8918 B/op	     178 allocs/op

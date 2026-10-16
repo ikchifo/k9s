@@ -1,0 +1,6 @@
+wl=true mode=typed h1=false wall=0.90s heap=229MB sys=287MB gc=15 gogc=100
+wl=false mode=typed h1=false wall=0.70s heap=339MB sys=355MB gc=9 gogc=100
+wl=true mode=typed h1=false wall=0.80s heap=253MB sys=267MB gc=14 gogc=100
+wl=false mode=typed h1=false wall=0.70s heap=340MB sys=355MB gc=9 gogc=100
+wl=true mode=typed h1=false wall=1.00s heap=230MB sys=283MB gc=14 gogc=100
+wl=false mode=typed h1=false wall=0.70s heap=340MB sys=355MB gc=9 gogc=100

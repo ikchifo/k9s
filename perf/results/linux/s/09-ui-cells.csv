@@ -1,0 +1,15 @@
+label,size,metric,unit,n,median,p90,min,max
+09-ui-cells,s,startup_first_byte,ms,5,126.5,132.9,121.4,137.0
+09-ui-cells,s,startup_first_frame,ms,5,439.1,541.5,416.3,581.8
+09-ui-cells,s,startup_full_table,ms,5,439.4,541.7,416.6,582.1
+09-ui-cells,s,idle_cpu_pct,%,5,3.8,4.0,3.4,4.1
+09-ui-cells,s,idle_rss,MiB,5,147.6,149.2,146.6,149.4
+09-ui-cells,s,refresh_cpu,ms,5,76.0,80.4,69.0,82.0
+09-ui-cells,s,refresh_bytes,B,5,23.0,50.4,23.0,68.6
+09-ui-cells,s,switch_to_deploy,ms,5,73.9,75.3,71.7,75.9
+09-ui-cells,s,switch_to_pods,ms,5,41.3,49.2,40.8,53.9
+09-ui-cells,s,filter_key_echo,ms,30,10.5,18.2,10.1,20.5
+09-ui-cells,s,filter_apply,ms,5,160.6,164.1,160.4,164.8
+09-ui-cells,s,scroll_page_down,ms,50,10.7,11.0,8.9,12.9
+09-ui-cells,s,sort_toggle,ms,10,14.0,14.2,12.6,15.1
+09-ui-cells,s,context_switch,ms,5,417.5,425.9,408.0,426.2

@@ -1,0 +1,46 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/model1
+cpu: Apple M1 Max
+BenchmarkSortAge-4        	     100	  11032310 ns/op	 1122370 B/op	       2 allocs/op
+BenchmarkSortAge-4        	     100	  10802285 ns/op	 1122369 B/op	       2 allocs/op
+BenchmarkSortAge-4        	     100	  10510474 ns/op	 1122368 B/op	       2 allocs/op
+BenchmarkSortAge-4        	     100	  10649523 ns/op	 1122369 B/op	       2 allocs/op
+BenchmarkSortAge-4        	     100	  11516386 ns/op	 1122370 B/op	       2 allocs/op
+BenchmarkSortAge-4        	     100	  16853169 ns/op	 1122371 B/op	       2 allocs/op
+BenchmarkSortAge-4        	     100	  12023093 ns/op	 1122371 B/op	       2 allocs/op
+BenchmarkSortAge-4        	     100	  10567414 ns/op	 1122370 B/op	       2 allocs/op
+BenchmarkSortAge-4        	     100	  10894645 ns/op	 1122371 B/op	       2 allocs/op
+BenchmarkSortAge-4        	     100	  11023578 ns/op	 1122372 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      97	  12772626 ns/op	 1122374 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      91	  17959750 ns/op	 1122375 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      82	  15241135 ns/op	 1122369 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      93	  12861023 ns/op	 1122370 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      94	  13598232 ns/op	 1122373 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      93	  12878923 ns/op	 1122381 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      97	  13146339 ns/op	 1122373 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      90	  12618624 ns/op	 1122370 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      94	  14243085 ns/op	 1122372 B/op	       2 allocs/op
+BenchmarkSortRestarts-4   	      74	  25357894 ns/op	 1122371 B/op	       2 allocs/op
+BenchmarkSortCapacity-4   	      91	  18065766 ns/op	 6638566 B/op	  158635 allocs/op
+BenchmarkSortCapacity-4   	     100	  14058449 ns/op	 6638550 B/op	  158634 allocs/op
+BenchmarkSortCapacity-4   	      96	  11893050 ns/op	 6638576 B/op	  158635 allocs/op
+BenchmarkSortCapacity-4   	      99	  12388979 ns/op	 6638590 B/op	  158635 allocs/op
+BenchmarkSortCapacity-4   	     100	  12355727 ns/op	 6638621 B/op	  158635 allocs/op
+BenchmarkSortCapacity-4   	     100	  11022941 ns/op	 6638566 B/op	  158634 allocs/op
+BenchmarkSortCapacity-4   	     100	  10667699 ns/op	 6638577 B/op	  158634 allocs/op
+BenchmarkSortCapacity-4   	     100	  10551204 ns/op	 6638590 B/op	  158635 allocs/op
+BenchmarkSortCapacity-4   	     100	  10663070 ns/op	 6638570 B/op	  158634 allocs/op
+BenchmarkSortCapacity-4   	      84	  14159177 ns/op	 6638585 B/op	  158635 allocs/op
+BenchmarkSortName-4       	      69	  15992452 ns/op	 1122368 B/op	       2 allocs/op
+BenchmarkSortName-4       	      85	  15176562 ns/op	 1122370 B/op	       2 allocs/op
+BenchmarkSortName-4       	      85	  16113965 ns/op	 1122370 B/op	       2 allocs/op
+BenchmarkSortName-4       	      85	  14382714 ns/op	 1122369 B/op	       2 allocs/op
+BenchmarkSortName-4       	      87	  14058721 ns/op	 1122368 B/op	       2 allocs/op
+BenchmarkSortName-4       	      86	  14044988 ns/op	 1122368 B/op	       2 allocs/op
+BenchmarkSortName-4       	      88	  14496570 ns/op	 1122368 B/op	       2 allocs/op
+BenchmarkSortName-4       	      85	  13992567 ns/op	 1122369 B/op	       2 allocs/op
+BenchmarkSortName-4       	      85	  13983565 ns/op	 1122370 B/op	       2 allocs/op
+BenchmarkSortName-4       	      86	  14096571 ns/op	 1122373 B/op	       2 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/model1	56.087s

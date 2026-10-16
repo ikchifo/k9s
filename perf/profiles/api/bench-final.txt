@@ -1,0 +1,24 @@
+goos: darwin
+goarch: arm64
+pkg: api-bench
+cpu: Apple M1 Max
+BenchmarkUnstructuredListJSON-10       	       3	2795663042 ns/op	  38.22 MB/s	1695570989 B/op	29505073 allocs/op
+BenchmarkUnstructuredListJSON-10       	       3	2794165500 ns/op	  38.24 MB/s	1695571016 B/op	29505074 allocs/op
+BenchmarkUnstructuredListJSON-10       	       3	2811808083 ns/op	  38.00 MB/s	1695570962 B/op	29505073 allocs/op
+BenchmarkWatchEventsUnstructured-10    	       3	2070434819 ns/op	  52.16 MB/s	919145706 B/op	15289690 allocs/op
+BenchmarkWatchEventsUnstructured-10    	       3	2043852125 ns/op	  52.84 MB/s	919145893 B/op	15289692 allocs/op
+BenchmarkWatchEventsUnstructured-10    	       3	2043402194 ns/op	  52.85 MB/s	919145605 B/op	15289689 allocs/op
+BenchmarkTypedProtobuf-10              	       3	 109592986 ns/op	 617.96 MB/s	422813717 B/op	 3314239 allocs/op
+BenchmarkTypedProtobuf-10              	       3	 110442264 ns/op	 613.21 MB/s	422813733 B/op	 3314239 allocs/op
+BenchmarkTypedProtobuf-10              	       3	 110951444 ns/op	 610.39 MB/s	422813749 B/op	 3314239 allocs/op
+BenchmarkTableObject-10                	       3	3667889472 ns/op	  67.49 MB/s	1084336200 B/op	15831776 allocs/op
+BenchmarkTableObject-10                	       3	3649859319 ns/op	  67.82 MB/s	1084337933 B/op	15831779 allocs/op
+BenchmarkTableObject-10                	       3	3652169653 ns/op	  67.78 MB/s	1084337949 B/op	15831779 allocs/op
+BenchmarkTableMetadata-10              	       3	1799117930 ns/op	  69.33 MB/s	537839141 B/op	 7560939 allocs/op
+BenchmarkTableMetadata-10              	       3	1787855611 ns/op	  69.77 MB/s	537840901 B/op	 7560942 allocs/op
+BenchmarkTableMetadata-10              	       3	1781225986 ns/op	  70.03 MB/s	537842645 B/op	 7560945 allocs/op
+BenchmarkTableCellsOnly-10             	       3	 229749792 ns/op	 542.90 MB/s	150286498 B/op	  585135 allocs/op
+BenchmarkTableCellsOnly-10             	       3	 230257083 ns/op	 541.71 MB/s	150286498 B/op	  585135 allocs/op
+BenchmarkTableCellsOnly-10             	       3	 228045069 ns/op	 546.96 MB/s	150286498 B/op	  585135 allocs/op
+PASS
+ok  	api-bench	129.865s

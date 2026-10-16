@@ -1,0 +1,12 @@
+cpu: Apple M1 Max
+            │ perf/evidence/04-pod-render/bench-before.txt │ perf/evidence/04-pod-render/bench-after.txt │
+            │                    sec/op                    │       sec/op         vs base                │
+PodRender-4                                    25.90µ ± 2%           17.10µ ± 4%  -33.97% (p=0.000 n=12)
+
+            │ perf/evidence/04-pod-render/bench-before.txt │ perf/evidence/04-pod-render/bench-after.txt │
+            │                     B/op                     │        B/op          vs base                │
+PodRender-4                                   8.712Ki ± 0%          7.759Ki ± 0%  -10.94% (p=0.000 n=12)
+
+            │ perf/evidence/04-pod-render/bench-before.txt │ perf/evidence/04-pod-render/bench-after.txt │
+            │                  allocs/op                   │      allocs/op       vs base                │
+PodRender-4                                     178.0 ± 0%            123.0 ± 0%  -30.90% (p=0.000 n=12)

@@ -1,0 +1,21 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/render
+cpu: Apple M1 Max
+                 │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podrender-master.txt │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podrender-branch.txt │
+                 │                                                     sec/op                                                     │                                         sec/op                                          vs base                │
+PodRender-10                                                                                                         19.401µ ± 5%                                                                             1.570µ ±  1%  -91.91% (p=0.000 n=10)
+PodRenderTick-10                                                                                                      15.06m ± 7%                                                                             12.53m ± 10%  -16.76% (p=0.000 n=10)
+geomean                                                                                                               540.5µ                                                                                  140.3µ        -74.05%
+
+                 │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podrender-master.txt │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podrender-branch.txt │
+                 │                                                      B/op                                                      │                                          B/op                                           vs base                │
+PodRender-10                                                                                                         8.500Ki ± 0%                                                                             2.594Ki ± 0%  -69.49% (p=0.000 n=10)
+PodRenderTick-10                                                                                                     23.53Mi ± 0%                                                                             23.54Mi ± 0%        ~ (p=0.075 n=10)
+geomean                                                                                                              452.6Ki                                                                                  250.0Ki       -44.76%
+
+                 │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podrender-master.txt │ /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/evidence/12m-typed-pods/podrender-branch.txt │
+                 │                                                   allocs/op                                                    │                                       allocs/op                                         vs base                │
+PodRender-10                                                                                                          128.00 ± 0%                                                                               31.00 ± 0%  -75.78% (p=0.000 n=10)
+PodRenderTick-10                                                                                                      160.2k ± 0%                                                                              160.2k ± 0%        ~ (p=0.556 n=10)
+geomean                                                                                                               4.529k                                                                                   2.229k       -50.79%

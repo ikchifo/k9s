@@ -1,0 +1,218 @@
+File: model1.test
+Type: cpu
+Time: 2026-10-15 21:29:38 EDT
+Duration: 23.83s, Total samples = 10.12s (42.47%)
+Showing nodes accounting for 0.44s, 4.35% of 10.12s total
+      flat  flat%   sum%        cum   cum%
+     3.38s 33.40% 33.40%      3.39s 33.50%  github.com/derailed/k9s/internal/model1.appendFold
+    -1.89s 18.68% 14.72%     -4.61s 45.55%  regexp.(*Regexp).tryBacktrack
+    -0.99s  9.78%  4.94%     -1.56s 15.42%  regexp/syntax.(*Inst).MatchRunePos
+     0.89s  8.79% 13.74%      0.89s  8.79%  internal/bytealg.IndexByteString
+     0.80s  7.91% 21.64%      1.12s 11.07%  runtime.mapaccess2_fast64
+    -0.72s  7.11% 14.53%     -5.76s 56.92%  regexp.(*Regexp).backtrack
+     0.58s  5.73% 20.26%      1.77s 17.49%  bytes.Index
+    -0.57s  5.63% 14.62%     -0.57s  5.63%  unicode.SimpleFold
+    -0.50s  4.94%  9.68%     -0.50s  4.94%  regexp.(*bitState).shouldVisit (inline)
+    -0.50s  4.94%  4.74%     -0.73s  7.21%  regexp.(*inputString).step
+     0.41s  4.05%  8.79%      0.50s  4.94%  github.com/derailed/k9s/internal/model1.(*TableData).rxFilter.func1 (inline)
+    -0.27s  2.67%  6.13%     -0.48s  4.74%  regexp.(*bitState).push (inline)
+    -0.23s  2.27%  3.85%     -0.23s  2.27%  unicode/utf8.DecodeRuneInString (inline)
+     0.18s  1.78%  5.63%      0.18s  1.78%  internal/bytealg.IndexString
+    -0.17s  1.68%  3.95%     -1.73s 17.09%  regexp/syntax.(*Inst).MatchRune (inline)
+    -0.16s  1.58%  2.37%     -0.16s  1.58%  runtime.madvise
+    -0.12s  1.19%  1.19%     -0.12s  1.19%  runtime.memclrNoHeapPointers
+     0.10s  0.99%  2.17%      0.16s  1.58%  regexp.(*inputBytes).step
+     0.10s  0.99%  3.16%      0.10s  0.99%  runtime.memequal
+    -0.10s  0.99%  2.17%     -0.10s  0.99%  runtime.memmove
+    -0.09s  0.89%  1.28%     -0.09s  0.89%  runtime.pthread_kill
+     0.07s  0.69%  1.98%      0.07s  0.69%  internal/runtime/maps.memHash64AES
+     0.07s  0.69%  2.67%      0.07s  0.69%  runtime.pthread_cond_wait
+    -0.07s  0.69%  1.98%     -0.07s  0.69%  runtime.tryDeferToSpanScan
+    -0.07s  0.69%  1.28%     -0.23s  2.27%  strings.(*Builder).WriteString (inline)
+     0.06s  0.59%  1.88%      0.56s  5.53%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+     0.06s  0.59%  2.47%      0.06s  0.59%  internal/runtime/maps.ctrlGroupMatchEmpty (inline)
+     0.06s  0.59%  3.06%      1.18s 11.66%  k8s.io/apimachinery/pkg/util/sets.Set[go.shape.int].Has (inline)
+     0.06s  0.59%  3.66%      0.11s  1.09%  runtime.mapassign_faststr
+     0.06s  0.59%  4.25%      0.06s  0.59%  unicode/utf8.DecodeRune (inline)
+     0.05s  0.49%  4.74%      0.19s  1.88%  github.com/derailed/k9s/internal/model1.(*RowEvents).Add (inline)
+     0.05s  0.49%  5.24%      0.05s  0.49%  internal/runtime/maps.ctrlGroupMatchH2 (inline)
+    -0.05s  0.49%  4.74%     -0.05s  0.49%  runtime.(*mspan).writeHeapBitsSmall
+     0.05s  0.49%  5.24%      0.05s  0.49%  runtime.kevent
+    -0.04s   0.4%  4.84%     -0.04s   0.4%  internal/runtime/atomic.(*Uint32).Add (inline)
+     0.04s   0.4%  5.24%      0.04s   0.4%  internal/runtime/maps.(*Map).Used (inline)
+     0.04s   0.4%  5.63%      0.04s   0.4%  internal/runtime/maps.(*Map).directoryIndex (inline)
+     0.04s   0.4%  6.03%      0.04s   0.4%  internal/runtime/maps.(*groupsReference).group (inline)
+    -0.04s   0.4%  5.63%     -0.09s  0.89%  runtime.scanObjectsSmall
+     0.04s   0.4%  6.03%      0.04s   0.4%  runtime.usleep
+    -0.04s   0.4%  5.63%     -0.04s   0.4%  strings.(*Builder).copyCheck (inline)
+    -0.04s   0.4%  5.24%     -0.43s  4.25%  strings.Join
+     0.03s   0.3%  5.53%      0.03s   0.3%  internal/runtime/atomic.(*UnsafePointer).Load (inline)
+    -0.03s   0.3%  5.24%     -0.03s   0.3%  runtime.(*fixalloc).alloc
+     0.03s   0.3%  5.53%      0.03s   0.3%  runtime.pthread_cond_signal
+    -0.03s   0.3%  5.24%     -0.15s  1.48%  strings.(*Builder).Grow
+     0.02s   0.2%  5.43%      0.91s  8.99%  bytes.IndexByte (inline)
+    -0.02s   0.2%  5.24%     -0.10s  0.99%  internal/bytealg.MakeNoZero
+    -0.02s   0.2%  5.04%     -0.02s   0.2%  internal/runtime/maps.memHashAES
+    -0.02s   0.2%  4.84%     -5.78s 57.11%  regexp.(*Regexp).find
+    -0.02s   0.2%  4.64%     -0.02s   0.2%  regexp.(*inputs).init (inline)
+    -0.02s   0.2%  4.45%     -0.02s   0.2%  runtime.findfunc
+    -0.02s   0.2%  4.25%     -0.22s  2.17%  runtime.mallocgc
+    -0.02s   0.2%  4.05%     -0.01s 0.099%  sync.(*Pool).Get
+     0.01s 0.099%  4.15%      0.01s 0.099%  internal/bytealg.Cutover (inline)
+     0.01s 0.099%  4.25%      0.01s 0.099%  internal/runtime/maps.(*ctrlGroup).setEmpty (inline)
+     0.01s 0.099%  4.35%      0.01s 0.099%  internal/runtime/maps.(*groupReference).key (inline)
+     0.01s 0.099%  4.45%      0.07s  0.69%  internal/runtime/maps.(*table).reset
+     0.01s 0.099%  4.55%      0.04s   0.4%  internal/runtime/maps.(*table).split
+     0.01s 0.099%  4.64%      0.06s  0.59%  internal/runtime/maps.ctrlGroup.matchH2 (inline)
+     0.01s 0.099%  4.74%      0.06s  0.59%  internal/runtime/maps.newGroups (inline)
+     0.01s 0.099%  4.84%      0.03s   0.3%  internal/runtime/maps.typedmemmove
+    -0.01s 0.099%  4.74%     -0.01s 0.099%  runtime.(*gcWork).tryGetObjFast (inline)
+    -0.01s 0.099%  4.64%     -0.04s   0.4%  runtime.(*mheap).allocMSpanLocked
+    -0.01s 0.099%  4.55%     -0.01s 0.099%  runtime.(*mspan).base (inline)
+     0.01s 0.099%  4.64%      0.01s 0.099%  runtime.(*mspan).init
+    -0.01s 0.099%  4.55%     -0.01s 0.099%  runtime.(*mspan).nextFreeIndex
+     0.01s 0.099%  4.64%      0.01s 0.099%  runtime.(*spanSet).pop
+    -0.01s 0.099%  4.55%     -0.01s 0.099%  runtime.(*spanSet).push
+    -0.01s 0.099%  4.45%     -0.01s 0.099%  runtime.(*sysMemStat).add
+     0.01s 0.099%  4.55%      0.01s 0.099%  runtime.(*unwinder).resolveInternal
+     0.01s 0.099%  4.64%      0.01s 0.099%  runtime.asyncPreempt
+    -0.01s 0.099%  4.55%     -0.01s 0.099%  runtime.bool2int (inline)
+     0.01s 0.099%  4.64%      0.01s 0.099%  runtime.extractHeapBitsSmall
+    -0.01s 0.099%  4.55%     -0.19s  1.88%  runtime.gcDrain
+     0.01s 0.099%  4.64%      0.01s 0.099%  runtime.getMCache (inline)
+    -0.01s 0.099%  4.55%     -0.06s  0.59%  runtime.heapSetTypeNoHeader (inline)
+     0.01s 0.099%  4.64%      0.01s 0.099%  runtime.isSweepDone (inline)
+    -0.01s 0.099%  4.55%     -0.23s  2.27%  runtime.makeslice
+    -0.01s 0.099%  4.45%     -0.06s  0.59%  runtime.mallocgcSmallNoscan
+     0.01s 0.099%  4.55%      0.01s 0.099%  runtime.procUnpin (inline)
+     0.01s 0.099%  4.64%      0.01s 0.099%  runtime.readUintptr (inline)
+     0.01s 0.099%  4.74%     -0.08s  0.79%  runtime.scanSpan
+    -0.01s 0.099%  4.64%     -0.01s 0.099%  runtime.setBlockOnExitSyscall
+    -0.01s 0.099%  4.55%     -0.01s 0.099%  runtime.spanAllocType.manual (inline)
+    -0.01s 0.099%  4.45%     -0.01s 0.099%  runtime.spanClass.sizeclass (inline)
+    -0.01s 0.099%  4.35%     -0.01s 0.099%  runtime.spanOf (inline)
+     0.01s 0.099%  4.45%      0.01s 0.099%  runtime.stealWork
+     0.01s 0.099%  4.55%      0.02s   0.2%  runtime.typedmemmove
+    -0.01s 0.099%  4.45%     -0.01s 0.099%  runtime.unlock2
+    -0.01s 0.099%  4.35%     -0.01s 0.099%  strings.(*Builder).String (inline)
+         0     0%  4.35%      1.77s 17.49%  bytes.Contains (inline)
+         0     0%  4.35%      0.09s  0.89%  bytes.Equal (inline)
+         0     0%  4.35%      0.01s 0.099%  fmt.Sprintf
+         0     0%  4.35%      0.01s 0.099%  github.com/derailed/k9s/internal.IsFuzzySelector (inline)
+         0     0%  4.35%      0.64s  6.32%  github.com/derailed/k9s/internal/model1.(*TableData).Filter
+         0     0%  4.35%      0.61s  6.03%  github.com/derailed/k9s/internal/model1.(*TableData).rxFilter
+         0     0%  4.35%      0.01s 0.099%  github.com/derailed/k9s/internal/model1.BenchmarkFilter
+         0     0%  4.35%      0.64s  6.32%  github.com/derailed/k9s/internal/model1.BenchmarkFilter.func1
+         0     0%  4.35%      0.06s  0.59%  github.com/derailed/k9s/internal/model1.NewRowEvents (inline)
+         0     0%  4.35%      0.02s   0.2%  github.com/derailed/k9s/internal/model1.NewTableData (inline)
+         0     0%  4.35%      0.02s   0.2%  github.com/derailed/k9s/internal/model1.NewTableDataFromTable (inline)
+         0     0%  4.35%      0.01s 0.099%  github.com/derailed/k9s/internal/model1.benchPodData
+         0     0%  4.35%      0.04s   0.4%  internal/runtime/maps.(*table).rehash
+         0     0%  4.35%      0.03s   0.3%  internal/runtime/maps.(*table).uncheckedPutSlot
+         0     0%  4.35%     -0.01s 0.099%  internal/runtime/maps.MemHash
+         0     0%  4.35%      0.06s  0.59%  internal/runtime/maps.NewMap
+         0     0%  4.35%     -0.01s 0.099%  internal/runtime/maps.StrHash (inline)
+         0     0%  4.35%      0.06s  0.59%  internal/runtime/maps.ctrlGroup.matchEmpty (inline)
+         0     0%  4.35%      0.07s  0.69%  internal/runtime/maps.newTable
+         0     0%  4.35%      0.05s  0.49%  internal/runtime/maps.newarray
+         0     0%  4.35%      0.01s 0.099%  regexp.(*Regexp).FindStringSubmatch
+         0     0%  4.35%      1.76s 17.39%  regexp.(*Regexp).Match (inline)
+         0     0%  4.35%     -7.55s 74.60%  regexp.(*Regexp).MatchString (inline)
+         0     0%  4.35%     -5.79s 57.21%  regexp.(*Regexp).doMatch (inline)
+         0     0%  4.35%     -0.06s  0.59%  regexp.(*bitState).reset
+         0     0%  4.35%     -0.01s 0.099%  regexp.newBitState (inline)
+         0     0%  4.35%     -0.04s   0.4%  runtime.(*consistentHeapStats).acquire
+         0     0%  4.35%     -0.01s 0.099%  runtime.(*gcControllerState).enlistWorker
+         0     0%  4.35%     -0.09s  0.89%  runtime.(*mcache).nextFree
+         0     0%  4.35%     -0.08s  0.79%  runtime.(*mcache).refill
+         0     0%  4.35%     -0.08s  0.79%  runtime.(*mcentral).cacheSpan
+         0     0%  4.35%     -0.08s  0.79%  runtime.(*mcentral).grow
+         0     0%  4.35%     -0.08s  0.79%  runtime.(*mheap).alloc
+         0     0%  4.35%     -0.24s  2.37%  runtime.(*mheap).alloc.func1
+         0     0%  4.35%     -0.24s  2.37%  runtime.(*mheap).allocSpan
+         0     0%  4.35%     -0.01s 0.099%  runtime.(*mheap).freeSpan (inline)
+         0     0%  4.35%     -0.01s 0.099%  runtime.(*mheap).freeSpan.func1
+         0     0%  4.35%     -0.01s 0.099%  runtime.(*mheap).freeSpanLocked
+         0     0%  4.35%      0.01s 0.099%  runtime.(*mheap).nextSpanForSweep
+         0     0%  4.35%     -0.03s   0.3%  runtime.(*sweepLocked).sweep
+         0     0%  4.35%      0.01s 0.099%  runtime.(*unwinder).initAt
+         0     0%  4.35%     -0.02s   0.2%  runtime.(*unwinder).next
+         0     0%  4.35%     -0.02s   0.2%  runtime.bgsweep
+         0     0%  4.35%      0.01s 0.099%  runtime.bulkBarrierPreWriteSrcOnly
+         0     0%  4.35%     -0.01s 0.099%  runtime.callers
+         0     0%  4.35%     -0.01s 0.099%  runtime.callers.func1
+         0     0%  4.35%     -0.01s 0.099%  runtime.findObject
+         0     0%  4.35%      0.08s  0.79%  runtime.findRunnable
+         0     0%  4.35%     -0.03s   0.3%  runtime.forEachP.func1
+         0     0%  4.35%     -0.03s   0.3%  runtime.forEachPInternal
+         0     0%  4.35%     -0.01s 0.099%  runtime.freeDeadSpanSPMCs
+         0     0%  4.35%     -0.01s 0.099%  runtime.freeSomeWbufs
+         0     0%  4.35%      0.01s 0.099%  runtime.gcAssistAlloc.func2
+         0     0%  4.35%      0.01s 0.099%  runtime.gcAssistAlloc1
+         0     0%  4.35%     -0.14s  1.38%  runtime.gcBgMarkWorker
+         0     0%  4.35%     -0.19s  1.88%  runtime.gcBgMarkWorker.func2
+         0     0%  4.35%     -0.12s  1.19%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0%  4.35%     -0.07s  0.69%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0%  4.35%      0.01s 0.099%  runtime.gcDrainN
+         0     0%  4.35%     -0.02s   0.2%  runtime.gcFlushBgCredit
+         0     0%  4.35%     -0.01s 0.099%  runtime.gcMarkDone
+         0     0%  4.35%     -0.01s 0.099%  runtime.gcMarkDone.func2
+         0     0%  4.35%      0.05s  0.49%  runtime.gcStart.func4
+         0     0%  4.35%      0.05s  0.49%  runtime.gopreempt_m (inline)
+         0     0%  4.35%      0.05s  0.49%  runtime.goschedImpl
+         0     0%  4.35%      0.03s   0.3%  runtime.growslice
+         0     0%  4.35%      0.05s  0.49%  runtime.lock (inline)
+         0     0%  4.35%      0.05s  0.49%  runtime.lock2
+         0     0%  4.35%      0.05s  0.49%  runtime.lockWithRank (inline)
+         0     0%  4.35%      0.07s  0.69%  runtime.mPark (inline)
+         0     0%  4.35%      0.02s   0.2%  runtime.mProf_Malloc
+         0     0%  4.35%     -0.01s 0.099%  runtime.makeSpanClass (inline)
+         0     0%  4.35%      0.06s  0.59%  runtime.makemap
+         0     0%  4.35%      0.02s   0.2%  runtime.mallocgcLarge
+         0     0%  4.35%      0.04s   0.4%  runtime.mallocgcSmallScanHeader
+         0     0%  4.35%     -0.21s  2.08%  runtime.mallocgcSmallScanNoHeader
+         0     0%  4.35%      0.01s 0.099%  runtime.mallocgcSmallScanNoHeaderSC7
+         0     0%  4.35%      0.01s 0.099%  runtime.mallocgcTinySC2
+         0     0%  4.35%     -0.02s   0.2%  runtime.markroot
+         0     0%  4.35%     -0.02s   0.2%  runtime.markroot.func1
+         0     0%  4.35%      0.09s  0.89%  runtime.mcall
+         0     0%  4.35%      0.02s   0.2%  runtime.memclrNoHeapPointersChunked
+         0     0%  4.35%      0.05s  0.49%  runtime.morestack
+         0     0%  4.35%      0.05s  0.49%  runtime.netpoll
+         0     0%  4.35%      0.05s  0.49%  runtime.newarray
+         0     0%  4.35%      0.05s  0.49%  runtime.newstack
+         0     0%  4.35%      0.07s  0.69%  runtime.notesleep
+         0     0%  4.35%      0.03s   0.3%  runtime.notewakeup
+         0     0%  4.35%      0.04s   0.4%  runtime.osyield (inline)
+         0     0%  4.35%      0.09s  0.89%  runtime.park_m
+         0     0%  4.35%     -0.09s  0.89%  runtime.preemptM
+         0     0%  4.35%     -0.03s   0.3%  runtime.preemptall
+         0     0%  4.35%     -0.08s  0.79%  runtime.preemptone
+         0     0%  4.35%      0.02s   0.2%  runtime.profilealloc
+         0     0%  4.35%     -0.02s   0.2%  runtime.ready
+         0     0%  4.35%      0.01s 0.099%  runtime.resetspinning
+         0     0%  4.35%     -0.03s   0.3%  runtime.scanObject
+         0     0%  4.35%      0.09s  0.89%  runtime.schedule
+         0     0%  4.35%      0.07s  0.69%  runtime.semasleep
+         0     0%  4.35%      0.03s   0.3%  runtime.semawakeup
+         0     0%  4.35%     -0.09s  0.89%  runtime.signalM (inline)
+         0     0%  4.35%      0.01s 0.099%  runtime.slicebytetostring
+         0     0%  4.35%      0.05s  0.49%  runtime.startTheWorldWithSema
+         0     0%  4.35%      0.03s   0.3%  runtime.startm
+         0     0%  4.35%      0.03s   0.3%  runtime.stkbucket
+         0     0%  4.35%     -0.01s 0.099%  runtime.stopTheWorldWithSema
+         0     0%  4.35%      0.07s  0.69%  runtime.stopm
+         0     0%  4.35%     -0.01s 0.099%  runtime.strhash
+         0     0%  4.35%     -0.02s   0.2%  runtime.suspendG
+         0     0%  4.35%     -0.02s   0.2%  runtime.sweepone
+         0     0%  4.35%     -0.16s  1.58%  runtime.sysUsed (inline)
+         0     0%  4.35%     -0.16s  1.58%  runtime.sysUsedOS (inline)
+         0     0%  4.35%     -0.43s  4.25%  runtime.systemstack
+         0     0%  4.35%     -0.02s   0.2%  runtime.tracebackPCs
+         0     0%  4.35%     -0.01s 0.099%  runtime.unlock (inline)
+         0     0%  4.35%     -0.01s 0.099%  runtime.unlockWithRank (inline)
+         0     0%  4.35%      0.03s   0.3%  runtime.wakep
+         0     0%  4.35%     -0.10s  0.99%  strings.(*Builder).grow
+         0     0%  4.35%      0.01s 0.099%  sync.runtime_procUnpin
+         0     0%  4.35%      0.65s  6.42%  testing.(*B).run1.func1
+         0     0%  4.35%      0.65s  6.42%  testing.(*B).runN

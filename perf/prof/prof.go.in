@@ -1,0 +1,87 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright Authors of K9s
+
+//go:build k9sprof
+
+package main
+
+import (
+	"flag"
+	"net/http"
+	_ "net/http/pprof"
+	"os"
+	"runtime"
+	"runtime/trace"
+	"time"
+
+	"github.com/felixge/fgprof"
+)
+
+const (
+	pprofAddrEnv = "K9S_PROF_ADDR"
+	klogVEnv     = "K9S_PROF_KLOG_V"
+	klogFileEnv  = "K9S_PROF_KLOG_FILE"
+	traceEnv     = "K9S_PROF_TRACE"
+	flightEnv    = "K9S_PROF_FLIGHT"
+	flightAge    = 10 * time.Second
+	traceWindow  = 15 * time.Second
+)
+
+// Profiling hooks, only compiled with -tags k9sprof.
+func init() {
+	if v := os.Getenv(klogVEnv); v != "" {
+		_ = flag.Set("v", v)
+	}
+	if f := os.Getenv(klogFileEnv); f != "" {
+		_ = flag.Set("log_file", f)
+		_ = flag.Set("one_output", "true")
+	}
+
+	if addr := os.Getenv(pprofAddrEnv); addr != "" {
+		runtime.SetBlockProfileRate(int(time.Microsecond))
+		runtime.SetMutexProfileFraction(5)
+		http.DefaultServeMux.Handle("/debug/fgprof", fgprof.Handler())
+		go func() { _ = http.ListenAndServe(addr, nil) }()
+	}
+
+	if path := os.Getenv(traceEnv); path != "" {
+		startTrace(path)
+	}
+
+	if path := os.Getenv(flightEnv); path != "" {
+		startFlight(path)
+	}
+}
+
+func startTrace(path string) {
+	f, err := os.Create(path)
+	if err != nil {
+		return
+	}
+	if err := trace.Start(f); err != nil {
+		return
+	}
+	time.AfterFunc(traceWindow, func() {
+		trace.Stop()
+		_ = f.Close()
+	})
+}
+
+// startFlight keeps a rolling trace window; GET /debug/flight dumps it.
+func startFlight(path string) {
+	fr := trace.NewFlightRecorder(trace.FlightRecorderConfig{MinAge: flightAge})
+	if err := fr.Start(); err != nil {
+		return
+	}
+	http.DefaultServeMux.HandleFunc("/debug/flight", func(w http.ResponseWriter, _ *http.Request) {
+		f, err := os.Create(path)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer f.Close()
+		if _, err := fr.WriteTo(f); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	})
+}

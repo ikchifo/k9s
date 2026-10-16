@@ -1,0 +1,55 @@
+File: k9s-prof-cpu
+Type: cpu
+Time: 2026-10-15 18:26:23 EDT
+Duration: 20.09s, Total samples = 19.90s (99.06%)
+Active filters:
+   focus=tview\.\(\*Application\)\.Run
+Showing nodes accounting for 3.97s, 19.95% of 19.90s total
+Dropped 138 nodes (cum <= 0.10s)
+Showing top 45 nodes out of 134
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%      6.74s 33.87%  github.com/derailed/k9s/cmd.Execute
+         0     0%     0%      6.74s 33.87%  github.com/derailed/k9s/cmd.run
+         0     0%     0%      6.74s 33.87%  github.com/derailed/k9s/internal/view.(*App).Run
+         0     0%     0%      6.74s 33.87%  github.com/derailed/tview.(*Application).Run
+         0     0%     0%      6.74s 33.87%  github.com/spf13/cobra.(*Command).Execute (inline)
+         0     0%     0%      6.74s 33.87%  github.com/spf13/cobra.(*Command).ExecuteC
+         0     0%     0%      6.74s 33.87%  github.com/spf13/cobra.(*Command).execute
+         0     0%     0%      6.74s 33.87%  main.main
+         0     0%     0%      6.74s 33.87%  runtime.main
+         0     0%     0%      6.49s 32.61%  github.com/derailed/tview.(*Application).QueueUpdateDraw.1
+         0     0%     0%      5.49s 27.59%  github.com/derailed/k9s/internal/ui.(*Table).Filter
+         0     0%     0%      5.49s 27.59%  github.com/derailed/k9s/internal/view.(*Table).BufferCompleted.func1
+     0.03s  0.15%  0.15%      5.39s 27.09%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+         0     0%  0.15%      5.23s 26.28%  github.com/derailed/k9s/internal/model1.(*TableData).Filter
+         0     0%  0.15%      5.23s 26.28%  github.com/derailed/k9s/internal/model1.(*TableData).rxFilter
+         0     0%  0.15%      5.23s 26.28%  github.com/derailed/k9s/internal/ui.(*Table).filtered
+     0.14s   0.7%  0.85%      5.19s 26.08%  github.com/derailed/k9s/internal/model1.(*TableData).rxFilter.func1 (inline)
+     0.01s  0.05%   0.9%      3.20s 16.08%  regexp.(*Regexp).find
+     0.21s  1.06%  1.96%      3.19s 16.03%  regexp.(*Regexp).backtrack
+     0.01s  0.05%  2.01%      3.07s 15.43%  regexp.(*Regexp).MatchString (inline)
+         0     0%  2.01%      3.06s 15.38%  regexp.(*Regexp).doMatch (inline)
+     0.67s  3.37%  5.38%      2.76s 13.87%  regexp.(*Regexp).tryBacktrack
+     0.05s  0.25%  5.63%      1.65s  8.29%  regexp/syntax.(*Inst).MatchRune (inline)
+     0.48s  2.41%  8.04%      1.60s  8.04%  regexp/syntax.(*Inst).MatchRunePos
+     0.12s   0.6%  8.64%      1.33s  6.68%  strings.Join
+     1.12s  5.63% 14.27%      1.12s  5.63%  unicode.SimpleFold
+     0.63s  3.17% 17.44%      1.10s  5.53%  strings.(*Builder).WriteString (inline)
+         0     0% 17.44%      0.96s  4.82%  github.com/derailed/tview.(*Application).draw
+         0     0% 17.44%      0.71s  3.57%  github.com/derailed/tview.(*Pages).Draw
+         0     0% 17.44%      0.68s  3.42%  github.com/derailed/tview.(*Flex).Draw
+         0     0% 17.44%      0.61s  3.07%  github.com/derailed/tview.(*Table).Draw
+     0.04s   0.2% 17.64%      0.44s  2.21%  runtime.mallocgc
+     0.40s  2.01% 19.65%      0.40s  2.01%  runtime.memmove
+         0     0% 19.65%      0.36s  1.81%  github.com/derailed/tview.decomposeString
+         0     0% 19.65%      0.29s  1.46%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI
+         0     0% 19.65%      0.29s  1.46%  github.com/derailed/k9s/internal/view.(*Browser).TableDataChanged.func1
+     0.04s   0.2% 19.85%      0.28s  1.41%  k8s.io/apimachinery/pkg/util/sets.Set[go.shape.int].Has (inline)
+         0     0% 19.85%      0.25s  1.26%  github.com/derailed/k9s/internal/model.(*Table).Peek
+         0     0% 19.85%      0.25s  1.26%  github.com/derailed/k9s/internal/model1.(*RowEvents).Clone
+         0     0% 19.85%      0.25s  1.26%  github.com/derailed/k9s/internal/model1.(*TableData).Clone
+         0     0% 19.85%      0.25s  1.26%  github.com/derailed/tcell/v2.(*tScreen).Show
+         0     0% 19.85%      0.25s  1.26%  github.com/derailed/tview.printWithStyle
+     0.02s   0.1% 19.95%      0.25s  1.26%  runtime.mallocgcSmallScanNoHeader
+         0     0% 19.95%      0.24s  1.21%  github.com/derailed/tcell/v2.(*devTty).WindowSize
+         0     0% 19.95%      0.24s  1.21%  github.com/derailed/tcell/v2.(*tScreen).resize

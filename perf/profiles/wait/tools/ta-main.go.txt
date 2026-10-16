@@ -1,0 +1,389 @@
+// Command ta summarizes a runtime/trace around a wall-clock anchor taken from
+// the driver's marks.json: UI goroutine spans (with who woke it), per-goroutine
+// state totals and k9s blocking sites.
+package main
+
+import (
+	"encoding/json"
+	"flag"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"sort"
+	"strings"
+	"time"
+
+	"golang.org/x/exp/trace"
+)
+
+type mark struct {
+	Wall int64  `json:"wall_ns"`
+	What string `json:"what"`
+}
+
+type gstate struct {
+	state    trace.GoState
+	since    int64
+	reason   string
+	site     string
+	creator  string
+	isUI     bool
+	wakeSite string
+	runStart int64
+	busyStart int64
+	runAcc   int64
+	csite    string
+}
+
+type agg struct {
+	running, runnable, syscall float64
+	waiting                    map[string]float64
+	n                          int
+}
+
+type span struct {
+	start, dur, cpu float64
+	waker      string
+	block      string
+}
+
+var (
+	from, to   float64
+	anchor     int64
+	offset     int64 // wall_ns - trace_ns
+	gs         = map[trace.GoID]*gstate{}
+	byFn       = map[string]*agg{}
+	sites      = map[string]float64{}
+	siteN      = map[string]int{}
+	uiSpans    []span
+	created    = map[string]int{}
+	exited     = map[string]int{}
+	uiStacks   = map[string]int{}
+	showCreate = flag.Bool("create", false, "print goroutine creations in window")
+	uiMinSpan  = flag.Float64("uimin", 0.5, "min UI span ms to print")
+	interestRx = []string{"derailed/k9s", "derailed/tview", "client-go"}
+)
+
+func rel(t trace.Time) float64 { return float64(int64(t)+offset-anchor) / 1e6 }
+
+func inWin(a, b float64) (float64, bool) {
+	if b < from || a > to {
+		return 0, false
+	}
+	return min(b, to) - max(a, from), true
+}
+
+// site returns the first interesting frames of a stack.
+func site(s trace.Stack, n int) string {
+	var out []string
+	for f := range s.Frames() {
+		fn := f.Func
+		for _, rx := range interestRx {
+			if strings.Contains(fn, rx) {
+				out = append(out, short(fn)+fmt.Sprintf(":%d", f.Line))
+				break
+			}
+		}
+		if len(out) >= n {
+			break
+		}
+	}
+	if len(out) == 0 {
+		for f := range s.Frames() {
+			return short(f.Func)
+		}
+		return "?"
+	}
+	return strings.Join(out, " < ")
+}
+
+func short(fn string) string {
+	fn = strings.TrimPrefix(fn, "github.com/derailed/")
+	fn = strings.TrimPrefix(fn, "k8s.io/")
+	return fn
+}
+
+func creatorOf(s trace.Stack) string {
+	var last string
+	for f := range s.Frames() {
+		last = short(f.Func)
+	}
+	return last
+}
+
+func hasFrame(s trace.Stack, sub string) bool {
+	for f := range s.Frames() {
+		if strings.Contains(f.Func, sub) {
+			return true
+		}
+	}
+	return false
+}
+
+func trimQ(s string) string {
+	pp := strings.Split(s, " < ")
+	var out []string
+	for _, p := range pp {
+		if strings.Contains(p, "QueueUpdateDraw") {
+			continue
+		}
+		out = append(out, p)
+	}
+	if len(out) > 3 {
+		out = out[:3]
+	}
+	return strings.Join(out, " < ")
+}
+
+func hasExact(s trace.Stack, fn string) bool {
+	for f := range s.Frames() {
+		if f.Func == fn {
+			return true
+		}
+	}
+	return false
+}
+
+func fnAgg(g *gstate) *agg {
+	k := g.creator
+	if g.isUI {
+		k = "** UI event loop (tview.Application.Run)"
+	}
+	a := byFn[k]
+	if a == nil {
+		a = &agg{waiting: map[string]float64{}}
+		byFn[k] = a
+	}
+	return a
+}
+
+func account(g *gstate, now int64) {
+	d, ok := inWin(float64(g.since+offset-anchor)/1e6, float64(now+offset-anchor)/1e6)
+	if !ok || d <= 0 {
+		return
+	}
+	a := fnAgg(g)
+	switch g.state {
+	case trace.GoRunning:
+		a.running += d
+	case trace.GoRunnable:
+		a.runnable += d
+	case trace.GoSyscall:
+		a.syscall += d
+	case trace.GoWaiting:
+		a.waiting[g.reason] += d
+		if g.site != "" {
+			k := g.reason + " @ " + g.site
+			sites[k] += d
+			siteN[k]++
+		}
+	}
+}
+
+func main() {
+	tracePath := flag.String("trace", "", "trace file")
+	marksPath := flag.String("marks", "", "marks.json")
+	anchorName := flag.String("anchor", "", "mark name (prefix) to use as t=0; last match")
+	flag.Float64Var(&from, "from", -200, "window start ms")
+	flag.Float64Var(&to, "to", 2000, "window end ms")
+	flag.Parse()
+
+	var mm []mark
+	b, err := os.ReadFile(*marksPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_ = json.Unmarshal(b, &mm)
+	for _, m := range mm {
+		if strings.HasPrefix(m.What, *anchorName) {
+			anchor = m.Wall
+		}
+	}
+	if anchor == 0 {
+		log.Fatalf("anchor %q not found", *anchorName)
+	}
+
+	f, err := os.Open(*tracePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	r, err := trace.NewReader(f)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var last trace.Time
+	for {
+		e, err := r.ReadEvent()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		last = e.Time()
+		switch e.Kind() {
+		case trace.EventSync:
+			if cs := e.Sync().ClockSnapshot; cs != nil && offset == 0 {
+				offset = cs.Wall.UnixNano() - int64(cs.Trace)
+				fmt.Printf("# clock snapshot: trace %d wall %s; anchor %q at %s\n", cs.Trace, cs.Wall.Format("15:04:05.000"), *anchorName, time.Unix(0, anchor).Format("15:04:05.000"))
+			}
+		case trace.EventStateTransition:
+			st := e.StateTransition()
+			if st.Resource.Kind != trace.ResourceGoroutine || offset == 0 {
+				continue
+			}
+			transition(e, st)
+		}
+	}
+	for _, g := range gs {
+		account(g, int64(last))
+	}
+	report()
+}
+
+func transition(e trace.Event, st trace.StateTransition) {
+	id := st.Resource.Goroutine()
+	old, nu := st.Goroutine()
+	now := int64(e.Time())
+	g := gs[id]
+	if g == nil {
+		g = &gstate{state: old, since: now}
+		gs[id] = g
+	}
+	if old == trace.GoNotExist {
+		g.csite = site(e.Stack(), 5)
+		g.creator = creatorOf(st.Stack)
+		if g.creator == "" {
+			g.creator = "?"
+		}
+		if t := rel(e.Time()); t >= from && t <= to {
+			created[g.creator]++
+			if *showCreate {
+				fmt.Printf("create %9.1f g%d %s <- %s\n", t, id, g.creator, site(e.Stack(), 4))
+			}
+		}
+	}
+	if g.creator == "" && e.Stack() != trace.NoStack {
+		g.creator = creatorOf(e.Stack())
+	}
+	if !g.isUI && old != trace.GoNotExist && e.Goroutine() == id && hasExact(e.Stack(), "github.com/derailed/tview.(*Application).Run") {
+		g.isUI = true
+	}
+
+	account(g, now)
+
+	if g.isUI && e.Goroutine() == id && e.Stack() != trace.NoStack {
+		if t := rel(e.Time()); t >= from && t <= to {
+			uiStacks[site(e.Stack(), 4)]++
+		}
+	}
+
+	if g.isUI && g.state == trace.GoRunning {
+		g.runAcc += now - g.runStart
+	}
+	if g.isUI && nu == trace.GoWaiting && g.busyStart != 0 {
+		s, d := rel(trace.Time(g.busyStart)), float64(now-g.busyStart)/1e6
+		if s+d >= from && s <= to {
+			uiSpans = append(uiSpans, span{start: s, dur: d, cpu: float64(g.runAcc) / 1e6, waker: g.wakeSite, block: site(e.Stack(), 2)})
+		}
+		g.busyStart, g.runAcc = 0, 0
+	}
+	if nu == trace.GoRunning {
+		g.runStart = now
+	}
+	if old == trace.GoWaiting || (g.busyStart == 0 && nu != trace.GoWaiting) {
+		g.busyStart = now
+	}
+	if nu == trace.GoWaiting {
+		g.reason = st.Reason
+		g.site = site(e.Stack(), 3)
+	}
+	if old == trace.GoWaiting && nu == trace.GoRunnable {
+		if w := gs[e.Goroutine()]; e.Goroutine() != trace.NoGoroutine && w != nil && w.csite != "" && strings.Contains(w.creator, "QueueUpdateDraw") {
+			g.wakeSite = "QUD from " + trimQ(w.csite)
+		} else if e.Goroutine() != trace.NoGoroutine {
+			g.wakeSite = site(e.Stack(), 3)
+		} else {
+			g.wakeSite = "(runtime/timer/netpoll)"
+		}
+	}
+	if nu == trace.GoNotExist {
+		if t := rel(e.Time()); t >= from && t <= to {
+			exited[g.creator]++
+		}
+	}
+	g.state, g.since = nu, now
+}
+
+func report() {
+	fmt.Printf("\n## UI goroutine running spans in [%.0f, %.0f] ms (merged until it blocks; >= %.1fms)\n", from, to, *uiMinSpan)
+	var tot, cpu float64
+	for _, s := range uiSpans {
+		tot += s.dur
+		cpu += s.cpu
+		if s.dur >= *uiMinSpan {
+			fmt.Printf("%9.1f +%7.1fms (cpu %6.1f) woken-by: %s | blocks-at: %s\n", s.start, s.dur, s.cpu, s.waker, s.block)
+		}
+	}
+	fmt.Printf("UI busy total: %.1fms (running %.1fms) in %d spans\n", tot, cpu, len(uiSpans))
+
+	fmt.Println("\n## UI goroutine event stacks (preempt/block/syscall sample, count)")
+	var us []string
+	for k := range uiStacks {
+		us = append(us, k)
+	}
+	sort.Slice(us, func(i, j int) bool { return uiStacks[us[i]] > uiStacks[us[j]] })
+	for i, k := range us {
+		if i >= 15 {
+			break
+		}
+		fmt.Printf("%5d %s\n", uiStacks[k], k)
+	}
+
+	fmt.Println("\n## per goroutine family (creator fn): ms in window")
+	type kv struct {
+		k string
+		a *agg
+	}
+	var kvs []kv
+	for k, a := range byFn {
+		kvs = append(kvs, kv{k, a})
+	}
+	sort.Slice(kvs, func(i, j int) bool { return kvs[i].a.running > kvs[j].a.running })
+	for _, x := range kvs {
+		if x.a.running < 1 && x.a.runnable < 1 {
+			continue
+		}
+		var ws []string
+		for r, d := range x.a.waiting {
+			if d >= 1 {
+				ws = append(ws, fmt.Sprintf("%s=%.0f", r, d))
+			}
+		}
+		sort.Strings(ws)
+		fmt.Printf("run=%7.1f runnable=%6.1f sys=%6.1f wait{%s}  %s\n", x.a.running, x.a.runnable, x.a.syscall, strings.Join(ws, " "), x.k)
+	}
+
+	fmt.Println("\n## top waiting sites (sum of goroutine-ms in window)")
+	var ss []string
+	for k := range sites {
+		ss = append(ss, k)
+	}
+	sort.Slice(ss, func(i, j int) bool { return sites[ss[i]] > sites[ss[j]] })
+	for i, k := range ss {
+		if i >= 25 {
+			break
+		}
+		fmt.Printf("%9.1fms n=%-4d %s\n", sites[k], siteN[k], k)
+	}
+
+	fmt.Println("\n## goroutines created / exited in window")
+	for k, n := range created {
+		fmt.Printf("created %4d %s\n", n, k)
+	}
+	for k, n := range exited {
+		fmt.Printf("exited  %4d %s\n", n, k)
+	}
+}

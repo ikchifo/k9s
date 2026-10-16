@@ -1,0 +1,7 @@
+# Sys = 1711274904
+# HeapAlloc = 1241317872
+# HeapSys = 1642954752
+# HeapInuse = 1297195008
+# NextGC = 1723984962
+# NumGC = 27
+# GCCPUFraction = 0.0071187600094143304

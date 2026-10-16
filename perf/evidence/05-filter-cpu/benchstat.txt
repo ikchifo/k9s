@@ -1,0 +1,30 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/model1
+cpu: Apple M1 Max
+                 │ perf/evidence/05-filter-cpu/bench-before.txt │ perf/evidence/05-filter-cpu/bench-after.txt │
+                 │                    sec/op                    │       sec/op         vs base                │
+Filter/plain-4                                    99.396m ± 33%          6.973m ±  6%  -92.98% (p=0.000 n=10)
+Filter/upper-4                                   129.214m ± 77%          6.864m ±  6%  -94.69% (p=0.000 n=10)
+Filter/inverse-4                                  38.767m ± 14%          6.400m ± 27%  -83.49% (p=0.000 n=10)
+Filter/regex-4                                     44.13m ± 30%          37.77m ± 15%  -14.41% (p=0.002 n=10)
+Filter/miss-4                                     56.911m ± 10%          7.722m ± 43%  -86.43% (p=0.000 n=10)
+geomean                                            65.98m                9.777m        -85.18%
+
+                 │ perf/evidence/05-filter-cpu/bench-before.txt │ perf/evidence/05-filter-cpu/bench-after.txt │
+                 │                     B/op                     │        B/op          vs base                │
+Filter/plain-4                                     7.954Mi ± 0%          1.110Mi ± 0%  -86.04% (p=0.000 n=10)
+Filter/upper-4                                     7.956Mi ± 0%          1.110Mi ± 0%  -86.05% (p=0.000 n=10)
+Filter/inverse-4                                   7.956Mi ± 0%          1.110Mi ± 0%  -86.05% (p=0.000 n=10)
+Filter/regex-4                                    12.190Mi ± 0%          5.348Mi ± 0%  -56.13% (p=0.000 n=10)
+Filter/miss-4                                      7.953Mi ± 0%          1.110Mi ± 0%  -86.04% (p=0.000 n=10)
+geomean                                            8.664Mi               1.520Mi       -82.45%
+
+                 │ perf/evidence/05-filter-cpu/bench-before.txt │ perf/evidence/05-filter-cpu/bench-after.txt │
+                 │                  allocs/op                   │      allocs/op       vs base                │
+Filter/plain-4                                    40074.00 ± 0%            54.00 ± 2%  -99.87% (p=0.000 n=10)
+Filter/upper-4                                    40074.00 ± 0%            53.50 ± 1%  -99.87% (p=0.000 n=10)
+Filter/inverse-4                                  40074.00 ± 0%            53.00 ± 2%  -99.87% (p=0.000 n=10)
+Filter/regex-4                                     40145.5 ± 0%            144.0 ± 1%  -99.64% (p=0.000 n=10)
+Filter/miss-4                                     40075.00 ± 0%            54.00 ± 2%  -99.87% (p=0.000 n=10)
+geomean                                             40.09k                 65.34       -99.84%

@@ -1,0 +1,14 @@
+Duration: 8.10s, Total samples = 8.41s (103.87%)
+watch stream decode (StreamWatcher.receive)        0.76s 9.04%
+  JSON->unstructured (decodeToUnstructured)        0.33s 3.92%
+LIST decode (rest.Result / ListAndWatch list)      0 0%
+informer store/DeltaFIFO/processor                 0.02s 0.24%
+Pod.Render (FromUnstructured+row)                  0.47s 5.59%
+  FromUnstructured                                 0.38s 4.52%
+ui.Table.UpdateUI                                  0.09s 1.07%
+tview draw                                         0.02s 0.24%
+madvise (heap growth, sysUsed)                     4.39s 52.20%
+  madvise from GC/mallocgc in decode               4.39s 52.20%
+GC bg mark                                         1.14s 13.56%
+mallocgc (all)                                     0.61s 7.25%
+scheduler (findRunnable/wakep/kevent)              1.47s 17.48%

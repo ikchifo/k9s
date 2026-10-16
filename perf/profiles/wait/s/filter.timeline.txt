@@ -1,0 +1,13 @@
+create      -5.3 g575 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Table).BufferCompleted:199 < k9s/internal/model.(*CmdBuff).fireBufferCompleted:231 < k9s/internal/model.(*CmdBuff).SetText:143
+create       5.2 g576 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Table).BufferCompleted:199 < k9s/internal/model.(*CmdBuff).fireBufferCompleted:231 < k9s/internal/model.(*CmdBuff).SetText:143
+create      56.6 g708 context.WithDeadlineCause.func2 <- ?
+create      56.7 g709 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Table).BufferCompleted:199 < k9s/internal/model.(*CmdBuff).fireBufferCompleted:231 < k9s/internal/model.(*CmdBuff).Add.func1:1
+create     754.5 g720 k9s/internal/ui.(*App).QueueUpdateDraw.func1 <- k9s/internal/ui.(*App).QueueUpdateDraw:79 < k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243
+## UI goroutine running spans in [-10, 1000] ms (merged until it blocks; >= 1.0ms)
+    -13.3 +   28.7ms (cpu   28.6) woken-by: tview.(*Application).Run.func2:259 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+     56.7 +    7.3ms (cpu    7.2) woken-by: tview.(*Application).QueueUpdate:722 < tview.(*Application).QueueUpdateDraw:730 < k9s/internal/ui.(*App).QueueUpdateDraw.func1:80 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+    754.5 +    5.4ms (cpu    3.9) woken-by: tview.(*Application).QueueUpdate:722 < tview.(*Application).QueueUpdateDraw:730 < k9s/internal/ui.(*App).QueueUpdateDraw.func1:80 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+UI busy total: 41.3ms (running 39.8ms) in 5 spans
+## goroutines created / exited in window
+created    4 k9s/internal/ui.(*App).QueueUpdateDraw.func1
+created    1 context.WithDeadlineCause.func2

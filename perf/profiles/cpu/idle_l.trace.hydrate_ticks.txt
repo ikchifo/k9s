@@ -1,0 +1,18 @@
+tick start=0.000s goroutines=10
+tick start=2.231s goroutines=10
+tick start=4.419s goroutines=10
+tick start=6.581s goroutines=10
+tick start=8.759s goroutines=10
+tick start=10.954s goroutines=10
+tick start=13.142s goroutines=10
+tick start=15.348s goroutines=10
+tick start=17.494s goroutines=10
+hydrate wall 166 ms
+hydrate wall 135 ms
+hydrate wall 117 ms
+hydrate wall 118 ms
+hydrate wall 145 ms
+hydrate wall 126 ms
+hydrate wall 133 ms
+hydrate wall 116 ms
+hydrate wall 129 ms

@@ -1,0 +1,159 @@
+== pprof CPU diff: before(base c3bc88f9) vs after(this change) ==
+File: client.test
+Type: cpu
+Time: 2026-10-15 23:45:41 EDT
+Duration: 38.67s, Total samples = 520ms ( 1.34%)
+Showing nodes accounting for 150ms, 28.85% of 520ms total
+Dropped 1 node (cum <= 2.60ms)
+      flat  flat%   sum%        cum   cum%
+      90ms 17.31% 17.31%       90ms 17.31%  runtime.kevent
+      70ms 13.46% 30.77%       70ms 13.46%  syscall.rawsyscalln
+     -20ms  3.85% 26.92%      -20ms  3.85%  runtime.madvise
+     -20ms  3.85% 23.08%      -20ms  3.85%  runtime.pthread_cond_signal
+      10ms  1.92% 25.00%       10ms  1.92%  crypto/hmac.New
+     -10ms  1.92% 23.08%      -10ms  1.92%  internal/runtime/atomic.(*UnsafePointer).Load (inline)
+      10ms  1.92% 25.00%       10ms  1.92%  internal/runtime/maps.(*Iter).Init
+      10ms  1.92% 26.92%       20ms  3.85%  k8s.io/client-go/transport.(*userAgentRoundTripper).RoundTrip
+      10ms  1.92% 28.85%       10ms  1.92%  runtime.runqempty (inline)
+     -10ms  1.92% 26.92%      -10ms  1.92%  runtime.tryDeferToSpanScan
+      10ms  1.92% 28.85%       10ms  1.92%  runtime.usleep
+     -10ms  1.92% 26.92%      -10ms  1.92%  runtime.walltime
+      10ms  1.92% 28.85%       10ms  1.92%  vendor/golang.org/x/net/idna.(*labelIter).done (inline)
+         0     0% 28.85%      -90ms 17.31%  _.goready.func1
+         0     0% 28.85%       70ms 13.46%  bufio.(*Reader).Peek
+         0     0% 28.85%       70ms 13.46%  bufio.(*Reader).fill
+         0     0% 28.85%      120ms 23.08%  bufio.(*Writer).Flush
+         0     0% 28.85%       10ms  1.92%  crypto/tls.(*Conn).HandshakeContext
+         0     0% 28.85%       70ms 13.46%  crypto/tls.(*Conn).Read
+         0     0% 28.85%      130ms 25.00%  crypto/tls.(*Conn).Write
+         0     0% 28.85%       10ms  1.92%  crypto/tls.(*Conn).handshakeContext
+         0     0% 28.85%       70ms 13.46%  crypto/tls.(*Conn).readFromUntil
+         0     0% 28.85%       70ms 13.46%  crypto/tls.(*Conn).readRecord (inline)
+
+== pprof CPU top: BEFORE ==
+File: bench-before.test
+Type: cpu
+Time: 2026-10-15 23:45:41 EDT
+Duration: 602.58ms, Total samples = 520ms (86.30%)
+Showing nodes accounting for 520ms, 100% of 520ms total
+      flat  flat%   sum%        cum   cum%
+     210ms 40.38% 40.38%      210ms 40.38%  runtime.pthread_cond_signal
+     160ms 30.77% 71.15%      160ms 30.77%  syscall.rawsyscalln
+      50ms  9.62% 80.77%       50ms  9.62%  runtime.pthread_cond_wait
+      40ms  7.69% 88.46%       40ms  7.69%  runtime.kevent
+      20ms  3.85% 92.31%       20ms  3.85%  runtime.madvise
+      10ms  1.92% 94.23%       10ms  1.92%  internal/runtime/atomic.(*UnsafePointer).Load (inline)
+      10ms  1.92% 96.15%       10ms  1.92%  runtime.pidleput
+      10ms  1.92% 98.08%       10ms  1.92%  runtime.tryDeferToSpanScan
+      10ms  1.92%   100%       10ms  1.92%  runtime.walltime
+         0     0%   100%      180ms 34.62%  _.goready.func1
+         0     0%   100%       10ms  1.92%  bufio.(*Reader).Peek
+         0     0%   100%       10ms  1.92%  bufio.(*Reader).fill
+         0     0%   100%       30ms  5.77%  bufio.(*Writer).Flush
+         0     0%   100%       10ms  1.92%  crypto/tls.(*Conn).Read
+         0     0%   100%       20ms  3.85%  crypto/tls.(*Conn).Write
+         0     0%   100%       10ms  1.92%  crypto/tls.(*Conn).readFromUntil
+
+== pprof CPU top: AFTER ==
+File: client.test
+Type: cpu
+Time: 2026-10-15 23:45:57 EDT
+Duration: 38.07s, Total samples = 660ms ( 1.73%)
+Showing nodes accounting for 660ms, 100% of 660ms total
+      flat  flat%   sum%        cum   cum%
+     230ms 34.85% 34.85%      230ms 34.85%  syscall.rawsyscalln
+     190ms 28.79% 63.64%      190ms 28.79%  runtime.pthread_cond_signal
+     130ms 19.70% 83.33%      130ms 19.70%  runtime.kevent
+      50ms  7.58% 90.91%       50ms  7.58%  runtime.pthread_cond_wait
+      10ms  1.52% 92.42%       10ms  1.52%  crypto/hmac.New
+      10ms  1.52% 93.94%       10ms  1.52%  internal/runtime/maps.(*Iter).Init
+      10ms  1.52% 95.45%       20ms  3.03%  k8s.io/client-go/transport.(*userAgentRoundTripper).RoundTrip
+      10ms  1.52% 96.97%       10ms  1.52%  runtime.runqempty (inline)
+      10ms  1.52% 98.48%       10ms  1.52%  runtime.usleep
+      10ms  1.52%   100%       10ms  1.52%  vendor/golang.org/x/net/idna.(*labelIter).done (inline)
+         0     0%   100%       90ms 13.64%  _.goready.func1
+         0     0%   100%       80ms 12.12%  bufio.(*Reader).Peek
+         0     0%   100%       80ms 12.12%  bufio.(*Reader).fill
+         0     0%   100%      150ms 22.73%  bufio.(*Writer).Flush
+         0     0%   100%       10ms  1.52%  crypto/tls.(*Conn).HandshakeContext
+         0     0%   100%       80ms 12.12%  crypto/tls.(*Conn).Read
+
+== pprof ALLOC_SPACE diff: before(base) vs after ==
+File: client.test
+Type: alloc_space
+Time: 2026-10-15 23:46:35 EDT
+Showing nodes accounting for -153.39MB, 77.44% of 198.09MB total
+Dropped 178 nodes (cum <= 0.99MB)
+      flat  flat%   sum%        cum   cum%
+  -35.51MB 17.92% 17.92%   -39.51MB 19.94%  k8s.io/client-go/rest.NewRESTClient
+  -11.50MB  5.81% 23.73%   -11.50MB  5.81%  net/url.parse
+     -11MB  5.55% 29.28%      -11MB  5.55%  k8s.io/apimachinery/pkg/runtime.NewClientNegotiator (inline)
+     -11MB  5.55% 34.84%      -14MB  7.07%  k8s.io/client-go/tools/clientcmd.mergeValues
+      -9MB  4.54% 39.38%       -9MB  4.54%  go.yaml.in/yaml/v2.(*parser).node (inline)
+      -6MB  3.03% 42.41%       -8MB  4.04%  path.Join
+   -5.50MB  2.78% 45.19%    -5.50MB  2.78%  k8s.io/apimachinery/pkg/runtime/serializer.CodecFactory.WithoutConversion
+      -5MB  2.52% 47.71%       -5MB  2.52%  reflect.mapassign0
+      -5MB  2.52% 50.24%       -5MB  2.52%  sigs.k8s.io/yaml.convertToJSONableObject
+      -4MB  2.02% 52.26%       -4MB  2.02%  k8s.io/client-go/tools/clientcmd/api.NewContext (inline)
+      -4MB  2.02% 54.28%       -4MB  2.02%  github.com/munnerz/goautoneg.ParseAccept
+      -3MB  1.51% 55.79%       -3MB  1.51%  reflect.mapassign_faststr0
+      -3MB  1.51% 57.30%       -3MB  1.51%  k8s.io/client-go/tools/clientcmd/api.NewConfig (inline)
+      -3MB  1.51% 58.82%       -3MB  1.51%  go.yaml.in/yaml/v2.read
+   -2.50MB  1.26% 60.08%    -2.50MB  1.26%  go.yaml.in/yaml/v2.yaml_parser_initialize (inline)
+   -2.50MB  1.26% 61.35%    -5.01MB  2.53%  go.yaml.in/yaml/v2.newParser (inline)
+   -2.50MB  1.26% 62.61%      -15MB  7.57%  go.yaml.in/yaml/v2.(*parser).mapping
+   -2.02MB  1.02% 63.63%    -2.02MB  1.02%  io.init.func1
+      -2MB  1.01% 64.64%       -2MB  1.01%  k8s.io/client-go/tools/clientcmd.getServerIdentificationPartialConfig (inline)
+      -2MB  1.01% 65.65%       -2MB  1.01%  reflect.unsafe_New
+   -1.50MB  0.76% 66.40%    -1.50MB  0.76%  go.yaml.in/yaml/v2.yaml_insert_token
+   -1.50MB  0.76% 67.16%    -3.50MB  1.77%  k8s.io/cli-runtime/pkg/genericclioptions.(*ConfigFlags).toRawKubeConfigLoader
+   -1.50MB  0.76% 67.92%    -1.50MB  0.76%  sync.(*Pool).pinSlow
+   -1.50MB  0.76% 68.68%    -1.50MB  0.76%  net/textproto.MIMEHeader.Set (inline)
+   -1.50MB  0.76% 69.43%    -1.50MB  0.76%  k8s.io/client-go/tools/clientcmd/api.NewCluster (inline)
+   -1.50MB  0.76% 70.19%    -1.50MB  0.76%  path.(*lazybuf).string (inline)
+
+== pprof ALLOC_SPACE top: BEFORE ==
+File: client.test
+Type: alloc_space
+Time: 2026-10-15 23:46:45 EDT
+Showing nodes accounting for 183.06MB, 92.41% of 198.09MB total
+Dropped 111 nodes (cum <= 0.99MB)
+      flat  flat%   sum%        cum   cum%
+   35.51MB 17.92% 17.92%    39.51MB 19.94%  k8s.io/client-go/rest.NewRESTClient
+      14MB  7.07% 24.99%       14MB  7.07%  net/url.parse
+      11MB  5.55% 30.55%       11MB  5.55%  k8s.io/apimachinery/pkg/runtime.NewClientNegotiator (inline)
+      11MB  5.55% 36.10%       14MB  7.07%  k8s.io/client-go/tools/clientcmd.mergeValues
+       9MB  4.54% 40.64%        9MB  4.54%  go.yaml.in/yaml/v2.(*parser).node (inline)
+       6MB  3.03% 43.67%        8MB  4.04%  path.Join
+    5.50MB  2.78% 46.45%     5.50MB  2.78%  k8s.io/apimachinery/pkg/runtime/serializer.CodecFactory.WithoutConversion
+       5MB  2.52% 48.97%        5MB  2.52%  reflect.mapassign0
+       5MB  2.52% 51.50%        5MB  2.52%  sigs.k8s.io/yaml.convertToJSONableObject
+       4MB  2.02% 53.52%        4MB  2.02%  k8s.io/client-go/tools/clientcmd/api.NewContext (inline)
+       4MB  2.02% 55.54%        4MB  2.02%  github.com/munnerz/goautoneg.ParseAccept
+    3.50MB  1.77% 57.30%     3.50MB  1.77%  reflect.unsafe_New
+       3MB  1.52% 58.82%        3MB  1.52%  net/http.http2RoundTrip
+       3MB  1.51% 60.33%        3MB  1.51%  net/textproto.readMIMEHeader
+       3MB  1.51% 61.85%        3MB  1.51%  reflect.mapassign_faststr0
+       3MB  1.51% 63.36%        3MB  1.51%  k8s.io/client-go/tools/clientcmd/api.NewConfig (inline)
+       3MB  1.51% 64.88%        3MB  1.51%  go.yaml.in/yaml/v2.read
+    2.50MB  1.26% 66.14%     2.50MB  1.26%  go.yaml.in/yaml/v2.yaml_parser_initialize (inline)
+
+== pprof ALLOC_SPACE top: AFTER ==
+File: client.test
+Type: alloc_space
+Time: 2026-10-15 23:46:35 EDT
+Showing nodes accounting for 32679.83kB, 100% of 32679.83kB total
+      flat  flat%   sum%        cum   cum%
+ 3072.87kB  9.40%  9.40%  3072.87kB  9.40%  k8s.io/apimachinery/pkg/util/net.CloneHeader (inline)
+ 2561.08kB  7.84% 17.24%  2561.08kB  7.84%  net/http.http2RoundTrip
+ 2560.56kB  7.84% 25.08%  2560.56kB  7.84%  net/textproto.readMIMEHeader
+ 2560.35kB  7.83% 32.91%  2560.35kB  7.83%  net/url.parse
+ 1538.05kB  4.71% 37.62%  1538.05kB  4.71%  runtime.mallocgc
+ 1536.56kB  4.70% 42.32%  2048.73kB  6.27%  k8s.io/client-go/rest.NewRequest
+ 1536.47kB  4.70% 47.02%  4609.34kB 14.10%  k8s.io/apimachinery/pkg/util/net.CloneRequest (inline)
+ 1536.47kB  4.70% 51.72%  3584.80kB 10.97%  net/http.readRequestLimit
+ 1536.30kB  4.70% 56.42%  1536.30kB  4.70%  reflect.unsafe_New
+ 1184.27kB  3.62% 60.05%  1184.27kB  3.62%  runtime/pprof.StartCPUProfile
+ 1024.50kB  3.13% 63.18%  1024.50kB  3.13%  io.ReadAll
+ 1024.31kB  3.13% 66.32%  2560.52kB  7.84%  net/http.NewRequestWithContext
+ 1024.20kB  3.13% 69.45% 17924.83kB 54.85%  k8s.io/client-go/discovery.(*DiscoveryClient).ServerVersionWithContext

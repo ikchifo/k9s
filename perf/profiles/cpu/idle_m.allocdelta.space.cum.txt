@@ -1,0 +1,67 @@
+File: k9s-prof-cpu
+Type: alloc_space
+Time: 2026-10-15 18:27:11 EDT
+Showing nodes accounting for 984.10MB, 82.62% of 1191.06MB total
+Dropped 82 nodes (cum <= 5.96MB)
+Showing top 60 nodes out of 81
+      flat  flat%   sum%        cum   cum%
+         0     0%     0%   964.30MB 80.96%  github.com/derailed/k9s/internal/model1.Hydrate.func1
+         0     0%     0%   964.30MB 80.96%  github.com/derailed/k9s/internal/model1.parallelRender.func1
+         0     0%     0%   964.30MB 80.96%  github.com/derailed/k9s/internal/render.(*Pod).Render
+  101.55MB  8.53%  8.53%   964.30MB 80.96%  github.com/derailed/k9s/internal/render.(*Pod).defaultRow
+         0     0%  8.53%   641.18MB 53.83%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructured (inline)
+         0     0%  8.53%   641.18MB 53.83%  k8s.io/apimachinery/pkg/runtime.(*unstructuredConverter).FromUnstructuredWithValidation
+         0     0%  8.53%   641.18MB 53.83%  k8s.io/apimachinery/pkg/runtime.fromUnstructured
+         0     0%  8.53%   641.18MB 53.83%  k8s.io/apimachinery/pkg/runtime.structFromUnstructured
+         0     0%  8.53%   559.17MB 46.95%  k8s.io/apimachinery/pkg/runtime.sliceFromUnstructured
+         0     0%  8.53%   224.08MB 18.81%  k8s.io/apimachinery/pkg/runtime.mapFromUnstructured
+      21MB  1.76% 10.29%   222.59MB 18.69%  reflect.MakeSlice
+  214.01MB 17.97% 28.26%   214.01MB 17.97%  reflect.unsafe_New
+  201.59MB 16.93% 45.18%   201.59MB 16.93%  reflect.unsafe_NewArray
+   58.55MB  4.92% 50.10%   152.06MB 12.77%  github.com/derailed/k9s/internal/render.gatherPodMX
+         0     0% 50.10%   145.58MB 12.22%  reflect.Value.SetMapIndex
+         0     0% 50.10%   145.58MB 12.22%  reflect.mapassign_faststr
+  145.58MB 12.22% 62.32%   145.58MB 12.22%  reflect.mapassign_faststr0
+         0     0% 62.32%   138.50MB 11.63%  reflect.copyVal
+         0     0% 62.32%      129MB 10.83%  reflect.Value.MapIndex
+         0     0% 62.32%   118.21MB  9.92%  github.com/derailed/k9s/cmd.Execute
+         0     0% 62.32%   118.21MB  9.92%  github.com/derailed/k9s/cmd.run
+         0     0% 62.32%   118.21MB  9.92%  github.com/derailed/k9s/internal/view.(*App).Run
+         0     0% 62.32%   118.21MB  9.92%  github.com/derailed/tview.(*Application).QueueUpdateDraw.1
+         0     0% 62.32%   118.21MB  9.92%  github.com/derailed/tview.(*Application).Run
+         0     0% 62.32%   118.21MB  9.92%  github.com/spf13/cobra.(*Command).Execute (inline)
+         0     0% 62.32%   118.21MB  9.92%  github.com/spf13/cobra.(*Command).ExecuteC
+         0     0% 62.32%   118.21MB  9.92%  github.com/spf13/cobra.(*Command).execute
+         0     0% 62.32%   118.21MB  9.92%  main.main
+         0     0% 62.32%   118.21MB  9.92%  runtime.main
+         0     0% 62.32%   117.20MB  9.84%  github.com/derailed/k9s/internal/model1.(*RowEvents).Range (inline)
+         0     0% 62.32%   117.20MB  9.84%  github.com/derailed/k9s/internal/model1.(*TableData).RowsRange (inline)
+         0     0% 62.32%   115.70MB  9.71%  github.com/derailed/k9s/internal/view.(*Browser).TableDataChanged.func1
+         0     0% 62.32%   115.20MB  9.67%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI
+         0     0% 62.32%   115.20MB  9.67%  github.com/derailed/k9s/internal/ui.(*Table).UpdateUI.func1 (inline)
+       4MB  0.34% 62.66%   115.20MB  9.67%  github.com/derailed/k9s/internal/ui.(*Table).buildRow
+         0     0% 62.66%   103.78MB  8.71%  github.com/cenkalti/backoff/v4.Operation.withEmptyData.func1
+         0     0% 62.66%   103.78MB  8.71%  github.com/cenkalti/backoff/v4.Retry (inline)
+         0     0% 62.66%   103.78MB  8.71%  github.com/cenkalti/backoff/v4.RetryNotify (inline)
+         0     0% 62.66%   103.78MB  8.71%  github.com/cenkalti/backoff/v4.RetryNotifyWithTimer
+         0     0% 62.66%   103.78MB  8.71%  github.com/cenkalti/backoff/v4.doRetryNotify[go.shape.struct {}]
+         0     0% 62.66%   103.78MB  8.71%  github.com/derailed/k9s/internal/model.(*Table).refresh
+         0     0% 62.66%   103.78MB  8.71%  github.com/derailed/k9s/internal/model.(*Table).updater
+         0     0% 62.66%   103.78MB  8.71%  github.com/derailed/k9s/internal/model.(*Table).updater.func1
+         0     0% 62.66%    94.01MB  7.89%  k8s.io/apimachinery/pkg/runtime.pointerFromUnstructured
+         0     0% 62.66%       74MB  6.21%  reflect.New
+   73.51MB  6.17% 68.83%    73.51MB  6.17%  github.com/derailed/tview.NewTableCell (inline)
+         0     0% 68.83%    53.51MB  4.49%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.(*Unstructured).GetLabels (inline)
+   53.51MB  4.49% 73.32%    53.51MB  4.49%  k8s.io/apimachinery/pkg/apis/meta/v1/unstructured.NestedNullCoercingStringMap
+         0     0% 73.32%    52.59MB  4.42%  github.com/derailed/k9s/internal/model.(*Table).reconcile
+         0     0% 73.32%       52MB  4.37%  sigs.k8s.io/structured-merge-diff/v6/value.TypeReflectCacheEntry.FromUnstructured
+   17.50MB  1.47% 74.79%       50MB  4.20%  github.com/derailed/k9s/internal/render.cosRequests
+         0     0% 74.79%    49.19MB  4.13%  github.com/derailed/k9s/internal/model.(*Table).Peek
+    6.27MB  0.53% 75.32%    49.19MB  4.13%  github.com/derailed/k9s/internal/model1.(*RowEvents).Clone
+         0     0% 75.32%    49.19MB  4.13%  github.com/derailed/k9s/internal/model1.(*TableData).Clone
+   47.50MB  3.99% 79.30%    47.50MB  3.99%  github.com/derailed/k9s/internal/render.extractGPU (inline)
+    3.02MB  0.25% 79.56%    43.17MB  3.62%  github.com/derailed/k9s/internal/model1.(*TableData).Render
+         0     0% 79.56%    40.15MB  3.37%  github.com/derailed/k9s/internal/model1.(*TableData).Update
+   36.51MB  3.07% 82.62%    36.51MB  3.07%  github.com/derailed/k9s/internal/model1.Fields.Clone (inline)
+         0     0% 82.62%    36.51MB  3.07%  github.com/derailed/k9s/internal/model1.Row.Clone (inline)
+         0     0% 82.62%    36.51MB  3.07%  github.com/derailed/k9s/internal/model1.RowEvent.Clone (inline)

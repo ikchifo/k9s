@@ -1,0 +1,74 @@
+# clock snapshot: trace 995568376253376 wall 18:40:13.192; anchor "fgprof idle end" at 18:40:22.667
+
+## UI goroutine running spans in [-12000, 1000] ms (merged until it blocks; >= 1.0ms)
+  -7951.0 +    6.3ms (cpu    6.1) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+  -6464.5 +  523.4ms (cpu    0.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: ?
+  -5941.1 +   12.4ms (cpu   12.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+  -4461.5 +  526.0ms (cpu    0.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: ?
+  -3935.4 +    5.5ms (cpu    5.5) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+  -2458.4 +  551.0ms (cpu    0.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: ?
+  -1907.4 +    7.8ms (cpu    7.4) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+   -454.4 +  567.6ms (cpu    0.0) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: ?
+    113.2 +    6.5ms (cpu    6.5) woken-by: QUD from k9s/internal/view.(*Browser).TableDataChanged:355 < k9s/internal/model.(*Table).fireTableChanged:300 < k9s/internal/model.(*Table).refresh:243 | blocks-at: tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569
+UI busy total: 2206.5ms (running 37.5ms) in 9 spans
+
+## UI goroutine event stacks (preempt/block/syscall sample, count)
+   10 tview.(*Application).draw:605 < tview.(*Application).QueueUpdateDraw.1:732 < tview.(*Application).Run:376 < k9s/internal/view.(*App).Run:569
+    5 tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124 < k9s/cmd.Execute:72
+    4 k9s/internal/ui.(*Table).shouldExcludeColumn:465 < k9s/internal/ui.(*Table).buildRow:512 < k9s/internal/ui.(*Table).UpdateUI.func1:485 < k9s/internal/model1.(*RowEvents).Range:244
+    2 k9s/internal/model1.(*RowEvents).Sort:281 < k9s/internal/model1.(*TableData).Sort:112 < k9s/internal/ui.(*Table).UpdateUI:475 < k9s/internal/view.(*Browser).TableDataChanged.func1:369
+    2 k9s/internal/ui.(*Table).buildRow:494 < k9s/internal/ui.(*Table).UpdateUI.func1:485 < k9s/internal/model1.(*RowEvents).Range:244 < k9s/internal/model1.(*TableData).RowsRange:104
+    1 tview.(*Box).DrawForSubclass:364 < tview.(*Pages).Draw:291 < tview.(*Application).draw:597 < tview.(*Application).QueueUpdateDraw.1:732
+    1 k9s/internal/render.(*Pod).ColorerFunc.func1:97 < k9s/internal/ui.(*Table).buildRow:537 < k9s/internal/ui.(*Table).UpdateUI.func1:485 < k9s/internal/model1.(*RowEvents).Range:244
+    1 k9s/internal/ui.(*Table).buildRow:543 < k9s/internal/ui.(*Table).UpdateUI.func1:485 < k9s/internal/model1.(*RowEvents).Range:244 < k9s/internal/model1.(*TableData).RowsRange:104
+    1 k9s/internal/model1.Less:200 < k9s/internal/model1.RowEventSorter.Less:317 < k9s/internal/model1.(*RowEvents).Sort:281 < k9s/internal/model1.(*TableData).Sort:112
+    1 tview.decomposeString:164 < tview.printWithStyle:243 < tview.(*Table).Draw:903 < tview.(*Pages).Draw:300
+    1 tview.decomposeString:190 < tview.TaggedStringWidth:432 < tview.(*Table).Draw:904 < tview.(*Pages).Draw:300
+    1 k9s/internal/model1.(*TableData).GetNamespace:241 < k9s/internal/model.(*Table).GetNamespace:162 < k9s/internal/ui.(*Table).buildRow:502 < k9s/internal/ui.(*Table).UpdateUI.func1:485
+    1 k9s/internal/model1.(*RowEvents).Get:251 < k9s/internal/model1.(*TableData).FindRow:96 < k9s/internal/ui.(*Table).UpdateUI.func1:480 < k9s/internal/model1.(*RowEvents).Range:244
+
+## per goroutine family (creator fn): ms in window
+run=  430.3 runnable=  14.5 sys=   0.0 wait{chan receive=10457 select=9044}  runtime.(*traceAdvancerState).start.func1
+run=  229.2 runnable= 296.6 sys=   0.0 wait{preempted=1 sync=9}  k9s/internal/model1.parallelRender.func1
+run=   59.0 runnable=   0.4 sys=   0.0 wait{=75613 system goroutine wait=19030}  runtime.gcBgMarkWorker
+run=   37.5 runnable=   0.8 sys=   0.1 wait{=2168 select=6745}  ** UI event loop (tview.Application.Run)
+run=   10.1 runnable=   0.1 sys=   0.1 wait{=7388 select=2072}  klog/v2.(*flushDaemon).run.func1
+run=    7.7 runnable=   0.2 sys=   0.0 wait{=2614 select=6783 sync=65}  k9s/internal/model.(*Table).updater
+run=    3.9 runnable=   0.5 sys=   0.0 wait{=6531 GC background sweeper wait=2935}  runtime.bgsweep
+run=    1.1 runnable=   0.9 sys=   0.0 wait{chan receive=10463}  runtime.traceStartReadCPU.func1
+run=    0.0 runnable=   4.1 sys=   0.0 wait{=5516 sleep=511 system goroutine wait=3439}  runtime.bgscavenge
+
+## top waiting sites (sum of goroutine-ms in window)
+ 254040.0ms n=278   @ runtime.gopark
+  28410.8ms n=30    @ client-go/tools/cache.(*sharedProcessor).run:1283
+  28410.8ms n=30    @ client-go/tools/cache.(*controller).RunWithContext.func1:175
+  28410.8ms n=30    @ client-go/tools/cache.handleAnyWatch:1001 < client-go/tools/cache.handleWatch:958 < client-go/tools/cache.(*Reflector).watch:620
+  28410.8ms n=30    @ client-go/tools/cache.(*RealFIFO).PopBatch:498 < client-go/tools/cache.(*controller).processLoop:251 < client-go/tools/cache.(*controller).RunWithContext:209
+  28410.8ms n=30    @ client-go/rest/watch.(*Decoder).Decode:49
+  28410.8ms n=30    @ client-go/tools/cache.(*Reflector).startResync:521 < client-go/tools/cache.(*Reflector).watchWithResync.func2:551
+  20920.3ms n=115  chan receive @ runtime.chanrecv1
+  19030.1ms n=109  system goroutine wait @ runtime.gopark
+  11116.6ms n=935  select @ runtime.selectgo
+  10470.3ms n=15   system goroutine wait @ runtime/trace.(*traceMultiplexer).startLocked.func1
+   9470.3ms n=10    @ k9s/internal/view.(*App).initSignals.func1:190
+   9470.3ms n=10    @ k9s/internal/ui.(*Flash).Watch:60
+   9470.3ms n=10    @ k9s/internal/view.(*App).clusterUpdater:376
+   9470.3ms n=10    @ tview.(*Application).Run.func2:267
+   6783.0ms n=5    select @ k9s/internal/model.(*Table).updater:208
+   6744.5ms n=5    select @ tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124
+   3439.5ms n=4    system goroutine wait @ runtime.(*scavengerState).park
+   2935.2ms n=2    GC background sweeper wait @ runtime.goparkunlock
+   2687.3ms n=5     @ tview.(*Application).Run:302 < k9s/internal/view.(*App).Run:569 < k9s/cmd.run:124
+   2614.1ms n=5     @ k9s/internal/model.(*Table).updater:208
+   1000.5ms n=1    network @ internal/poll.(*FD).Read
+    510.6ms n=1    sleep @ runtime.(*scavengerState).sleep
+     65.4ms n=5    sync @ k9s/internal/model1.parallelRender:58 < k9s/internal/model1.Hydrate:64 < k9s/internal/model1.(*TableData).Render:266
+     38.5ms n=5    chan receive @ tview.(*Application).QueueUpdate:723 < tview.(*Application).QueueUpdateDraw:730 < k9s/internal/ui.(*App).QueueUpdateDraw.func1:80
+
+## goroutines created / exited in window
+created   50 k9s/internal/model1.parallelRender.func1
+created    5 k9s/internal/ui.(*App).QueueUpdateDraw.func1
+exited    50 k9s/internal/model1.parallelRender.func1
+exited     5 k9s/internal/ui.(*App).QueueUpdateDraw.func1
+exited     1 runtime.(*traceAdvancerState).start.func1
+exited     1 net/http.(*connReader).backgroundRead

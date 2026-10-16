@@ -1,0 +1,7 @@
+.kube/
+results/*.log
+profiles/**/*.trace
+profiles/**/*.out
+profiles/**/*.log
+profiles/api/metrics-*.txt
+rust-proto/target/

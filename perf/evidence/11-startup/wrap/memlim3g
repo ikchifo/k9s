@@ -1,0 +1,2 @@
+#!/bin/sh
+GOGC=off GOMEMLIMIT=3GiB exec /private/var/folders/bs/z4bl587j47j1x1r2vjhd1srh0000gn/T/opencode/k9s-11-base "$@"

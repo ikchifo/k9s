@@ -1,0 +1,12 @@
+File: k9s-prof-cpu
+Type: cpu
+Time: 2026-10-15 18:24:47 EDT
+Duration: 8.01s, Total samples = 8.96s (111.92%)
+-----------+-------------------------------------------------------
+     4.42s   runtime.madvise
+             runtime.sysUsedOS (inline)
+             runtime.sysUsed (inline)
+             runtime.(*mheap).allocSpan
+             runtime.(*mheap).alloc.func1
+             runtime.systemstack
+-----------+-------------------------------------------------------

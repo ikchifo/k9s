@@ -1,0 +1,26 @@
+File: k9s-prof-cpu
+Type: alloc_space
+Time: 2026-10-15 18:25:16 EDT
+Showing nodes accounting for 4586.18MB, 100% of 4586.18MB total
+----------------------------------------------------------+-------------
+      flat  flat%   sum%        cum   cum%   calls calls% + context 	 	 
+----------------------------------------------------------+-------------
+                                          328.04MB   100% |   github.com/derailed/k9s/internal/ui.(*Table).buildRow (inline)
+  328.04MB  7.15%  7.15%   328.04MB  7.15%                | github.com/derailed/tview.NewTableCell
+----------------------------------------------------------+-------------
+                                          105.04MB   100% |   github.com/derailed/k9s/internal/model1.Row.Clone (inline)
+  105.04MB  2.29%  9.44%   105.04MB  2.29%                | github.com/derailed/k9s/internal/model1.Fields.Clone
+----------------------------------------------------------+-------------
+                                          154.76MB   100% |   github.com/derailed/k9s/internal/model1.(*TableData).Clone
+   20.75MB  0.45%  9.90%   154.76MB  3.37%                | github.com/derailed/k9s/internal/model1.(*RowEvents).Clone
+                                          105.04MB 67.87% |   github.com/derailed/k9s/internal/model1.RowEvent.Clone (inline)
+                                           28.96MB 18.72% |   github.com/derailed/k9s/internal/model1.NewRowEventsWithEvts (inline)
+----------------------------------------------------------+-------------
+                                          154.76MB   100% |   github.com/derailed/k9s/internal/model.(*Table).refresh
+         0     0%  9.90%   154.76MB  3.37%                | github.com/derailed/k9s/internal/model.(*Table).Peek
+                                          154.76MB   100% |   github.com/derailed/k9s/internal/model1.(*TableData).Clone
+----------------------------------------------------------+-------------
+                                          154.76MB   100% |   github.com/derailed/k9s/internal/model.(*Table).Peek
+         0     0%  9.90%   154.76MB  3.37%                | github.com/derailed/k9s/internal/model1.(*TableData).Clone
+                                          154.76MB   100% |   github.com/derailed/k9s/internal/model1.(*RowEvents).Clone
+----------------------------------------------------------+-------------

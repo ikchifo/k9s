@@ -1,0 +1,26 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/derailed/k9s/internal/render
+cpu: Apple M1 Max
+BenchmarkPodRender-10        	  661141	      1569 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRender-10        	  708202	      1580 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRender-10        	  721857	      1589 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRender-10        	  725043	      1597 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRender-10        	  730585	      1564 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRender-10        	  728806	      1571 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRender-10        	  750019	      1564 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRender-10        	  727143	      1556 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRender-10        	  762547	      1576 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRender-10        	  704856	      1541 ns/op	    2656 B/op	      31 allocs/op
+BenchmarkPodRenderTick-10    	      88	  12416661 ns/op	24679434 B/op	  160230 allocs/op
+BenchmarkPodRenderTick-10    	     100	  12460850 ns/op	24678794 B/op	  160228 allocs/op
+BenchmarkPodRenderTick-10    	      97	  12365646 ns/op	24678269 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-10    	     100	  12433656 ns/op	24678314 B/op	  160228 allocs/op
+BenchmarkPodRenderTick-10    	      94	  13725350 ns/op	24678297 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-10    	      97	  12698555 ns/op	24678416 B/op	  160228 allocs/op
+BenchmarkPodRenderTick-10    	      91	  12688414 ns/op	24678260 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-10    	      97	  12607020 ns/op	24678383 B/op	  160228 allocs/op
+BenchmarkPodRenderTick-10    	      97	  12314534 ns/op	24678289 B/op	  160227 allocs/op
+BenchmarkPodRenderTick-10    	      98	  13799390 ns/op	24678259 B/op	  160227 allocs/op
+PASS
+ok  	github.com/derailed/k9s/internal/render	29.475s
