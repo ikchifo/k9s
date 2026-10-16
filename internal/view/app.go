@@ -262,6 +262,7 @@ func (a *App) bindKeys() {
 		ui.KeyRightBracket: ui.NewSharedKeyAction("Go Forward", a.nextCommand, false),
 		ui.KeyDash:         ui.NewSharedKeyAction("Last View", a.lastCommand, false),
 		tcell.KeyCtrlA:     ui.NewSharedKeyAction("Aliases", a.aliasCmd, false),
+		tcell.KeyCtrlX:     ui.NewSharedKeyAction("Switch Context", a.ctxPickerCmd, false),
 		tcell.KeyEnter:     ui.NewKeyAction("Goto", a.gotoCmd, false),
 		tcell.KeyCtrlC:     ui.NewKeyAction("Quit", a.quitCmd, false),
 	}))
@@ -464,6 +465,7 @@ func (a *App) switchContext(ci *cmd.Interpreter, force bool) error {
 	if (!ok || a.Config.ActiveContextName() == contextName) && !force {
 		return nil
 	}
+	prev := a.Config.ActiveContextName()
 	a.Halt()
 	defer a.Resume()
 	{
@@ -472,6 +474,7 @@ func (a *App) switchContext(ci *cmd.Interpreter, force bool) error {
 		if err != nil {
 			return err
 		}
+		recordSwitch(prev, contextName)
 		if cns, ok := ci.NSArg(); ok {
 			ct.Namespace.Active = cns
 		}
@@ -820,4 +823,36 @@ func (a *App) clusterInfo() *ClusterInfo {
 
 func (a *App) statusIndicator() *ui.StatusIndicator {
 	return a.Views()["statusIndicator"].(*ui.StatusIndicator)
+}
+
+func (a *App) ctxPickerCmd(evt *tcell.EventKey) *tcell.EventKey {
+	if a.InCmdMode() {
+		return evt
+	}
+
+	names, err := a.contextNames()
+	if err != nil {
+		a.Flash().Err(err)
+		return nil
+	}
+	if len(names) == 0 {
+		a.Flash().Warn("No contexts found")
+		return nil
+	}
+
+	current := a.Config.ActiveContextName()
+	ranked := loadCtxRecency().rank(names, current)
+	d := a.Styles.Dialog()
+	dialog.ShowPicker(&d, a.Content.Pages, "Switch Context", ranked, func(name string) {
+		if name == current {
+			return
+		}
+		if err := useContext(a, name); err != nil {
+			a.Flash().Err(err)
+			return
+		}
+		a.clearHistory()
+	})
+
+	return nil
 }
