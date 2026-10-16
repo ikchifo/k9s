@@ -470,7 +470,7 @@ func (t *Table) shouldExcludeColumn(h model1.HeaderColumn) bool {
 }
 
 func (t *Table) UpdateUI(cdata, data *model1.TableData) {
-	t.Clear()
+	t.resetCells(cdata)
 	t.refreshHeaders(cdata)
 	cdata.Sort(t.getSortCol())
 
@@ -480,6 +480,7 @@ func (t *Table) UpdateUI(cdata, data *model1.TableData) {
 		ore, ok := data.FindRow(re.Row.ID)
 		if !ok {
 			slog.Error("Unable to find original row event", slogs.RowID, re.Row.ID)
+			t.resetRow(row + 1)
 			return true
 		}
 		t.buildRow(row+1, re, ore, cdata.Header(), pads)
@@ -534,16 +535,69 @@ func (t *Table) buildRow(r int, re, ore model1.RowEvent, h model1.Header, pads M
 			field = formatCell(field, pads[c])
 		}
 
-		cell := tview.NewTableCell(field)
+		cell := t.reuseCell(r, col, field)
 		cell.SetExpansion(1)
 		cell.SetAlign(h[c].Align)
 		cell.SetTextColor(fgColor)
 		if col == 0 {
 			cell.SetReference(re.Row.ID)
 		}
-		t.SetCell(r, col, cell)
 		col++
 	}
+}
+
+// resetRow drops all cells of row r, leaving it uninitialized.
+func (t *Table) resetRow(r int) {
+	t.InsertRow(r)
+	t.RemoveRow(r + 1)
+}
+
+// reuseCell resets the cell at r,c to tview.NewTableCell defaults, allocating only if missing.
+func (t *Table) reuseCell(r, c int, text string) *tview.TableCell {
+	cell := t.GetCell(r, c)
+	*cell = tview.TableCell{
+		Text:            text,
+		Align:           tview.AlignLeft,
+		Color:           tview.Styles.PrimaryTextColor,
+		BackgroundColor: tview.Styles.PrimitiveBackgroundColor,
+		Transparent:     true,
+	}
+	t.SetCell(r, c, cell)
+
+	return cell
+}
+
+// resetCells keeps existing cells for reuse unless the table shape changed.
+func (t *Table) resetCells(data *model1.TableData) {
+	rows, cols := data.RowCount()+1, t.visibleColCount(data.Header())
+	if cols == 0 || cols != t.GetColumnCount() || t.GetRowCount() > 2*rows || hasShortRows(data) {
+		t.Clear()
+		return
+	}
+	for t.GetRowCount() > rows {
+		t.RemoveRow(t.GetRowCount() - 1)
+	}
+}
+
+func hasShortRows(data *model1.TableData) bool {
+	short, n := false, data.HeaderCount()
+	data.RowsRange(func(_ int, re model1.RowEvent) bool {
+		short = len(re.Row.Fields) < n
+		return !short
+	})
+
+	return short
+}
+
+func (t *Table) visibleColCount(h model1.Header) int {
+	var n int
+	for _, c := range h {
+		if !t.shouldExcludeColumn(c) {
+			n++
+		}
+	}
+
+	return n
 }
 
 // SortColCmd designates a sorted column.

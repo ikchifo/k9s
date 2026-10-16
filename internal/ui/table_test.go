@@ -5,6 +5,7 @@ package ui_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -133,4 +134,65 @@ func makeContext() context.Context {
 	ctx = context.WithValue(ctx, internal.KeyViewConfig, config.NewCustomView())
 
 	return ctx
+}
+
+func TestTableUpdateReusesCells(t *testing.T) {
+	uu := map[string][]*model1.TableData{
+		"shrink":      {makeRows(3, 3), makeRows(1, 3)},
+		"grow":        {makeRows(1, 3), makeRows(3, 3)},
+		"fewer cols":  {makeRows(2, 3), makeRows(2, 2)},
+		"short rows":  {makeRows(2, 3), withShortRow(makeRows(2, 3))},
+		"same shape":  {makeRows(3, 3), makeRows(3, 3)},
+		"emptied out": {makeRows(3, 3), makeRows(0, 3)},
+	}
+
+	for k, u := range uu {
+		t.Run(k, func(t *testing.T) {
+			v := ui.NewTable(client.NewGVR("fred"))
+			v.Init(makeContext())
+			for _, d := range u {
+				v.UpdateUI(v.Update(d, false), d)
+			}
+			v.ShowDeleted()
+			last := u[len(u)-1]
+			v.UpdateUI(v.Update(last, false), last)
+
+			e := ui.NewTable(client.NewGVR("fred"))
+			e.Init(makeContext())
+			e.UpdateUI(e.Update(last, false), last)
+
+			assert.Equal(t, e.GetRowCount(), v.GetRowCount())
+			assert.Equal(t, e.GetColumnCount(), v.GetColumnCount())
+			for r := range e.GetRowCount() {
+				for c := range e.GetColumnCount() {
+					assert.Equal(t, *e.GetCell(r, c), *v.GetCell(r, c), "cell %d,%d", r, c)
+				}
+			}
+		})
+	}
+}
+
+func makeRows(n, cols int) *model1.TableData {
+	h := make(model1.Header, cols)
+	for c := range h {
+		h[c] = model1.HeaderColumn{Name: fmt.Sprintf("C%d", c)}
+	}
+	ee := make([]model1.RowEvent, 0, n)
+	for r := range n {
+		ff := make(model1.Fields, cols)
+		for c := range ff {
+			ff[c] = fmt.Sprintf("r%d-c%d", r, c)
+		}
+		ee = append(ee, model1.RowEvent{Kind: model1.ResEvent(r % 3), Row: model1.Row{ID: fmt.Sprintf("r%d", r), Fields: ff}})
+	}
+
+	return model1.NewTableDataWithRows(client.NewGVR("test"), h, model1.NewRowEventsWithEvts(ee...))
+}
+
+func withShortRow(d *model1.TableData) *model1.TableData {
+	re, _ := d.RowAt(0)
+	re.Row.Fields = re.Row.Fields[:1]
+	d.SetRow(0, re)
+
+	return d
 }
