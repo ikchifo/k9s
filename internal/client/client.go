@@ -534,7 +534,7 @@ func (a *APIClient) DynDial() (dynamic.Interface, error) {
 	if err != nil {
 		return nil, err
 	}
-	c, err := dynamic.NewForConfig(cfg)
+	c, err := newDynamicClient(cfg)
 	if err != nil {
 		return nil, err
 	}
