@@ -4,6 +4,8 @@
 package ui
 
 import (
+	"cmp"
+	"slices"
 	"strings"
 
 	"github.com/derailed/tcell/v2"
@@ -27,20 +29,23 @@ type ModalPicker struct {
 	list     *tview.List
 	frame    *tview.Frame
 	items    []string
+	recent   int
 	matches  []string
 	hlTag    string
 	onSelect func(string)
 	onCancel func()
 }
 
-// NewModalPicker returns a picker over items, kept in the given order until filtered.
-func NewModalPicker(title string, items []string, hlColor string) *ModalPicker {
+// NewModalPicker returns a picker over items, kept in the given order until
+// filtered. The first recent items stay on top of any filtered results.
+func NewModalPicker(title string, items []string, recent int, hlColor string) *ModalPicker {
 	m := ModalPicker{
-		Box:   tview.NewBox(),
-		input: tview.NewInputField(),
-		list:  tview.NewList(),
-		items: items,
-		hlTag: "[" + hlColor + "::b]",
+		Box:    tview.NewBox(),
+		input:  tview.NewInputField(),
+		list:   tview.NewList(),
+		items:  items,
+		recent: recent,
+		hlTag:  "[" + hlColor + "::b]",
 	}
 	m.input.SetLabel("> ")
 	m.input.SetChangedFunc(m.filter)
@@ -98,10 +103,18 @@ func (m *ModalPicker) filter(q string) {
 		return
 	}
 
-	// Stable sort keeps the caller's order (e.g. recency) on score ties.
-	for _, mx := range fuzzy.Find(q, m.items) {
+	mm := fuzzy.Find(q, m.items)
+	slices.SortStableFunc(mm, func(a, b fuzzy.Match) int {
+		return cmp.Compare(m.pin(a), m.pin(b))
+	})
+	for _, mx := range mm {
 		m.addItem(mx.Str, m.highlight(mx))
 	}
+}
+
+// pin keeps recent items in their given order ahead of score-ranked ones.
+func (m *ModalPicker) pin(mx fuzzy.Match) int {
+	return min(mx.Index, m.recent)
 }
 
 func (m *ModalPicker) addItem(item, label string) {

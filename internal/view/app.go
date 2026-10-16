@@ -846,9 +846,9 @@ func (a *App) ctxPickerCmd(evt *tcell.EventKey) *tcell.EventKey {
 	}
 
 	current := a.Config.ActiveContextName()
-	ranked := loadCtxRecency().rank(names, current)
+	ranked, recent := loadCtxRecency().rank(names, current)
 	d := a.Styles.Dialog()
-	dialog.ShowPicker(&d, a.Content.Pages, "Switch Context", ranked, func(name string) {
+	dialog.ShowPicker(&d, a.Content.Pages, "Switch Context", ranked, recent, func(name string) {
 		if name == current {
 			return
 		}

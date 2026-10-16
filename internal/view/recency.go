@@ -159,8 +159,9 @@ func (rr recency) trim() {
 }
 
 // rank orders names most recent first, then by name; current goes last.
-func (rr recency) rank(names []string, current string) []string {
-	out := slices.Clone(names)
+// It also returns how many leading names were used before.
+func (rr recency) rank(names []string, current string) (out []string, recent int) {
+	out = slices.Clone(names)
 	slices.SortFunc(out, func(a, b string) int {
 		if a == current || b == current {
 			return cmp.Compare(boolRank(a == current), boolRank(b == current))
@@ -172,7 +173,14 @@ func (rr recency) rank(names []string, current string) []string {
 		return cmp.Compare(a, b)
 	})
 
-	return out
+	for _, n := range out {
+		if n == current || rr[n] == 0 {
+			break
+		}
+		recent++
+	}
+
+	return out, recent
 }
 
 func boolRank(b bool) int {

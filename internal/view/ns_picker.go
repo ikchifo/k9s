@@ -58,9 +58,9 @@ func (a *App) showNSPicker(names []string) {
 	}
 
 	current := nsKey(a.Config.ActiveNamespace())
-	ranked := loadNSRecency(a.Config.ActiveContextName()).rank(names, current)
+	ranked, recent := loadNSRecency(a.Config.ActiveContextName()).rank(names, current)
 	d := a.Styles.Dialog()
-	dialog.ShowPicker(&d, a.Content.Pages, nsPickerTitle, ranked, func(ns string) {
+	dialog.ShowPicker(&d, a.Content.Pages, nsPickerTitle, ranked, recent, func(ns string) {
 		if ns == current {
 			return
 		}

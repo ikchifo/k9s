@@ -8,9 +8,10 @@ import (
 	"github.com/derailed/k9s/internal/ui"
 )
 
-// ShowPicker pops a centered fuzzy picker over items.
-func ShowPicker(styles *config.Dialog, pages *ui.Pages, title string, items []string, action func(string)) {
-	p := ui.NewModalPicker("<"+title+">", items, styles.LabelFgColor.String())
+// ShowPicker pops a centered fuzzy picker over items; the first recent items
+// rank above other matches.
+func ShowPicker(styles *config.Dialog, pages *ui.Pages, title string, items []string, recent int, action func(string)) {
+	p := ui.NewModalPicker("<"+title+">", items, recent, styles.LabelFgColor.String())
 	p.SetColors(
 		styles.FgColor.Color(),
 		styles.BgColor.Color(),
