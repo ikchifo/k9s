@@ -4,16 +4,21 @@
 package render
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
 	"github.com/derailed/k9s/internal/client"
+	"github.com/derailed/k9s/internal/model1"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	v1 "k8s.io/api/core/v1"
 	res "k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	mv1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 )
 
@@ -770,6 +775,57 @@ func Test_diagnose(t *testing.T) {
 				assert.Contains(t, err.Error(), u.err)
 			}
 		})
+	}
+}
+
+func Test_podRowMatchesFullConversion(t *testing.T) {
+	for _, f := range []string{"po", "po_init", "po_sidecar", "po_full", "po_evicted"} {
+		t.Run(f, func(t *testing.T) {
+			u := loadPod(t, f)
+			pwm := &PodWithMetrics{Raw: u, MX: podMX("100m", "50Mi")}
+
+			p := NewPod()
+			var got model1.Row
+			require.NoError(t, p.Render(pwm, "", &got))
+
+			spec, _, err := podSpecStatus(u)
+			require.NoError(t, err)
+			fullSpec, fullSt := fullPodSpecStatus(t, u)
+
+			var want model1.Row
+			require.NoError(t, p.podRow(pwm, fullSpec, fullSt, &want))
+
+			assert.Equal(t, want.ID, got.ID)
+			assert.Equal(t, want.Fields, got.Fields)
+			assert.Equal(t, ExtractImages(fullSpec), ExtractImages(spec))
+		})
+	}
+}
+
+func loadPod(t *testing.T, n string) *unstructured.Unstructured {
+	raw, err := os.ReadFile(fmt.Sprintf("testdata/%s.json", n))
+	require.NoError(t, err)
+
+	var u unstructured.Unstructured
+	require.NoError(t, json.Unmarshal(raw, &u))
+
+	return &u
+}
+
+// fullPodSpecStatus converts whole spec/status objects, as rows did before
+// podSpecStatus started picking keys.
+func fullPodSpecStatus(t *testing.T, u *unstructured.Unstructured) (*v1.PodSpec, *v1.PodStatus) {
+	spec := new(v1.PodSpec)
+	require.NoError(t, runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object["spec"].(map[string]any), spec))
+	var st v1.PodStatus
+	require.NoError(t, runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object["status"].(map[string]any), &st))
+
+	return spec, &st
+}
+
+func podMX(cpu, mem string) *mv1beta1.PodMetrics {
+	return &mv1beta1.PodMetrics{
+		Containers: []mv1beta1.ContainerMetrics{{Usage: makeRes(cpu, mem)}},
 	}
 }
 

@@ -1,0 +1,59 @@
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "creationTimestamp": "2024-05-01T10:00:00Z",
+    "labels": {
+      "app": "evicted"
+    },
+    "name": "evicted",
+    "namespace": "default",
+    "uid": "e0000000-0000-4000-8000-00000000000e"
+  },
+  "spec": {
+    "containers": [
+      {
+        "image": "registry.example.com/team/app:1.2.3",
+        "name": "app",
+        "resources": {
+          "requests": {
+            "cpu": "100m",
+            "memory": "64Mi"
+          }
+        }
+      }
+    ],
+    "nodeName": "node-1",
+    "serviceAccountName": "sa1"
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastProbeTime": null,
+        "lastTransitionTime": "2024-05-01T10:00:01Z",
+        "status": "True",
+        "type": "PodScheduled"
+      }
+    ],
+    "containerStatuses": [
+      {
+        "image": "registry.example.com/team/app:1.2.3",
+        "imageID": "docker-pullable://registry.example.com/team/app@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lastState": {},
+        "name": "app",
+        "ready": true,
+        "restartCount": 1,
+        "state": {
+          "running": {
+            "startedAt": "2024-05-01T10:00:01Z"
+          }
+        }
+      }
+    ],
+    "nominatedNodeName": "node-2",
+    "phase": "Failed",
+    "podIP": "10.1.2.4",
+    "qosClass": "Burstable",
+    "reason": "Evicted"
+  }
+}

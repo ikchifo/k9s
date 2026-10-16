@@ -1,0 +1,210 @@
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "creationTimestamp": "2024-05-01T10:00:00Z",
+    "labels": {
+      "app": "full"
+    },
+    "name": "full",
+    "namespace": "default",
+    "uid": "f0000000-0000-4000-8000-00000000000f"
+  },
+  "spec": {
+    "containers": [
+      {
+        "command": ["sh", "-c", "sleep 1d"],
+        "env": [{ "name": "MODE", "value": "perf" }],
+        "image": "registry.example.com/team/app:1.2.3",
+        "imagePullPolicy": "IfNotPresent",
+        "name": "app",
+        "ports": [{ "containerPort": 8080, "name": "http" }],
+        "resources": {
+          "limits": {
+            "cpu": "250m",
+            "memory": "128Mi",
+            "nvidia.com/gpu": "1"
+          },
+          "requests": {
+            "cpu": "100m",
+            "memory": "64Mi",
+            "nvidia.com/gpu": "1"
+          }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "volumeMounts": [{ "mountPath": "/data", "name": "data" }]
+      },
+      {
+        "image": "registry.example.com/infra/aux:2.0",
+        "name": "aux",
+        "resources": {
+          "requests": {
+            "cpu": "5m",
+            "memory": "8Mi"
+          }
+        }
+      }
+    ],
+    "dnsPolicy": "ClusterFirst",
+    "initContainers": [
+      {
+        "command": ["sh", "-c", "init setup"],
+        "image": "registry.example.com/infra/setup:1.0",
+        "name": "setup",
+        "resources": {
+          "requests": {
+            "cpu": "5m",
+            "memory": "8Mi"
+          }
+        }
+      },
+      {
+        "image": "registry.example.com/infra/proxy:2.0",
+        "name": "proxy",
+        "resources": {
+          "limits": {
+            "cpu": "50m",
+            "memory": "32Mi"
+          },
+          "requests": {
+            "cpu": "10m",
+            "memory": "16Mi"
+          }
+        },
+        "restartPolicy": "Always"
+      }
+    ],
+    "nodeName": "node-1",
+    "readinessGates": [
+      { "conditionType": "www.example.com/gate1" },
+      { "conditionType": "www.example.com/gate2" }
+    ],
+    "restartPolicy": "Always",
+    "schedulerName": "default-scheduler",
+    "securityContext": {},
+    "serviceAccountName": "sa1",
+    "terminationGracePeriodSeconds": 30,
+    "tolerations": [
+      {
+        "effect": "NoExecute",
+        "key": "node.kubernetes.io/not-ready",
+        "operator": "Exists"
+      }
+    ],
+    "volumes": [{ "name": "data", "emptyDir": {} }]
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastProbeTime": null,
+        "lastTransitionTime": "2024-05-01T10:00:01Z",
+        "status": "True",
+        "type": "Initialized"
+      },
+      {
+        "lastProbeTime": null,
+        "lastTransitionTime": "2024-05-01T10:00:02Z",
+        "status": "True",
+        "type": "PodScheduled"
+      },
+      {
+        "lastProbeTime": null,
+        "lastTransitionTime": "2024-05-01T10:00:03Z",
+        "status": "True",
+        "type": "www.example.com/gate1"
+      },
+      {
+        "lastProbeTime": null,
+        "lastTransitionTime": "2024-05-01T10:00:04Z",
+        "status": "False",
+        "type": "www.example.com/gate2"
+      },
+      {
+        "lastProbeTime": null,
+        "lastTransitionTime": "2024-05-01T10:00:05Z",
+        "status": "False",
+        "type": "Ready"
+      }
+    ],
+    "containerStatuses": [
+      {
+        "containerID": "docker://abc",
+        "image": "registry.example.com/team/app:1.2.3",
+        "imageID": "docker-pullable://registry.example.com/team/app@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lastState": {
+          "terminated": {
+            "exitCode": 137,
+            "finishedAt": "2024-05-01T09:00:00Z",
+            "reason": "OOMKilled",
+            "startedAt": "2024-05-01T08:59:00Z"
+          }
+        },
+        "name": "app",
+        "ready": true,
+        "restartCount": 2,
+        "state": {
+          "running": {
+            "startedAt": "2024-05-01T10:00:01Z"
+          }
+        }
+      },
+      {
+        "containerID": "docker://def",
+        "image": "registry.example.com/infra/aux:2.0",
+        "imageID": "docker-pullable://registry.example.com/infra/aux@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "lastState": {},
+        "name": "aux",
+        "ready": false,
+        "restartCount": 1,
+        "state": {
+          "waiting": {
+            "message": "back-off 5m0s restarting failed container",
+            "reason": "CrashLoopBackOff"
+          }
+        }
+      }
+    ],
+    "hostIP": "192.168.64.1",
+    "initContainerStatuses": [
+      {
+        "containerID": "docker://012",
+        "image": "registry.example.com/infra/setup:1.0",
+        "imageID": "docker-pullable://registry.example.com/infra/setup@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "lastState": {},
+        "name": "setup",
+        "ready": true,
+        "restartCount": 0,
+        "state": {
+          "terminated": {
+            "exitCode": 0,
+            "finishedAt": "2024-05-01T09:59:59Z",
+            "reason": "Completed",
+            "startedAt": "2024-05-01T09:59:00Z"
+          }
+        }
+      },
+      {
+        "containerID": "docker://345",
+        "image": "registry.example.com/infra/proxy:2.0",
+        "imageID": "docker-pullable://registry.example.com/infra/proxy@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "lastState": {},
+        "name": "proxy",
+        "ready": true,
+        "restartCount": 0,
+        "started": true,
+        "state": {
+          "running": {
+            "startedAt": "2024-05-01T10:00:00Z"
+          }
+        }
+      }
+    ],
+    "nominatedNodeName": "node-2",
+    "phase": "Failed",
+    "podIP": "10.1.2.3",
+    "qosClass": "Burstable",
+    "reason": "Evicted",
+    "startTime": "2024-05-01T10:00:00Z"
+  }
+}
