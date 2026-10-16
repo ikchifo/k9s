@@ -327,12 +327,58 @@ func (a *APIClient) ValidNamespaceNames() (NamespaceNames, error) {
 		}
 	}
 
-	ok, err := a.CanI(ClusterScope, NsGVR, "", ListAccess)
-	if !ok || err != nil {
-		a.cache.Add(cacheNSKey, NamespaceNames{}, cacheExpiry)
-		return nil, fmt.Errorf("user not authorized to list all namespaces")
+	// Concurrent callers share a single namespace fetch.
+	v, err, _ := a.inFlight.Do(cacheNSKey, func() (any, error) {
+		// The cache may have been populated while this call waited on the flight.
+		if nn, ok := a.cache.Get(cacheNSKey); ok {
+			if nss, ok := nn.(NamespaceNames); ok {
+				return nss, nil
+			}
+		}
+
+		return a.fetchNamespaceNames()
+	})
+	if err != nil {
+		return nil, err
+	}
+	nns, ok := v.(NamespaceNames)
+	if !ok {
+		return nil, fmt.Errorf("valid namespaces returned unexpected payload %T", v)
 	}
 
+	return nns, nil
+}
+
+// fetchNamespaceNames lists namespaces speculatively alongside the access
+// review since both sit on the first-frame critical path.
+func (a *APIClient) fetchNamespaceNames() (NamespaceNames, error) {
+	var (
+		wg      sync.WaitGroup
+		nns     NamespaceNames
+		listErr error
+	)
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		nns, listErr = a.listNamespaces()
+	}()
+
+	ok, err := a.CanI(ClusterScope, NsGVR, "", ListAccess)
+	wg.Wait()
+	if !ok || err != nil {
+		a.cache.Add(cacheNSKey, NamespaceNames{}, cacheExpiry)
+
+		return nil, fmt.Errorf("user not authorized to list all namespaces")
+	}
+	if listErr != nil {
+		return nil, listErr
+	}
+	a.cache.Add(cacheNSKey, nns, cacheExpiry)
+
+	return nns, nil
+}
+
+func (a *APIClient) listNamespaces() (NamespaceNames, error) {
 	dial, err := a.Dial()
 	if err != nil {
 		return nil, err
@@ -347,7 +393,6 @@ func (a *APIClient) ValidNamespaceNames() (NamespaceNames, error) {
 	for i := range nn.Items {
 		nns[nn.Items[i].Name] = struct{}{}
 	}
-	a.cache.Add(cacheNSKey, nns, cacheExpiry)
 
 	return nns, nil
 }
@@ -405,9 +450,12 @@ func (a *APIClient) probeVersion(client kubernetes.Interface) error {
 	if err != nil {
 		return err
 	}
-	if _, ok := v.(*version.Info); !ok {
+	info, ok := v.(*version.Info)
+	if !ok || info == nil {
 		return fmt.Errorf("server version returned unexpected payload %T", v)
 	}
+	// Seed the LRU so the next ServerVersion() reuses this probe's round trip.
+	a.cache.Add(serverVersion, info, cacheExpiry)
 
 	return nil
 }
