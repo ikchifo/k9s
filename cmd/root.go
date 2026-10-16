@@ -144,6 +144,12 @@ func loadConfiguration() (*config.Config, error) {
 	}
 	k9sCfg.SetConnection(conn)
 
+	// Probe the server while the config loads and validates namespaces.
+	connected := make(chan bool, 1)
+	go func() {
+		connected <- conn.HasActiveContext() && conn.CheckConnectivity()
+	}()
+
 	if err := k9sCfg.Load(config.AppConfigFile, false); err != nil {
 		errs = errors.Join(errs, err)
 	}
@@ -160,8 +166,9 @@ func loadConfiguration() (*config.Config, error) {
 
 	// Try to access server version if that fail. Connectivity issue?
 	// Skip connectivity checks if no context is configured
+	ok := <-connected
 	if k9sCfg.K9s.ActiveContextName() != "" {
-		if !conn.CheckConnectivity() {
+		if !ok && !conn.CheckConnectivity() {
 			ctx := k9sCfg.K9s.ActiveContextName()
 			errs = errors.Join(errs, fmt.Errorf("cannot connect to context: %s", ctx))
 		}
