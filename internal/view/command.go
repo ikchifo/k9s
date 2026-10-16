@@ -106,7 +106,8 @@ func (c *Command) contextCmd(p *cmd.Interpreter, pushCmd bool) error {
 	}
 
 	if ct != "" {
-		return useContext(c.app, ct)
+		useContext(c.app, ct, nil)
+		return nil
 	}
 
 	gvr, v, comd, err := c.viewMetaFor(p)
@@ -185,29 +186,13 @@ func (c *Command) run(p *cmd.Interpreter, fqn string, clearStack, pushCmd bool) 
 		p.Merge(comd)
 	}
 
-	if context, ok := p.HasContext(); ok {
-		if context != c.app.Config.ActiveContextName() {
-			if err := c.app.Config.Save(true); err != nil {
-				slog.Error("Config save failed during command exec", slogs.Error, err)
-			} else {
-				slog.Debug("Successfully saved config", slogs.Context, context)
+	if context, ok := p.HasContext(); ok && context != c.app.Config.ActiveContextName() {
+		c.app.switchAsync(p, false, func() {
+			if err := c.run(p, fqn, clearStack, pushCmd); err != nil {
+				c.app.Flash().Err(err)
 			}
-		}
-		res, err := dao.AccessorFor(c.app.factory, client.CtGVR)
-		if err != nil {
-			return err
-		}
-		switcher, ok := res.(dao.Switchable)
-		if !ok {
-			return errors.New("expecting a switchable resource")
-		}
-		if err := switcher.Switch(context); err != nil {
-			slog.Error("Unable to switch context", slogs.Error, err)
-			return err
-		}
-		if err := c.app.switchContext(p, false); err != nil {
-			return err
-		}
+		})
+		return nil
 	}
 
 	ns := c.app.Config.ActiveNamespace()

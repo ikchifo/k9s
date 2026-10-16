@@ -4,12 +4,10 @@
 package view
 
 import (
-	"errors"
 	"fmt"
 	"log/slog"
 
 	"github.com/derailed/k9s/internal/client"
-	"github.com/derailed/k9s/internal/dao"
 	"github.com/derailed/k9s/internal/slogs"
 	"github.com/derailed/k9s/internal/ui"
 	"github.com/derailed/k9s/internal/ui/dialog"
@@ -134,40 +132,13 @@ func (c *Context) useCtx(app *App, _ ui.Tabular, gvr *client.GVR, path string) {
 		slogs.GVR, gvr,
 		slogs.FQN, path,
 	)
-	if err := useContext(app, path); err != nil {
-		app.Flash().Err(err)
-		return
-	}
-	c.App().clearHistory()
-	c.Refresh()
-	c.GetTable().Select(1, 0)
+	useContext(app, path, func() {
+		c.App().clearHistory()
+		c.Refresh()
+		c.GetTable().Select(1, 0)
+	})
 }
 
-func useContext(app *App, name string) error {
-	if app.Content.Top() != nil {
-		app.Content.Top().Stop()
-	}
-	res, err := dao.AccessorFor(app.factory, client.CtGVR)
-	if err != nil {
-		return err
-	}
-	switcher, ok := res.(dao.Switchable)
-	if !ok {
-		return errors.New("expecting a switchable resource")
-	}
-
-	app.Config.K9s.ToggleContextSwitch(true)
-	defer app.Config.K9s.ToggleContextSwitch(false)
-
-	// Save config prior to context switch...
-	if err := app.Config.Save(true); err != nil {
-		slog.Error("Fail to save config to disk", slogs.Subsys, "config", slogs.Error, err)
-	}
-
-	if err := switcher.Switch(name); err != nil {
-		slog.Error("Context switch failed during use command", slogs.Error, err)
-		return err
-	}
-
-	return app.switchContext(cmd.NewInterpreter("ctx "+name), true)
+func useContext(app *App, name string, then func()) {
+	app.switchAsync(cmd.NewInterpreter("ctx "+name), true, then)
 }

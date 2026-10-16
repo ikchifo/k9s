@@ -33,7 +33,7 @@ func NewPages() *Pages {
 func (p *Pages) IsTopDialog() bool {
 	_, pa := p.GetFrontPage()
 	switch pa.(type) {
-	case *tview.ModalForm, *ModalList, *ModalPicker:
+	case *tview.ModalForm, *ModalList, *ModalPicker, *ModalProgress:
 		return true
 	default:
 		return false

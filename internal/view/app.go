@@ -847,11 +847,7 @@ func (a *App) ctxPickerCmd(evt *tcell.EventKey) *tcell.EventKey {
 		if name == current {
 			return
 		}
-		if err := useContext(a, name); err != nil {
-			a.Flash().Err(err)
-			return
-		}
-		a.clearHistory()
+		useContext(a, name, a.clearHistory)
 	})
 
 	return nil
