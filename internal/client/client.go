@@ -33,6 +33,9 @@ const (
 	cacheMXAPIKey = "metricsAPI"
 	serverVersion = "serverVersion"
 	cacheNSKey    = "validNamespaces"
+
+	// discoveryTTL matches kubectl's discovery disk cache lifetime.
+	discoveryTTL = 6 * time.Hour
 )
 
 var supportedMetricsAPIVersions = []string{"v1beta1"}
@@ -71,15 +74,17 @@ func InitConnection(config *Config, log *slog.Logger) (*APIClient, error) {
 		connOK: true,
 		log:    log.With(slogs.Subsys, "client"),
 	}
-	if err := a.supportsMetricsResources(); err != nil {
-		if a.HasActiveContext() {
+	if !a.HasActiveContext() {
+		return &a, nil
+	}
+
+	// Probe metrics-server off the startup path; CheckConnectivity covers liveness.
+	go func() {
+		if err := a.supportsMetricsResources(); err != nil {
 			slog.Warn("Fail to locate metrics-server", slogs.Error, err)
 		}
-		if !errors.Is(err, noMetricServerErr) && !errors.Is(err, metricsUnsupportedErr) {
-			a.connOK = false
-			return &a, err
-		}
-	}
+	}()
+
 	return &a, nil
 }
 
@@ -515,7 +520,7 @@ func (a *APIClient) CachedDiscovery() (*disk.CachedDiscoveryClient, error) {
 	httpCacheDir := filepath.Join(baseCacheDir, "http")
 	discCacheDir := filepath.Join(baseCacheDir, "discovery", toHostDir(cfg.Host))
 
-	c, err := disk.NewCachedDiscoveryClientForConfig(cfg, discCacheDir, httpCacheDir, cacheExpiry)
+	c, err := disk.NewCachedDiscoveryClientForConfig(cfg, discCacheDir, httpCacheDir, discoveryTTL)
 	if err != nil {
 		return nil, err
 	}
@@ -634,9 +639,6 @@ func (a *APIClient) supportsMetricsResources() error {
 		}
 		return err
 	}
-	// Force live discovery so a metrics-server installed after the cached
-	// data was fetched is still detected.
-	dial.Invalidate()
 	apiGroups, err := dial.ServerGroups()
 	if err != nil {
 		return err

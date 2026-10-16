@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"sync/atomic"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -204,6 +205,7 @@ func TestInitConnectionStoresDiscoveryClient(t *testing.T) {
 	a, err := InitConnection(NewConfig(flags), slog.Default())
 	require.NoError(t, err)
 
-	assert.NotNil(t, a.getCachedClient(),
+	assert.Eventually(t, func() bool { return a.getCachedClient() != nil },
+		time.Second, 10*time.Millisecond,
 		"InitConnection should reuse the shared cached discovery client")
 }
