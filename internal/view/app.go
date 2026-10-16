@@ -263,6 +263,7 @@ func (a *App) bindKeys() {
 		ui.KeyDash:         ui.NewSharedKeyAction("Last View", a.lastCommand, false),
 		tcell.KeyCtrlA:     ui.NewSharedKeyAction("Aliases", a.aliasCmd, false),
 		tcell.KeyCtrlX:     ui.NewSharedKeyAction("Switch Context", a.ctxPickerCmd, false),
+		tcell.KeyCtrlO:     ui.NewSharedKeyAction("Switch Namespace", a.nsPickerCmd, false),
 		tcell.KeyEnter:     ui.NewKeyAction("Goto", a.gotoCmd, false),
 		tcell.KeyCtrlC:     ui.NewKeyAction("Quit", a.quitCmd, false),
 	}))
@@ -447,7 +448,8 @@ func (a *App) refreshCluster(context.Context) error {
 }
 
 func (a *App) switchNS(ns string) error {
-	if a.Config.ActiveNamespace() == ns {
+	prev := a.Config.ActiveNamespace()
+	if prev == ns {
 		return nil
 	}
 	if ns == client.ClusterScope {
@@ -455,6 +457,9 @@ func (a *App) switchNS(ns string) error {
 	}
 	if err := a.Config.SetActiveNamespace(ns); err != nil {
 		return err
+	}
+	if nsKey(prev) != nsKey(ns) {
+		recordNSSwitch(a.Config.ActiveContextName(), prev, ns)
 	}
 
 	return a.factory.SetActiveNS(ns)
