@@ -118,10 +118,12 @@ func (a *App) Init(version string, _ int) error {
 		a.clusterModel.AddListener(a.statusIndicator())
 		if a.Conn().ConnectionOK() {
 			go func() {
-				a.clusterModel.Refresh()
+				// Init the panel before the first refresh lands; the refresh
+				// fires the last data draw and must not be cleared by Init.
 				a.QueueUpdateDraw(func() {
 					a.clusterInfo().Init()
 				})
+				a.clusterModel.Refresh()
 			}()
 		}
 	}
