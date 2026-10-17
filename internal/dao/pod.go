@@ -5,6 +5,7 @@ package dao
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -205,6 +206,12 @@ func (p *Pod) TailLogs(ctx context.Context, opts *LogOptions) ([]LogChan, error)
 	if err != nil {
 		return nil, err
 	}
+
+	return p.tailPodLogs(ctx, po, opts)
+}
+
+// tailPodLogs tails all containers logs for the given pod.
+func (p *Pod) tailPodLogs(ctx context.Context, po *v1.Pod, opts *LogOptions) ([]LogChan, error) {
 	coCounts := len(po.Spec.InitContainers) + len(po.Spec.Containers) + len(po.Spec.EphemeralContainers)
 	if coCounts == 1 {
 		opts.SingleContainer = true
@@ -467,49 +474,63 @@ func readLogs(ctx context.Context, stream io.ReadCloser, out chan<- *LogItem, op
 	var droppedLines int64
 
 	for {
-		bytes, err := r.ReadBytes('\n')
-		if err == nil {
-			item := opts.ToLogItem(tview.EscapeBytes(bytes))
-			select {
-			case <-ctx.Done():
-				return streamCanceled
-			case out <- item:
-			default:
-				droppedLines++
-				if droppedLines == 1 || droppedLines%100 == 0 {
-					slog.Warn("Dropping log lines due to slow consumer",
-						slogs.Container, opts.Info(),
-						slogs.Count, droppedLines,
-					)
-				}
+		bb, err := r.ReadBytes('\n')
+		if err != nil {
+			return endRead(out, bb, opts, err, droppedLines)
+		}
+
+		item := opts.ToLogItem(escapeLog(bb))
+		select {
+		case <-ctx.Done():
+			return streamCanceled
+		case out <- item:
+		default:
+			droppedLines++
+			if droppedLines == 1 || droppedLines%100 == 0 {
+				slog.Warn("Dropping log lines due to slow consumer",
+					slogs.Container, opts.Info(),
+					slogs.Count, droppedLines,
+				)
 			}
-			continue
 		}
-
-		if droppedLines > 0 {
-			slog.Warn("Total log lines dropped during stream",
-				slogs.Container, opts.Info(),
-				slogs.Count, droppedLines,
-			)
-		}
-
-		if errors.Is(err, io.EOF) {
-			if len(bytes) > 0 {
-				// Emit trailing partial line before EOF
-				out <- opts.ToLogItem(tview.EscapeBytes(bytes))
-			}
-			slog.Debug("Log reader reached EOF", slogs.Container, opts.Info())
-			out <- opts.ToErrLogItem(fmt.Errorf("stream closed: %w for %s", err, opts.Info()))
-			return streamEOF
-		}
-
-		// Non-EOF error
-		slog.Debug("Log stream error, will retry connection",
-			slogs.Container, opts.Info(),
-			slogs.Error, fmt.Errorf("stream error: %w for %s", err, opts.Info()),
-		)
-		return streamError
 	}
+}
+
+// endRead emits the stream epilogue: a trailing partial line on EOF plus the
+// stream closed marker, or the retry signal on a transport error.
+func endRead(out chan<- *LogItem, bb []byte, opts *LogOptions, err error, dropped int64) streamResult {
+	if dropped > 0 {
+		slog.Warn("Total log lines dropped during stream",
+			slogs.Container, opts.Info(),
+			slogs.Count, dropped,
+		)
+	}
+
+	if errors.Is(err, io.EOF) {
+		if len(bb) > 0 {
+			out <- opts.ToLogItem(escapeLog(bb))
+		}
+		slog.Debug("Log reader reached EOF", slogs.Container, opts.Info())
+		out <- opts.ToErrLogItem(fmt.Errorf("stream closed: %w for %s", err, opts.Info()))
+
+		return streamEOF
+	}
+
+	slog.Debug("Log stream error, will retry connection",
+		slogs.Container, opts.Info(),
+		slogs.Error, fmt.Errorf("stream error: %w for %s", err, opts.Info()),
+	)
+
+	return streamError
+}
+
+// escapeLog escapes tview tags, skipping the regex pass when no tag opener.
+func escapeLog(bb []byte) []byte {
+	if bytes.IndexByte(bb, '[') < 0 {
+		return bb
+	}
+
+	return tview.EscapeBytes(bb)
 }
 
 // MetaFQN returns a fully qualified resource name.

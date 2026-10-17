@@ -32,6 +32,8 @@ type LogItems struct {
 	items     []*LogItem
 	podColors podColors
 	mx        sync.RWMutex
+	rxQ       string
+	rx        *regexp.Regexp
 }
 
 // NewLogItems returns a new instance.
@@ -181,6 +183,26 @@ func (l *LogItems) Filter(index int, q string, showTime bool) (matches []int, in
 	return matches, indices, nil
 }
 
+// cachedRx returns the compiled filter regex, compiling it only on change.
+func (l *LogItems) cachedRx(q string) (*regexp.Regexp, error) {
+	l.mx.RLock()
+	rx, cached := l.rx, l.rxQ
+	l.mx.RUnlock()
+	if rx != nil && cached == q {
+		return rx, nil
+	}
+
+	compiled, err := regexp.Compile(`(?i)` + q)
+	if err != nil {
+		return nil, err
+	}
+	l.mx.Lock()
+	l.rx, l.rxQ = compiled, q
+	l.mx.Unlock()
+
+	return compiled, nil
+}
+
 func (l *LogItems) fuzzyFilter(index int, q string, showTime bool) (matches []int, indices [][]int) {
 	q = strings.TrimSpace(q)
 	matches, indices = make([]int, 0, len(l.items)), make([][]int, 0, len(l.items))
@@ -199,7 +221,7 @@ func (l *LogItems) filterLogs(index int, q string, showTime bool) (matches []int
 		invert = true
 		q = q[1:]
 	}
-	rx, err := regexp.Compile(`(?i)` + q)
+	rx, err := l.cachedRx(q)
 	if err != nil {
 		return nil, nil, err
 	}

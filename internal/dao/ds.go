@@ -92,15 +92,17 @@ func podLogs(ctx context.Context, sel map[string]string, opts *LogOptions) ([]Lo
 	var po Pod
 	po.Init(f, client.PodGVR)
 
+	// Pods are already in hand; tail them directly so streams start
+	// concurrently without a per-pod factory lookup.
 	outs := make([]LogChan, 0, len(oo))
 	for _, o := range oo {
 		pod, err := client.ToPod(o)
 		if err != nil {
 			return nil, err
 		}
-		opts = opts.Clone()
-		opts.Path = client.FQN(pod.Namespace, pod.Name)
-		cc, err := po.TailLogs(ctx, opts)
+		cfg := opts.Clone()
+		cfg.Path = client.FQN(pod.Namespace, pod.Name)
+		cc, err := po.tailPodLogs(ctx, pod, cfg)
 		if err != nil {
 			return nil, err
 		}
