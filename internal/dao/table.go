@@ -6,6 +6,7 @@ package dao
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/derailed/k9s/internal"
 	"github.com/derailed/k9s/internal/client"
@@ -14,6 +15,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/client-go/rest"
 )
@@ -24,9 +26,31 @@ const (
 	includeObj  = "Object"
 	includeNone = "None"
 	header      = "application/json;as=Table;v=v1;g=meta.k8s.io,application/json;as=Table;v=v1beta1;g=meta.k8s.io,application/json"
+
+	colTypeStr = "string"
+	nsColName  = "Namespace"
 )
 
 var genScheme = runtime.NewScheme()
+
+// tableDial bundles a table REST client with its parameter codec.
+type tableDial struct {
+	client *rest.RESTClient
+	params runtime.ParameterCodec
+}
+
+// tableDials caches dials per factory+gvr. A factory change (context switch)
+// invalidates every entry. genGVs tracks registered group versions so scheme
+// writes happen at most once per GV. All fields are guarded by mx.
+var tableDials = struct {
+	mx      sync.Mutex
+	factory Factory
+	entries map[client.GVR]*tableDial
+	genGVs  map[schema.GroupVersion]bool
+}{
+	entries: make(map[client.GVR]*tableDial),
+	genGVs:  make(map[schema.GroupVersion]bool),
+}
 
 // Table retrieves K8s resources as tabular data.
 type Table struct {
@@ -35,19 +59,18 @@ type Table struct {
 
 // Get returns a given resource.
 func (t *Table) Get(ctx context.Context, path string) (runtime.Object, error) {
-	f, p := t.codec()
-	c, err := t.getClient(f)
+	d, err := t.dial()
 	if err != nil {
 		return nil, err
 	}
 
 	ns, n := client.Namespaced(path)
 	a := fmt.Sprintf(gvFmt, metav1.SchemeGroupVersion.Version, metav1.GroupName)
-	req := c.Get().
+	req := d.client.Get().
 		SetHeader("Accept", a).
 		Name(n).
 		Resource(t.gvr.R()).
-		VersionedParams(&metav1.TableOptions{}, p)
+		VersionedParams(&metav1.TableOptions{}, d.params)
 	if ns != client.ClusterScope {
 		req = req.Namespace(ns)
 	}
@@ -68,12 +91,11 @@ func (t *Table) List(ctx context.Context, ns string) ([]runtime.Object, error) {
 		includeObject = includeObj
 	}
 
-	f, _ := t.codec()
-	c, err := t.getClient(f)
+	d, err := t.dial()
 	if err != nil {
 		return nil, err
 	}
-	o, err := c.Get().
+	o, err := d.client.Get().
 		SetHeader("Accept", header).
 		Param("includeObject", includeObject).
 		Namespace(ns).
@@ -104,7 +126,7 @@ func (t *Table) List(ctx context.Context, ns string) ([]runtime.Object, error) {
 
 func decodeTable(ctx context.Context, table *metav1.Table, namespaced bool) (runtime.Object, error) {
 	if namespaced {
-		table.ColumnDefinitions = append([]metav1.TableColumnDefinition{{Name: "Namespace", Type: "string"}}, table.ColumnDefinitions...)
+		table.ColumnDefinitions = append([]metav1.TableColumnDefinition{{Name: nsColName, Type: colTypeStr}}, table.ColumnDefinitions...)
 	}
 	pool := internal.NewWorkerPool(ctx, internal.DefaultPoolSize)
 	for i := range table.Rows {
@@ -140,33 +162,64 @@ func decodeTable(ctx context.Context, table *metav1.Table, namespaced bool) (run
 	return table, nil
 }
 
-func (t *Table) getClient(f serializer.CodecFactory) (*rest.RESTClient, error) {
-	cfg, err := t.Client().RestConfig()
-	if err != nil {
-		return nil, err
-	}
-	gv := t.gvr.GV()
-	cfg.GroupVersion = &gv
-	cfg.APIPath = "/apis"
-	if t.gvr.G() == "" {
-		cfg.APIPath = "/api"
-	}
-	cfg.NegotiatedSerializer = f.WithoutConversion()
-	crRestClient, err := rest.RESTClientFor(cfg)
-	if err != nil {
-		return nil, err
-	}
+func (t *Table) dial() (*tableDial, error) {
+	f := t.getFactory()
 
-	return crRestClient, nil
+	tableDials.mx.Lock()
+	defer tableDials.mx.Unlock()
+
+	if tableDials.factory != f {
+		tableDials.entries, tableDials.factory = make(map[client.GVR]*tableDial), f
+	}
+	if d, ok := tableDials.entries[*t.gvr]; ok {
+		return d, nil
+	}
+	d, err := newTableDial(f, t.gvr)
+	if err != nil {
+		return nil, err
+	}
+	tableDials.entries[*t.gvr] = d
+
+	return d, nil
 }
 
-func (t *Table) codec() (serializer.CodecFactory, runtime.ParameterCodec) {
-	var tt metav1.Table
-	opts := metav1.TableOptions{IncludeObject: metav1.IncludeObject}
-	gv := t.gvr.GV()
-	metav1.AddToGroupVersion(genScheme, gv)
-	genScheme.AddKnownTypes(gv, &tt, &opts)
-	genScheme.AddKnownTypes(metav1.SchemeGroupVersion, &tt, &opts)
+func newTableDial(f Factory, gvr *client.GVR) (*tableDial, error) {
+	registerTableTypes(gvr.GV())
+	codecs := serializer.NewCodecFactory(genScheme)
 
-	return serializer.NewCodecFactory(genScheme), runtime.NewParameterCodec(genScheme)
+	cfg, err := f.Client().RestConfig()
+	if err != nil {
+		return nil, err
+	}
+	gv := gvr.GV()
+	cfg.GroupVersion = &gv
+	cfg.APIPath = "/apis"
+	if gvr.G() == "" {
+		cfg.APIPath = "/api"
+	}
+	cfg.NegotiatedSerializer = codecs.WithoutConversion()
+	rc, err := rest.RESTClientFor(cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	return &tableDial{client: rc, params: runtime.NewParameterCodec(genScheme)}, nil
+}
+
+// registerTableTypes declares table types in the shared scheme once per group version.
+func registerTableTypes(gv schema.GroupVersion) {
+	if tableDials.genGVs[gv] {
+		return
+	}
+	var (
+		tt  metav1.Table
+		opt metav1.TableOptions
+	)
+	metav1.AddToGroupVersion(genScheme, gv)
+	genScheme.AddKnownTypes(gv, &tt, &opt)
+	if !tableDials.genGVs[metav1.SchemeGroupVersion] {
+		genScheme.AddKnownTypes(metav1.SchemeGroupVersion, &tt, &opt)
+		tableDials.genGVs[metav1.SchemeGroupVersion] = true
+	}
+	tableDials.genGVs[gv] = true
 }
