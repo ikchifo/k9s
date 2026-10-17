@@ -161,21 +161,23 @@ func (c *Container) shellCmd(evt *tcell.EventKey) *tcell.EventKey {
 		return evt
 	}
 
-	var err error
+	pod, err := fetchPod(c.App().factory, c.GetTable().Path)
+	if err != nil {
+		c.App().Flash().Err(err)
+		return nil
+	}
+
+	var shellErr error
 	c.Stop()
 	defer func() {
 		c.Start()
-		if err != nil {
-			c.App().QueueUpdate(func() {
-				if err != nil {
-					c.App().Flash().Errf("Shell exec failed: %s", err)
-				}
-			})
-
-			c.App().Flash().Err(err)
-		}
+		c.App().QueueUpdate(func() {
+			if shellErr != nil {
+				c.App().Flash().Errf("Shell exec failed: %s", shellErr)
+			}
+		})
 	}()
-	err = shellIn(c.App(), c.GetTable().Path, path)
+	shellErr = shellIn(c.App(), pod, path)
 
 	return nil
 }
@@ -186,9 +188,15 @@ func (c *Container) attachCmd(evt *tcell.EventKey) *tcell.EventKey {
 		return evt
 	}
 
+	pod, err := fetchPod(c.App().factory, c.GetTable().Path)
+	if err != nil {
+		c.App().Flash().Err(err)
+		return nil
+	}
+
 	c.Stop()
 	defer c.Start()
-	attachIn(c.App(), c.GetTable().Path, sel)
+	attachIn(c.App(), pod, sel)
 
 	return nil
 }

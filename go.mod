@@ -22,6 +22,7 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.4.1
 	github.com/mattn/go-colorable v0.1.16
 	github.com/mattn/go-runewidth v0.0.31
+	github.com/moby/term v0.5.2
 	github.com/olekukonko/tablewriter v1.1.5
 	github.com/petergtz/pegomock v2.9.0+incompatible
 	github.com/rakyll/hey v0.1.5
@@ -42,6 +43,7 @@ require (
 	k8s.io/klog/v2 v2.140.0
 	k8s.io/kubectl v0.37.1
 	k8s.io/metrics v0.37.1
+	k8s.io/streaming v0.37.1
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730
 	sigs.k8s.io/yaml v1.6.0
 )
@@ -282,7 +284,6 @@ require (
 	github.com/moby/sys/signal v0.7.1 // indirect
 	github.com/moby/sys/user v0.4.1 // indirect
 	github.com/moby/sys/userns v0.2.1 // indirect
-	github.com/moby/term v0.5.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/monochromegane/go-gitignore v0.0.0-20200626010858-205db1a8cc00 // indirect
@@ -412,7 +413,6 @@ require (
 	k8s.io/component-base v0.37.1 // indirect
 	k8s.io/component-helpers v0.37.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20260721132016-d427ff9ee9ad // indirect
-	k8s.io/streaming v0.37.1 // indirect
 	k8s.io/utils v0.0.0-20260626114624-be93311217bd // indirect
 	modernc.org/libc v1.75.7 // indirect
 	modernc.org/mathutil v1.7.1 // indirect

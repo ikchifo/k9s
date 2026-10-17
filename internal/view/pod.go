@@ -26,7 +26,6 @@ import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/cli-runtime/pkg/genericclioptions"
 )
 
 const (
@@ -223,11 +222,6 @@ func (p *Pod) shellCmd(evt *tcell.EventKey) *tcell.EventKey {
 		return evt
 	}
 
-	if !podIsRunning(p.App().factory, path) {
-		p.App().Flash().Errf("%s is not in a running state", path)
-		return nil
-	}
-
 	if err := containerShellIn(p.App(), p, path, ""); err != nil {
 		p.App().Flash().Err(err)
 	}
@@ -239,11 +233,6 @@ func (p *Pod) attachCmd(evt *tcell.EventKey) *tcell.EventKey {
 	path := p.GetTable().GetSelectedItem()
 	if path == "" {
 		return evt
-	}
-
-	if !podIsRunning(p.App().factory, path) {
-		p.App().Flash().Errf("%s is not in a happy state", path)
-		return nil
 	}
 
 	if err := containerAttachIn(p.App(), p, path, ""); err != nil {
@@ -354,36 +343,39 @@ func (p *Pod) transferCmd(*tcell.EventKey) *tcell.EventKey {
 // Helpers...
 
 func containerShellIn(a *App, comp model.Component, path, co string) error {
-	if co != "" {
-		resumeShellIn(a, comp, path, co)
-		return nil
-	}
-
 	pod, err := fetchPod(a.factory, path)
 	if err != nil {
 		return err
 	}
+	if !podRunning(pod) {
+		return fmt.Errorf("%s is not in a running state", path)
+	}
+
+	if co != "" {
+		resumeShellIn(a, comp, co, pod)
+		return nil
+	}
 	if dco, ok := dao.GetDefaultContainer(&pod.ObjectMeta, &pod.Spec); ok {
-		resumeShellIn(a, comp, path, dco)
+		resumeShellIn(a, comp, dco, pod)
 		return nil
 	}
 
 	cc := fetchContainers(&pod.ObjectMeta, &pod.Spec, false)
 	if len(cc) == 1 {
-		resumeShellIn(a, comp, path, cc[0])
+		resumeShellIn(a, comp, cc[0], pod)
 		return nil
 	}
 
 	picker := NewPicker()
 	picker.populate(cc)
 	picker.SetSelectedFunc(func(_ int, co, _ string, _ rune) {
-		resumeShellIn(a, comp, path, co)
+		resumeShellIn(a, comp, co, pod)
 	})
 
 	return a.inject(picker, false)
 }
 
-func resumeShellIn(a *App, c model.Component, path, co string) {
+func resumeShellIn(a *App, c model.Component, co string, pod *v1.Pod) {
 	var err error
 	c.Stop()
 	defer func() {
@@ -395,44 +387,52 @@ func resumeShellIn(a *App, c model.Component, path, co string) {
 		})
 	}()
 
-	err = shellIn(a, path, co)
+	err = shellIn(a, pod, co)
 }
 
-func shellIn(a *App, fqn, co string) error {
-	platform, err := getPodOS(a.factory, fqn)
+func shellIn(a *App, po *v1.Pod, co string) error {
+	platform, err := podOS(a.factory, po)
 	if err != nil {
 		slog.Warn("OS detection failed (assuming linux)", slogs.Error, err)
-		platform = "linux"
 	}
 
-	args := computeShellArgs(fqn, co, a.Conn().Config().Flags(), platform)
+	cmd := []string{"sh", "-c", shellCheck}
+	if platform == windowsOS {
+		cmd = []string{"cmd", "/c", winShellCheck}
+	}
+
+	s, err := newRemoteSession(a, po, co, false, cmd)
+	if err != nil {
+		return err
+	}
 	c := color.New(color.BgGreen).Add(color.FgBlack).Add(color.Bold)
-	return runK(a, &shellOpts{
-		clear:  true,
-		banner: c.Sprintf(bannerFmt, fqn, co),
-		args:   args},
-	)
+
+	return runRemote(a, s, c.Sprintf(bannerFmt, client.FQN(po.Namespace, po.Name), co))
 }
 
 func containerAttachIn(a *App, comp model.Component, path, co string) error {
-	if co != "" {
-		resumeAttachIn(a, comp, path, co)
-		return nil
-	}
-
 	pod, err := fetchPod(a.factory, path)
 	if err != nil {
 		return err
 	}
+	if !podRunning(pod) {
+		return fmt.Errorf("%s is not in a happy state", path)
+	}
+
+	if co != "" {
+		resumeAttachIn(a, comp, co, pod)
+		return nil
+	}
+
 	cc := fetchContainers(&pod.ObjectMeta, &pod.Spec, false)
 	if len(cc) == 1 {
-		resumeAttachIn(a, comp, path, cc[0])
+		resumeAttachIn(a, comp, cc[0], pod)
 		return nil
 	}
 	picker := NewPicker()
 	picker.populate(cc)
 	picker.SetSelectedFunc(func(_ int, co, _ string, _ rune) {
-		resumeAttachIn(a, comp, path, co)
+		resumeAttachIn(a, comp, co, pod)
 	})
 	if err := a.inject(picker, false); err != nil {
 		return err
@@ -441,63 +441,23 @@ func containerAttachIn(a *App, comp model.Component, path, co string) error {
 	return nil
 }
 
-func resumeAttachIn(a *App, c model.Component, path, co string) {
+func resumeAttachIn(a *App, c model.Component, co string, pod *v1.Pod) {
 	c.Stop()
 	defer c.Start()
 
-	attachIn(a, path, co)
+	attachIn(a, pod, co)
 }
 
-func attachIn(a *App, path, co string) {
-	args := buildShellArgs("attach", path, co, a.Conn().Config().Flags())
+func attachIn(a *App, po *v1.Pod, co string) {
+	s, err := newRemoteSession(a, po, co, true, nil)
+	if err != nil {
+		a.Flash().Errf("Attach exec failed: %s", err)
+		return
+	}
 	c := color.New(color.BgGreen).Add(color.FgBlack).Add(color.Bold)
-	if err := runK(a, &shellOpts{clear: true, banner: c.Sprintf(bannerFmt, path, co), args: args}); err != nil {
+	if err := runRemote(a, s, c.Sprintf(bannerFmt, client.FQN(po.Namespace, po.Name), co)); err != nil {
 		a.Flash().Errf("Attach exec failed: %s", err)
 	}
-}
-
-func computeShellArgs(path, co string, flags *genericclioptions.ConfigFlags, platform string) []string {
-	args := buildShellArgs("exec", path, co, flags)
-	if platform == windowsOS {
-		return append(args, "--", "cmd", "/c", winShellCheck)
-	}
-
-	return append(args, "--", "sh", "-c", shellCheck)
-}
-
-func isFlagSet(flag *string) (string, bool) {
-	if flag == nil || *flag == "" {
-		return "", false
-	}
-
-	return *flag, true
-}
-
-func buildShellArgs(cmd, path, co string, flags *genericclioptions.ConfigFlags) []string {
-	args := make([]string, 0, 15)
-
-	args = append(args, cmd, "-it")
-	ns, po := client.Namespaced(path)
-	if ns != client.BlankNamespace {
-		args = append(args, "-n", ns)
-	}
-	args = append(args, po)
-	if flags != nil {
-		if v, ok := isFlagSet(flags.KubeConfig); ok {
-			args = append(args, "--kubeconfig", v)
-		}
-		if v, ok := isFlagSet(flags.Context); ok {
-			args = append(args, "--context", v)
-		}
-		if v, ok := isFlagSet(flags.BearerToken); ok {
-			args = append(args, "--token", v)
-		}
-	}
-	if co != "" {
-		args = append(args, "-c", co)
-	}
-
-	return args
 }
 
 func fetchContainers(meta *metav1.ObjectMeta, spec *v1.PodSpec, allContainers bool) []string {
@@ -536,34 +496,25 @@ func fetchPod(f dao.Factory, path string) (*v1.Pod, error) {
 	return client.ToPod(o)
 }
 
-func podIsRunning(f dao.Factory, fqn string) bool {
-	po, err := fetchPod(f, fqn)
-	if err != nil {
-		slog.Error("Unable to fetch pod",
-			slogs.FQN, fqn,
-			slogs.Error, err,
-		)
-		return false
-	}
-
+func podRunning(po *v1.Pod) bool {
 	var re render.Pod
 	return re.Phase(po.DeletionTimestamp, &po.Spec, &po.Status) == render.Running
 }
 
-func getPodOS(f dao.Factory, fqn string) (string, error) {
-	po, err := fetchPod(f, fqn)
-	if err != nil {
-		return "", err
+func podOS(f dao.Factory, po *v1.Pod) (string, error) {
+	if po.Spec.OS != nil && po.Spec.OS.Name != "" {
+		return string(po.Spec.OS.Name), nil
 	}
 	if podOS, ok := osFromSelector(po.Spec.NodeSelector); ok {
 		return podOS, nil
 	}
 
 	node, err := dao.FetchNode(context.Background(), f, po.Spec.NodeName)
-	if err == nil {
-		if nodeOS, ok := osFromSelector(node.Labels); ok {
-			return nodeOS, nil
-		}
+	if err != nil {
+		return "", err
+	}
+	if nodeOS, ok := osFromSelector(node.Labels); ok {
+		return nodeOS, nil
 	}
 
 	return "", errors.New("no os information available")
