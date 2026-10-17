@@ -36,7 +36,10 @@ const (
 	logFmt              = "([hilite:bg:]%s[-:bg:-])[[green:bg:b]%s[-:bg:-]] "
 	logCoFmt            = "([hilite:bg:]%s:[hilite:bg:b]%s[-:bg:-])[[green:bg:b]%s[-:bg:-]] "
 	defaultFlushTimeout = 50 * time.Millisecond
-	ansiEsc             = '\x1b'
+	// viewFlushInterval caps log redraws; the first op after an idle spell
+	// flushes immediately, so first lines render without waiting it out.
+	viewFlushInterval = 200 * time.Millisecond
+	ansiEsc           = '\x1b'
 )
 
 // logOp represents a queued log view update.
@@ -63,6 +66,7 @@ type Log struct {
 
 	opsMx          sync.Mutex
 	ops            []logOp
+	flushCh        chan struct{}
 	flusherDone    chan struct{}
 	flusherOnce    sync.Once
 	flushBuf       bytes.Buffer
@@ -126,6 +130,7 @@ func (l *Log) Init(ctx context.Context) (err error) {
 	l.model.ToggleShowTimestamp(l.app.Config.K9s.Logger.ShowTime)
 
 	l.flusherDone = make(chan struct{})
+	l.flushCh = make(chan struct{}, 1)
 	go l.flusher()
 
 	return nil
@@ -192,6 +197,11 @@ func (l *Log) pushOp(op logOp) {
 	defer l.opsMx.Unlock()
 
 	l.ops = append(l.ops, op)
+	// Wake the flusher; never block when it is busy.
+	select {
+	case l.flushCh <- struct{}{}:
+	default:
+	}
 }
 
 // BufferCompleted indicates input was accepted.
@@ -269,18 +279,27 @@ func (l *Log) Stop() {
 }
 
 // flusher serializes view updates on a fixed cadence so bursts of model
-// notifications coalesce into a single ordered ui update.
+// notifications coalesce into a single ordered ui update. Ops arriving after
+// an idle spell flush immediately so first lines render promptly.
 func (l *Log) flusher() {
-	t := time.NewTicker(defaultFlushTimeout)
+	t := time.NewTicker(viewFlushInterval)
 	defer t.Stop()
 
+	var lastFlush time.Time
 	for {
 		select {
+		case <-l.flushCh:
+			if time.Since(lastFlush) < viewFlushInterval {
+				continue
+			}
+			// Shift tick phase so the ticker cannot fire right after this flush.
+			t.Reset(viewFlushInterval)
 		case <-t.C:
-			l.flushOps()
 		case <-l.flusherDone:
 			return
 		}
+		lastFlush = time.Now()
+		l.flushOps()
 	}
 }
 
@@ -447,6 +466,10 @@ func (l *Log) Flush(lines [][]byte) {
 // writeLines renders a batch in one shot, skipping ansi translation for
 // plain utf-8 text.
 func (l *Log) writeLines(lines [][]byte) {
+	if l.cancelUpdates {
+		return
+	}
+
 	l.flushBuf.Reset()
 	for i := range lines {
 		l.flushBuf.Write(lines[i])

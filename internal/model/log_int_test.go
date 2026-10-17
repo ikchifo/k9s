@@ -6,6 +6,7 @@ package model
 import (
 	"context"
 	"strconv"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -33,8 +34,8 @@ func TestUpdateLogs(t *testing.T) {
 	time.Sleep(2 * time.Second)
 	// The ticker flushes while lines flow, so every appended line is
 	// rendered at most once: one buffer's worth is guaranteed.
-	assert.GreaterOrEqual(t, v.count, size)
-	assert.LessOrEqual(t, v.count, 2*size)
+	assert.GreaterOrEqual(t, v.count.Load(), int64(size))
+	assert.LessOrEqual(t, v.count.Load(), int64(2*size))
 }
 
 func BenchmarkUpdateLogs(b *testing.B) {
@@ -70,7 +71,7 @@ func makeLogOpts(count int) *dao.LogOptions {
 }
 
 type mockLogView struct {
-	count int
+	count atomic.Int64
 }
 
 func newMockLogView() *mockLogView {
@@ -78,7 +79,7 @@ func newMockLogView() *mockLogView {
 }
 
 func (t *mockLogView) LogChanged(ll [][]byte) {
-	t.count += len(ll)
+	t.count.Add(int64(len(ll)))
 }
 func (*mockLogView) LogStop()        {}
 func (*mockLogView) LogCanceled()    {}
