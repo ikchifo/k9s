@@ -34,11 +34,14 @@ const (
 type Factory struct {
 	factories    map[string]di.DynamicSharedInformerFactory
 	podFactories map[string]informers.SharedInformerFactory
-	client       client.Connection
-	podClient    kubernetes.Interface
-	stopChan     chan struct{}
-	forwarders   Forwarders
-	mx           sync.RWMutex
+	// clusterInfs tracks informers started on the cluster-wide factory so
+	// namespaced reads can reuse them without probing the factory.
+	clusterInfs map[string]informers.GenericInformer
+	client      client.Connection
+	podClient   kubernetes.Interface
+	stopChan    chan struct{}
+	forwarders  Forwarders
+	mx          sync.RWMutex
 }
 
 // NewFactory returns a new informers factory.
@@ -47,6 +50,7 @@ func NewFactory(clt client.Connection) *Factory {
 		client:       clt,
 		factories:    make(map[string]di.DynamicSharedInformerFactory),
 		podFactories: make(map[string]informers.SharedInformerFactory),
+		clusterInfs:  make(map[string]informers.GenericInformer),
 		forwarders:   NewForwarders(),
 	}
 }
@@ -82,6 +86,9 @@ func (f *Factory) Terminate() {
 	}
 	for k := range f.podFactories {
 		delete(f.podFactories, k)
+	}
+	for k := range f.clusterInfs {
+		delete(f.clusterInfs, k)
 	}
 	f.podClient = nil
 	f.forwarders.DeleteAll()
@@ -264,6 +271,9 @@ func (f *Factory) ForResource(ns string, gvr *client.GVR) (informers.GenericInfo
 	if gvr == client.PodGVR {
 		return f.podForResource(ns)
 	}
+	if inf, ok := f.syncedClusterInformer(ns, gvr); ok {
+		return inf, nil
+	}
 	fact, err := f.ensureFactory(ns)
 	if err != nil {
 		return nil, err
@@ -278,11 +288,32 @@ func (f *Factory) ForResource(ns string, gvr *client.GVR) (informers.GenericInfo
 	}
 	_ = inf.Informer().SetTransform(dropManagedFields)
 
-	f.mx.RLock()
-	defer f.mx.RUnlock()
+	f.mx.Lock()
 	fact.Start(f.stopChan)
+	if client.IsClusterWide(ns) {
+		f.clusterInfs[gvr.String()] = inf
+	}
+	f.mx.Unlock()
 
 	return inf, nil
+}
+
+// syncedClusterInformer serves a namespaced read from a running cluster-wide
+// informer when it is already synced, sparing a full LIST plus watch for
+// every visited namespace.
+func (f *Factory) syncedClusterInformer(ns string, gvr *client.GVR) (informers.GenericInformer, bool) {
+	if client.IsClusterWide(ns) {
+		return nil, false
+	}
+
+	f.mx.RLock()
+	defer f.mx.RUnlock()
+	inf, ok := f.clusterInfs[gvr.String()]
+	if !ok || !inf.Informer().HasSynced() {
+		return nil, false
+	}
+
+	return inf, true
 }
 
 // podForResource returns a typed informer serving cached *v1.Pod.
@@ -308,6 +339,12 @@ func (f *Factory) ensurePodFactory(ns string) (informers.SharedInformerFactory, 
 	f.mx.Lock()
 	defer f.mx.Unlock()
 	if fac, ok := f.podFactories[ns]; ok {
+		return fac, nil
+	}
+	// The cluster-wide pod informer already lists every namespace: reuse it
+	// and serve per-namespace reads through the lister instead of paying a
+	// full LIST and an extra watch per namespace.
+	if fac, ok := f.podFactories[client.BlankNamespace]; ok {
 		return fac, nil
 	}
 

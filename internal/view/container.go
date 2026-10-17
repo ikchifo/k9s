@@ -199,8 +199,8 @@ func (c *Container) portFwdCmd(evt *tcell.EventKey) *tcell.EventKey {
 		return evt
 	}
 
-	if _, ok := c.App().factory.ForwarderFor(fwFQN(c.GetTable().Path, path)); ok {
-		c.App().Flash().Errf("A port-forward already exists on container %s", c.GetTable().Path)
+	if c.App().factory.Forwarders().IsContainerForwarded(c.GetTable().Path, path) {
+		c.App().Flash().Errf("A port-forward already exists on container %s", path)
 		return nil
 	}
 
@@ -208,7 +208,7 @@ func (c *Container) portFwdCmd(evt *tcell.EventKey) *tcell.EventKey {
 	if !ok {
 		return nil
 	}
-	ShowPortForwards(c, c.GetTable().Path+"|"+path, ports, ann, startFwdCB)
+	ShowPortForwards(c, c.GetTable().Path, ports, ann, startFwdCB)
 
 	return nil
 }

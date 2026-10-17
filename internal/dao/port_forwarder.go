@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/derailed/k9s/internal/client"
@@ -122,7 +123,9 @@ func (p *PortForwarder) Start(path string, tt port.PortTunnel) (*portforward.Por
 	p.path, p.tunnel, p.age = path, tt, time.Now()
 
 	ns, n := client.Namespaced(path)
-	auth, err := p.Client().CanI(ns, client.PodGVR, n, client.GetAccess)
+	podName := strings.Split(n, "|")[0]
+
+	auth, err := p.Client().CanI(ns, client.PodGVR, podName, client.GetAccess)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +133,6 @@ func (p *PortForwarder) Start(path string, tt port.PortTunnel) (*portforward.Por
 		return nil, fmt.Errorf("user is not authorized to get pods")
 	}
 
-	podName := strings.Split(n, "|")[0]
 	var res Pod
 	res.Init(p, client.PodGVR)
 	pod, err := res.GetInstance(client.FQN(ns, podName))
@@ -146,21 +148,8 @@ func (p *PortForwarder) Start(path string, tt port.PortTunnel) (*portforward.Por
 	// WebSockets instead of SPDY (PortForwardWebsockets feature). A WebSocket handshake is
 	// an HTTP GET, which maps to the 'get' verb in RBAC. Therefore, a Role that grants only
 	// 'get' on pods/portforward is sufficient for port-forward on 1.31+ clusters.
-	//
-	// We perform two independent authorization checks and allow port-forward if EITHER one
-	// succeeds. This preserves backward compatibility for legacy SPDY-only clusters while
-	// correctly supporting the newer WebSocket path.
-	var getAuth, createAuth bool
-	getAuth, err = p.Client().CanI(ns, client.PodGVR.WithSubResource("portforward"), "", client.GetAccess)
-	if err != nil {
-		return nil, err
-	}
-	createAuth, err = p.Client().CanI(ns, client.PodGVR.WithSubResource("portforward"), "", []string{client.CreateVerb})
-	if err != nil {
-		return nil, err
-	}
-	if !getAuth && !createAuth {
-		return nil, fmt.Errorf("user is not authorized to access portforward (requires get or create on pods/portforward)")
+	if ferr := p.checkPortForwardAccess(ns); ferr != nil {
+		return nil, ferr
 	}
 
 	cfg, err := p.Client().RestConfig()
@@ -182,6 +171,45 @@ func (p *PortForwarder) Start(path string, tt port.PortTunnel) (*portforward.Por
 		SubResource("portforward")
 
 	return p.forwardPorts("POST", req.URL(), tt.Address, tt.PortMap())
+}
+
+// pfVerbs are the verbs that can unlock pods/portforward: legacy SPDY maps to
+// create while the 1.31+ websocket tunnel maps to get.
+var pfVerbs = []string{client.GetVerb, client.CreateVerb}
+
+const pfSubRes = "portforward"
+
+// checkPortForwardAccess allows the forward when either port-forward verb is
+// granted. The reviews run concurrently since any single allow is enough.
+func (p *PortForwarder) checkPortForwardAccess(ns string) error {
+	pfGVR := client.PodGVR.WithSubResource(pfSubRes)
+
+	var (
+		wg   sync.WaitGroup
+		oks  = make([]bool, len(pfVerbs))
+		errs = make([]error, len(pfVerbs))
+	)
+	wg.Add(len(pfVerbs))
+	for i, verb := range pfVerbs {
+		go func() {
+			defer wg.Done()
+			oks[i], errs[i] = p.Client().CanI(ns, pfGVR, "", []string{verb})
+		}()
+	}
+	wg.Wait()
+
+	for i := range pfVerbs {
+		if oks[i] {
+			return nil
+		}
+	}
+	for _, err := range errs {
+		if err != nil {
+			return err
+		}
+	}
+
+	return fmt.Errorf("user is not authorized to access portforward (requires get or create on pods/%s)", pfSubRes)
 }
 
 func (p *PortForwarder) forwardPorts(method string, u *url.URL, addr, portMap string) (*portforward.PortForwarder, error) {
