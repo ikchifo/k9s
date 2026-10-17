@@ -29,7 +29,10 @@ import (
 )
 
 const (
-	cacheSize     = 100
+	// cacheSize bounds the shared LRU. Access verdicts are keyed by
+	// ns:gvr:name:verbs so busy sessions across many namespaces and
+	// resources need headroom beyond a hundred entries.
+	cacheSize     = 1_000
 	cacheExpiry   = 5 * time.Minute
 	cacheMXAPIKey = "metricsAPI"
 	serverVersion = "serverVersion"
@@ -118,6 +121,22 @@ func makeCacheKey(ns string, gvr *GVR, n string, vv []string) string {
 	return ns + ":" + gvr.String() + ":" + n + "::" + strings.Join(vv, ",")
 }
 
+// caniScope normalizes the review scope: namespace resources authorize per
+// namespace name, cluster-wide scope maps to blank and helm data hides in secrets.
+func caniScope(ns string, gvr *GVR, name string) (string, *GVR) {
+	if gvr == NsGVR {
+		ns = name
+	}
+	if IsClusterWide(ns) {
+		ns = BlankNamespace
+	}
+	if gvr == HmGVR {
+		gvr = SecGVR
+	}
+
+	return ns, gvr
+}
+
 // ActiveContext returns the current context name.
 func (a *APIClient) ActiveContext() string {
 	c, err := a.config.CurrentContextName()
@@ -163,31 +182,24 @@ func (a *APIClient) CanI(ns string, gvr *GVR, name string, verbs []string) (auth
 	if !a.getConnOK() {
 		return false, errors.New("ACCESS -- No API server connection")
 	}
-	if gvr == NsGVR {
-		// The name of the namespace is required to check permissions in some cases
-		ns = name
-	}
-	if IsClusterWide(ns) {
-		ns = BlankNamespace
-	}
-	if gvr == HmGVR {
-		// helm stores release data in secrets
-		gvr = SecGVR
-	}
+	ns, gvr = caniScope(ns, gvr, name)
+
 	key := makeCacheKey(ns, gvr, name, verbs)
-	if v, ok := a.cache.Get(key); ok {
-		if auth, ok = v.(bool); ok {
-			return auth, nil
-		}
+	if cached, ok := a.checkCacheBool(key); ok {
+		return cached, nil
+	}
+	if a.cachedNamelessAllow(ns, gvr, name, verbs) {
+		return true, nil
 	}
 
 	// Concurrent checks for the same access share a single review round trip.
 	v, err, _ := a.inFlight.Do("cani:"+key, func() (any, error) {
 		// The cache may have been populated while this call waited on the flight.
-		if v, ok := a.cache.Get(key); ok {
-			if cached, ok := v.(bool); ok {
-				return cached, nil
-			}
+		if cached, ok := a.checkCacheBool(key); ok {
+			return cached, nil
+		}
+		if a.cachedNamelessAllow(ns, gvr, name, verbs) {
+			return true, nil
 		}
 
 		return a.reviewAccess(ns, gvr, name, verbs, key)
@@ -203,7 +215,62 @@ func (a *APIClient) CanI(ns string, gvr *GVR, name string, verbs []string) (auth
 	return auth, nil
 }
 
+// cachedNamelessAllow reports whether the same verbs are already allowed
+// without an object name. RBAC rules with no resourceNames match every name,
+// so such an allow answers any named check; a name-less deny cannot since
+// resourceNames-scoped rules may still allow this name.
+func (a *APIClient) cachedNamelessAllow(ns string, gvr *GVR, name string, verbs []string) bool {
+	if name == "" {
+		return false
+	}
+	auth, _ := a.checkCacheBool(makeCacheKey(ns, gvr, "", verbs))
+
+	return auth
+}
+
+// namelessAllowed resolves the name-less verdict for the verbs, probing the
+// api server on the first miss and caching the outcome either way.
+func (a *APIClient) namelessAllowed(ns string, gvr *GVR, verbs []string) (bool, error) {
+	key := makeCacheKey(ns, gvr, "", verbs)
+	if auth, ok := a.checkCacheBool(key); ok {
+		return auth, nil
+	}
+
+	allowed, err := a.accessReview(ns, gvr, "", verbs)
+	if err != nil {
+		return false, err
+	}
+	a.cache.Add(key, allowed, cacheExpiry)
+
+	return allowed, nil
+}
+
 func (a *APIClient) reviewAccess(ns string, gvr *GVR, name string, verbs []string, key string) (bool, error) {
+	// A named check first resolves the name-less verdict: a single allow
+	// there then covers every object in the namespace for these verbs.
+	if name != "" {
+		allowed, err := a.namelessAllowed(ns, gvr, verbs)
+		if err != nil {
+			return false, err
+		}
+		if allowed {
+			return true, nil
+		}
+	}
+
+	allowed, err := a.accessReview(ns, gvr, name, verbs)
+	a.cache.Add(key, allowed, cacheExpiry)
+	if err != nil {
+		return false, err
+	}
+	if !allowed {
+		return false, fmt.Errorf("(%v) access denied for user on resource %q:%s in namespace %q", verbs, name, gvr, ns)
+	}
+
+	return true, nil
+}
+
+func (a *APIClient) accessReview(ns string, gvr *GVR, name string, verbs []string) (bool, error) {
 	clog := a.log.With(slogs.Subsys, "can")
 
 	dial, err := a.Dial()
@@ -231,17 +298,13 @@ func (a *APIClient) reviewAccess(ns string, gvr *GVR, name string, verbs []strin
 		}
 		if err != nil {
 			clog.Warn("Auth request failed", slogs.Error, err)
-			a.cache.Add(key, false, cacheExpiry)
 
 			return false, err
 		}
 		if !resp.Status.Allowed {
-			a.cache.Add(key, false, cacheExpiry)
-
-			return false, fmt.Errorf("(%s) access denied for user on resource %q:%s in namespace %q", v, name, gvr, ns)
+			return false, nil
 		}
 	}
-	a.cache.Add(key, true, cacheExpiry)
 
 	return true, nil
 }
