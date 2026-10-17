@@ -14,6 +14,19 @@ func NewRow(size int) Row {
 	return Row{Fields: make([]string, size)}
 }
 
+func (r Row) equal(o Row) bool {
+	if r.ID != o.ID || len(r.Fields) != len(o.Fields) {
+		return false
+	}
+	for i, f := range r.Fields {
+		if f != o.Fields[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
 // Labelize returns a new row based on labels.
 func (r Row) Labelize(cols []int, labelCol int, labels []string) Row {
 	out := NewRow(len(cols) + len(labels))

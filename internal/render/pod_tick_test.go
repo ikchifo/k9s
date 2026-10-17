@@ -33,12 +33,13 @@ func BenchmarkPodRenderTick(b *testing.B) {
 	}
 	td := model1.NewTableData(client.PodGVR)
 	po := render.NewPod()
-	require.NoError(b, td.Render(context.Background(), po, oo))
+	_, err := td.Render(context.Background(), po, oo)
+	require.NoError(b, err)
 
 	b.ReportAllocs()
 	b.ResetTimer()
 	for range b.N {
-		_ = td.Render(context.Background(), po, oo)
+		_, _ = td.Render(context.Background(), po, oo)
 	}
 }
 
@@ -51,7 +52,8 @@ func TestPodRenderTick(t *testing.T) {
 
 	assertFresh := func(t *testing.T) model1.Fields {
 		t.Helper()
-		require.NoError(t, td.Render(context.Background(), po, []runtime.Object{pwm}))
+		_, err := td.Render(context.Background(), po, []runtime.Object{pwm})
+		require.NoError(t, err)
 		var want model1.Row
 		require.NoError(t, render.NewPod().Render(pwm, "", &want))
 		got, ok := td.FindRow(want.ID)

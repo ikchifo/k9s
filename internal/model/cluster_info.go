@@ -76,15 +76,16 @@ func (c *ClusterMeta) Deltas(n *ClusterMeta) bool {
 
 // ClusterInfo models cluster metadata.
 type ClusterInfo struct {
-	cluster   *Cluster
-	factory   dao.Factory
-	data      *ClusterMeta
-	version   string
-	cfg       *config.K9s
-	listeners []ClusterInfoListener
-	cache     *cache.LRUExpireCache
-	inFlight  singleflight.Group
-	mx        sync.RWMutex
+	cluster    *Cluster
+	factory    dao.Factory
+	data       *ClusterMeta
+	version    string
+	cfg        *config.K9s
+	listeners  []ClusterInfoListener
+	cache      *cache.LRUExpireCache
+	inFlight   singleflight.Group
+	deltaShown bool
+	mx         sync.RWMutex
 }
 
 // NewClusterInfo returns a new instance.
@@ -197,7 +198,9 @@ func (c *ClusterInfo) refresh() {
 
 	if c.data.Deltas(data) {
 		c.fireMetaChanged(c.data, data)
-	} else {
+		c.deltaShown = c.data.Cpu != data.Cpu || c.data.Mem != data.Mem
+	} else if c.deltaShown {
+		c.deltaShown = false
 		c.fireNoMetaChanged(data)
 	}
 	c.mx.Lock()

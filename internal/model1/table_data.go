@@ -324,33 +324,35 @@ func (t *TableData) Reset(ns string) {
 	t.Clear()
 }
 
-func (t *TableData) Render(_ context.Context, r Renderer, oo []runtime.Object) error {
+func (t *TableData) Render(_ context.Context, r Renderer, oo []runtime.Object) (bool, error) {
 	var rows Rows
 	if len(oo) > 0 {
 		if r.IsGeneric() {
 			table, ok := oo[0].(*metav1.Table)
 			if !ok {
-				return fmt.Errorf("expecting a meta table but got %T", oo[0])
+				return false, fmt.Errorf("expecting a meta table but got %T", oo[0])
 			}
 			rows = make(Rows, len(table.Rows))
 			if err := GenericHydrate(t.namespace, table, rows, r); err != nil {
-				return err
+				return false, err
 			}
 		} else {
 			rows = make(Rows, len(oo))
 			if err := t.hydrate(oo, rows, r); err != nil {
-				return err
+				return false, err
 			}
 		}
 	}
 
-	t.Update(rows)
-	t.SetHeader(t.namespace, r.Header(t.namespace))
+	changed := t.Update(rows)
+	h := r.Header(t.namespace)
+	changed = t.header.Diff(h) || changed
+	t.SetHeader(t.namespace, h)
 	if t.HeaderCount() == 0 {
-		return fmt.Errorf("no data found for resource %s", t.gvr)
+		return changed, fmt.Errorf("no data found for resource %s", t.gvr)
 	}
 
-	return nil
+	return changed, nil
 }
 
 // hydrate renders rows, reusing the previous refresh state when the renderer supports it.
@@ -517,38 +519,56 @@ func (t *TableData) SetHeader(ns string, h Header) {
 }
 
 // Update computes row deltas and update the table data.
-func (t *TableData) Update(rows Rows) {
+// Reports whether anything changed.
+func (t *TableData) Update(rows Rows) bool {
 	empty := t.Empty()
 	kk := sets.New[string]()
-	var blankDelta DeltaRow
+	changed := false
 	t.mx.Lock()
 	for _, row := range rows {
 		kk.Insert(row.ID)
 		if empty {
 			t.rowEvents.Add(NewRowEvent(EventAdd, row))
+			changed = true
 			continue
 		}
 		if index, ok := t.rowEvents.FindIndex(row.ID); ok {
-			ev, ok := t.rowEvents.At(index)
-			if !ok {
-				continue
-			}
-			delta := NewDeltaRow(ev.Row, row, t.header)
-			if delta.IsBlank() {
-				ev.Kind, ev.Deltas, ev.Row = EventUnchanged, blankDelta, row
-				t.rowEvents.Set(index, ev)
-			} else {
-				t.rowEvents.Set(index, NewRowEventWithDeltas(row, delta))
-			}
+			changed = t.mergeRow(index, row) || changed
 			continue
 		}
 		t.rowEvents.Add(NewRowEvent(EventAdd, row))
+		changed = true
 	}
+	n := t.rowEvents.Len()
 	t.mx.Unlock()
 
 	if !empty {
 		t.Delete(kk)
+		if t.rowEvents.Len() != n {
+			changed = true
+		}
 	}
+
+	return changed
+}
+
+func (t *TableData) mergeRow(index int, row Row) bool {
+	ev, ok := t.rowEvents.At(index)
+	if !ok {
+		return false
+	}
+	delta := NewDeltaRow(ev.Row, row, t.header)
+	if delta.IsBlank() {
+		if ev.Kind == EventUnchanged && ev.Row.equal(row) {
+			return false
+		}
+		ev.Kind, ev.Deltas, ev.Row = EventUnchanged, nil, row
+	} else {
+		ev = NewRowEventWithDeltas(row, delta)
+	}
+	t.rowEvents.Set(index, ev)
+
+	return true
 }
 
 // Delete removes items in cache that are no longer valid.

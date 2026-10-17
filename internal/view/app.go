@@ -29,6 +29,8 @@ import (
 	"github.com/derailed/k9s/internal/watch"
 	"github.com/derailed/tcell/v2"
 	"github.com/derailed/tview"
+	"k8s.io/apimachinery/pkg/api/meta"
+	"k8s.io/client-go/tools/cache"
 )
 
 // ExitStatus indicates UI exit conditions.
@@ -56,6 +58,8 @@ type App struct {
 	showHeader    bool
 	showLogo      bool
 	showCrumbs    bool
+	crdsDirty     atomic.Bool
+	lastRefresh   atomic.Int64
 }
 
 // NewApp returns a K9s app instance.
@@ -112,6 +116,7 @@ func (a *App) Init(version string, _ int) error {
 		ns := a.Config.ActiveNamespace()
 		a.factory = watch.NewFactory(a.Conn())
 		a.initFactory(ns)
+		go a.watchCRDs()
 
 		a.clusterModel = model.NewClusterInfo(a.factory, a.version, a.Config.K9s)
 		a.clusterModel.AddListener(a.clusterInfo())
@@ -369,9 +374,11 @@ func (a *App) clusterUpdater(ctx context.Context) {
 		return
 	}
 
-	if err := a.refreshCluster(ctx); err != nil {
-		slog.Error("Cluster updater failed!", slogs.Error, err)
-		return
+	if a.refreshDue() {
+		if err := a.refreshCluster(ctx); err != nil {
+			slog.Error("Cluster updater failed!", slogs.Error, err)
+			return
+		}
 	}
 
 	bf := model.NewExpBackOff(ctx, clusterRefresh, 2*time.Minute)
@@ -400,6 +407,7 @@ func (a *App) refreshCluster(context.Context) error {
 	if a.Conn() == nil || a.factory == nil || a.clusterModel == nil {
 		return nil
 	}
+	a.lastRefresh.Store(time.Now().UnixNano())
 
 	c := a.Content.Top()
 	if ok := a.Conn().CheckConnectivity(); ok {
@@ -432,19 +440,56 @@ func (a *App) refreshCluster(context.Context) error {
 		return fmt.Errorf("conn check failed (%d/%d)", count, maxConnRetry)
 	}
 
-	// Reload alias
-	go func() {
-		if err := a.command.Reset(a.Config.ContextAliasesPath(), false); err != nil {
-			slog.Warn("Command reset failed", slogs.Error, err)
-			a.QueueUpdateDraw(func() {
-				a.Logo().Warn("Aliases load failed!")
-			})
-		}
-	}()
+	// Reload aliases when the files or CRDs changed
+	a.reloadAliases()
 	// Update cluster info
 	a.clusterModel.Refresh()
 
 	return nil
+}
+
+func (a *App) reloadAliases() {
+	path := a.Config.ContextAliasesPath()
+	if a.crdsDirty.Swap(false) || a.command.aliasesStale(path) {
+		go func() {
+			if err := a.command.Reset(path, true); err != nil {
+				slog.Warn("Command reset failed", slogs.Error, err)
+				a.QueueUpdateDraw(func() {
+					a.Logo().Warn("Aliases load failed!")
+				})
+			}
+		}()
+	}
+}
+
+// refreshDue reports whether a cluster refresh is due since the last one.
+func (a *App) refreshDue() bool {
+	last := a.lastRefresh.Load()
+	return last == 0 || time.Since(time.Unix(0, last)) >= clusterRefresh
+}
+
+// watchCRDs flags CRD changes so the next refresh reloads aliases.
+func (a *App) watchCRDs() {
+	inf, err := a.factory.CanForResource(client.ClusterScope, client.CrdGVR, client.ListAccess)
+	if err != nil || inf == nil {
+		slog.Debug("CRD watcher unavailable", slogs.Error, err)
+		return
+	}
+	_, _ = inf.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
+		AddFunc: func(any) {
+			a.crdsDirty.Store(true)
+		},
+		DeleteFunc: func(any) {
+			a.crdsDirty.Store(true)
+		},
+		UpdateFunc: func(o, n any) {
+			ov, e1 := meta.Accessor(o)
+			nv, e2 := meta.Accessor(n)
+			if e1 != nil || e2 != nil || ov.GetResourceVersion() != nv.GetResourceVersion() {
+				a.crdsDirty.Store(true)
+			}
+		},
+	})
 }
 
 func (a *App) switchNS(ns string) error {
@@ -516,6 +561,7 @@ func (a *App) switchContext(ci *cmd.Interpreter, force bool) error {
 		if err := a.command.Reset(a.Config.ContextAliasesPath(), true); err != nil {
 			return err
 		}
+		go a.watchCRDs()
 
 		slog.Debug("Switching Context",
 			slogs.Context, contextName,

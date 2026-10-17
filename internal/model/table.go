@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log/slog"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	backoff "github.com/cenkalti/backoff/v4"
@@ -47,6 +48,7 @@ type Table struct {
 	labelSelector labels.Selector
 	mx            sync.RWMutex
 	vs            *config.ViewSetting
+	fired         atomic.Bool
 }
 
 // NewTable returns a new table model.
@@ -64,7 +66,7 @@ func (t *Table) SetViewSetting(ctx context.Context, vs *config.ViewSetting) {
 	t.mx.Unlock()
 
 	if ctx != context.Background() {
-		if err := t.reconcile(ctx); err != nil {
+		if _, err := t.reconcile(ctx); err != nil {
 			slog.Error("Refresh failed", slogs.GVR, t.gvr)
 		}
 	}
@@ -119,6 +121,7 @@ func (t *Table) RemoveListener(l TableListener) {
 // Watch initiates model updates.
 func (t *Table) Watch(ctx context.Context) error {
 	synced := t.syncedChan(ctx)
+	t.fired.Store(false)
 	if err := t.refresh(ctx); err != nil {
 		return err
 	}
@@ -273,14 +276,18 @@ func (t *Table) refresh(ctx context.Context) error {
 	}
 	defer t.updateMx.Unlock()
 
-	if err := t.reconcile(ctx); err != nil {
+	changed, err := t.reconcile(ctx)
+	if err != nil {
 		return err
 	}
-	data := t.Peek()
-	if data.RowCount() == 0 {
-		t.fireNoData(data)
-	} else {
-		t.fireTableChanged(data)
+	first := !t.fired.Swap(true)
+	if changed || first || t.Empty() {
+		data := t.Peek()
+		if data.RowCount() == 0 {
+			t.fireNoData(data)
+		} else {
+			t.fireTableChanged(data)
+		}
 	}
 
 	return nil
@@ -305,7 +312,7 @@ func (t *Table) list(ctx context.Context, a dao.Accessor) ([]runtime.Object, err
 	return a.List(ctx, ns)
 }
 
-func (t *Table) reconcile(ctx context.Context) error {
+func (t *Table) reconcile(ctx context.Context) (bool, error) {
 	var (
 		oo  []runtime.Object
 		err error
@@ -322,7 +329,7 @@ func (t *Table) reconcile(ctx context.Context) error {
 		oo, err = []runtime.Object{o}, e
 	}
 	if err != nil {
-		return err
+		return false, err
 	}
 	r := meta.Renderer
 	r.SetViewSetting(t.vs)

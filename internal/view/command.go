@@ -7,12 +7,15 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"os"
 	"regexp"
 	"runtime/debug"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/derailed/k9s/internal/client"
+	"github.com/derailed/k9s/internal/config"
 	"github.com/derailed/k9s/internal/dao"
 	"github.com/derailed/k9s/internal/model"
 	"github.com/derailed/k9s/internal/slogs"
@@ -31,11 +34,17 @@ var (
 	contextRX     = regexp.MustCompile(`\s+@([\w-]+)`)
 )
 
+// aliasStamp tracks an alias file modification time.
+type aliasStamp struct {
+	mod time.Time
+}
+
 // Command represents a user command.
 type Command struct {
-	app   *App
-	alias *dao.Alias
-	mx    sync.Mutex
+	app    *App
+	alias  *dao.Alias
+	mx     sync.Mutex
+	stamps map[string]aliasStamp
 }
 
 // NewCommand returns a new command.
@@ -61,6 +70,7 @@ func (c *Command) Init(path string) error {
 			slog.Error("Ensure aliases failed", slogs.Error, err)
 			return err
 		}
+		c.stamps = stampAliases(path)
 	}
 	customViewers = loadCustomViewers()
 
@@ -82,8 +92,45 @@ func (c *Command) Reset(path string, nuke bool) error {
 	if _, err := c.alias.Ensure(path); err != nil {
 		return err
 	}
+	c.stamps = stampAliases(path)
 
 	return nil
+}
+
+// aliasesStale checks whether alias files changed since the last reset.
+func (c *Command) aliasesStale(path string) bool {
+	c.mx.Lock()
+	defer c.mx.Unlock()
+
+	if c.stamps == nil {
+		return false
+	}
+	for _, f := range []string{config.AppAliasesFile, path} {
+		s, stamped := c.stamps[f]
+		fi, err := os.Stat(f)
+		if err != nil {
+			if stamped {
+				return true
+			}
+			continue
+		}
+		if !stamped || !fi.ModTime().Equal(s.mod) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func stampAliases(path string) map[string]aliasStamp {
+	st := make(map[string]aliasStamp, 2)
+	for _, f := range []string{config.AppAliasesFile, path} {
+		if fi, err := os.Stat(f); err == nil {
+			st[f] = aliasStamp{mod: fi.ModTime()}
+		}
+	}
+
+	return st
 }
 
 var allowedCmds = sets.New[*client.GVR](
