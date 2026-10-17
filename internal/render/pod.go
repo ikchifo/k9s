@@ -187,11 +187,13 @@ func (p *Pod) RenderCached(o any, _ string, prev any, row *model1.Row) (any, err
 type podState struct {
 	uid, rv     string
 	fields      model1.Fields
-	labels      map[string]string
-	images      []string
 	res         metric
 	lastRestart metav1.Time
 	created     metav1.Time
+	labels      map[string]string
+	images      []string
+	mx          *mv1beta1.PodMetrics
+	mxf         *podMXFields
 }
 
 func (s *podState) matches(pod *v1.Pod) bool {
@@ -252,23 +254,46 @@ func (p *Pod) newPodState(pod *v1.Pod) *podState {
 	}
 }
 
-// fill renders the row, recomputing the columns that depend on time, metrics or scans.
-func (s *podState) fill(pwm *PodWithMetrics, row *model1.Row) {
+// podMXFields caches the metric columns derived from a pod's metrics.
+type podMXFields struct {
+	cpu, cpuR, cpuL string
+	mem, memR, memL string
+}
+
+func newMXFields(mx *mv1beta1.PodMetrics, res metric) *podMXFields {
 	var c metric
-	if pwm.MX != nil {
-		ccpu, cmem := currentRes(pwm.MX.Containers)
+	if mx != nil {
+		ccpu, cmem := currentRes(mx.Containers)
 		c.cpu, c.mem = ccpu.MilliValue(), cmem.Value()
+	}
+
+	return &podMXFields{
+		cpu:  toMc(c.cpu),
+		cpuR: client.ToPercentageStr(c.cpu, res.cpu),
+		cpuL: client.ToPercentageStr(c.cpu, res.lcpu),
+		mem:  toMi(c.mem),
+		memR: client.ToPercentageStr(c.mem, res.mem),
+		memL: client.ToPercentageStr(c.mem, res.lmem),
+	}
+}
+
+// fill renders the row. Metric columns recompute only when the metrics
+// pointer moves; time columns refresh on every tick.
+func (s *podState) fill(pwm *PodWithMetrics, row *model1.Row) {
+	if s.mxf == nil || pwm.MX != s.mx {
+		s.mx = pwm.MX
+		s.mxf = newMXFields(pwm.MX, s.res)
 	}
 
 	ff := slices.Clone(s.fields)
 	ff[vulIdx] = scoreImages(ff[0], s.labels, s.images)
 	ff[podLastRestartIdx] = ToAge(s.lastRestart)
-	ff[podCPUIdx] = toMc(c.cpu)
-	ff[podCPUReqIdx] = client.ToPercentageStr(c.cpu, s.res.cpu)
-	ff[podCPULimIdx] = client.ToPercentageStr(c.cpu, s.res.lcpu)
-	ff[podMEMIdx] = toMi(c.mem)
-	ff[podMEMReqIdx] = client.ToPercentageStr(c.mem, s.res.mem)
-	ff[podMEMLimIdx] = client.ToPercentageStr(c.mem, s.res.lmem)
+	ff[podCPUIdx] = s.mxf.cpu
+	ff[podCPUReqIdx] = s.mxf.cpuR
+	ff[podCPULimIdx] = s.mxf.cpuL
+	ff[podMEMIdx] = s.mxf.mem
+	ff[podMEMReqIdx] = s.mxf.memR
+	ff[podMEMLimIdx] = s.mxf.memL
 	ff[podAgeIdx] = ToAge(s.created)
 
 	row.ID = client.FQN(ff[0], ff[1])
