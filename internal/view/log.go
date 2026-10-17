@@ -4,6 +4,7 @@
 package view
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
@@ -13,6 +14,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"unicode/utf8"
 
 	"github.com/derailed/k9s/internal/client"
 	"github.com/derailed/k9s/internal/color"
@@ -34,7 +36,14 @@ const (
 	logFmt              = "([hilite:bg:]%s[-:bg:-])[[green:bg:b]%s[-:bg:-]] "
 	logCoFmt            = "([hilite:bg:]%s:[hilite:bg:b]%s[-:bg:-])[[green:bg:b]%s[-:bg:-]] "
 	defaultFlushTimeout = 50 * time.Millisecond
+	ansiEsc             = '\x1b'
 )
+
+// logOp represents a queued log view update.
+type logOp struct {
+	clear bool
+	lines [][]byte
+}
 
 // Log represents a generic log viewer.
 type Log struct {
@@ -51,6 +60,13 @@ type Log struct {
 	follow            bool
 	columnLock        bool
 	requestOneRefresh bool
+
+	opsMx          sync.Mutex
+	ops            []logOp
+	flusherDone    chan struct{}
+	flusherOnce    sync.Once
+	flushBuf       bytes.Buffer
+	hasPlaceholder bool
 }
 
 var _ model.Component = (*Log)(nil)
@@ -90,6 +106,7 @@ func (l *Log) Init(ctx context.Context) (err error) {
 	}
 	l.logs.SetBorderPadding(0, 0, 1, 1)
 	l.logs.SetText("[orange::d]" + logMessage)
+	l.hasPlaceholder = true
 	l.logs.SetWrap(l.app.Config.K9s.Logger.TextWrap)
 	l.logs.SetMaxLines(l.app.Config.K9s.Logger.BufferSize)
 
@@ -108,6 +125,9 @@ func (l *Log) Init(ctx context.Context) (err error) {
 
 	l.model.ToggleShowTimestamp(l.app.Config.K9s.Logger.ShowTime)
 
+	l.flusherDone = make(chan struct{})
+	go l.flusher()
+
 	return nil
 }
 
@@ -119,7 +139,7 @@ func (l *Log) InCmdMode() bool {
 // LogCanceled indicates no more logs are coming.
 func (l *Log) LogCanceled() {
 	slog.Debug("Logs watcher canceled!")
-	l.Flush([][]byte{[]byte("\n🏁 [red::b]Stream exited! No more logs...")})
+	l.pushLines([][]byte{[]byte("\n🏁 [red::b]Stream exited! No more logs...")})
 }
 
 // LogStop disables log flushes.
@@ -141,17 +161,16 @@ func (l *Log) LogResume() {
 
 // LogCleared clears the logs.
 func (l *Log) LogCleared() {
-	l.app.QueueUpdateDraw(func() {
-		l.logs.Clear()
-	})
+	l.pushOp(logOp{clear: true})
 }
 
 // LogFailed notifies an error occurred.
 func (l *Log) LogFailed(err error) {
 	l.app.QueueUpdateDraw(func() {
 		l.app.Flash().Err(err)
-		if l.logs.GetText(true) == logMessage {
+		if l.hasPlaceholder {
 			l.logs.Clear()
+			l.hasPlaceholder = false
 		}
 		if _, err = l.ansiWriter.Write([]byte(tview.Escape(color.Colorize(err.Error(), color.Red)))); err != nil {
 			slog.Error("Log line write failed", slogs.Error, err)
@@ -161,12 +180,18 @@ func (l *Log) LogFailed(err error) {
 
 // LogChanged updates the logs.
 func (l *Log) LogChanged(lines [][]byte) {
-	l.app.QueueUpdateDraw(func() {
-		if l.logs.GetText(true) == logMessage {
-			l.logs.Clear()
-		}
-		l.Flush(lines)
-	})
+	l.pushLines(lines)
+}
+
+func (l *Log) pushLines(lines [][]byte) {
+	l.pushOp(logOp{lines: lines})
+}
+
+func (l *Log) pushOp(op logOp) {
+	l.opsMx.Lock()
+	defer l.opsMx.Unlock()
+
+	l.ops = append(l.ops, op)
 }
 
 // BufferCompleted indicates input was accepted.
@@ -237,9 +262,58 @@ func (l *Log) Stop() {
 	l.model.RemoveListener(l)
 	l.model.Stop()
 	l.cancel()
+	l.stopFlusher()
 	l.app.Styles.RemoveListener(l)
 	l.logs.cmdBuff.RemoveListener(l)
 	l.logs.cmdBuff.RemoveListener(l.app.Prompt())
+}
+
+// flusher serializes view updates on a fixed cadence so bursts of model
+// notifications coalesce into a single ordered ui update.
+func (l *Log) flusher() {
+	t := time.NewTicker(defaultFlushTimeout)
+	defer t.Stop()
+
+	for {
+		select {
+		case <-t.C:
+			l.flushOps()
+		case <-l.flusherDone:
+			return
+		}
+	}
+}
+
+func (l *Log) stopFlusher() {
+	l.flusherOnce.Do(func() { close(l.flusherDone) })
+}
+
+func (l *Log) flushOps() {
+	l.opsMx.Lock()
+	ops := l.ops
+	l.ops = nil
+	l.opsMx.Unlock()
+	if len(ops) == 0 {
+		return
+	}
+
+	var cleared bool
+	lines := make([][]byte, 0, len(ops))
+	for _, op := range ops {
+		if op.clear {
+			cleared, lines = true, lines[:0]
+			continue
+		}
+		lines = append(lines, op.lines...)
+	}
+
+	l.app.Application.QueueUpdateDraw(func() {
+		if cleared || l.hasPlaceholder {
+			l.logs.Clear()
+			l.hasPlaceholder = false
+		}
+		l.Flush(lines)
+	})
 }
 
 // Name returns the component name.
@@ -359,12 +433,7 @@ func (l *Log) Flush(lines [][]byte) {
 	if l.requestOneRefresh {
 		l.requestOneRefresh = false
 	}
-	for i := range lines {
-		if l.cancelUpdates {
-			break
-		}
-		_, _ = l.ansiWriter.Write(lines[i])
-	}
+	l.writeLines(lines)
 	if l.follow {
 		if l.columnLock {
 			// Enables end tracking without resetting column
@@ -373,6 +442,23 @@ func (l *Log) Flush(lines [][]byte) {
 			l.logs.ScrollToEnd()
 		}
 	}
+}
+
+// writeLines renders a batch in one shot, skipping ansi translation for
+// plain utf-8 text.
+func (l *Log) writeLines(lines [][]byte) {
+	l.flushBuf.Reset()
+	for i := range lines {
+		l.flushBuf.Write(lines[i])
+	}
+
+	bb := l.flushBuf.Bytes()
+	// The ansi writer rewrites invalid utf-8 runes, so keep it in the loop.
+	if !utf8.Valid(bb) || bytes.IndexByte(bb, ansiEsc) >= 0 {
+		_, _ = l.ansiWriter.Write(bb)
+		return
+	}
+	_, _ = l.logs.Write(bb)
 }
 
 // ----------------------------------------------------------------------------

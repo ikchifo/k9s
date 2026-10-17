@@ -279,6 +279,11 @@ func (l *Log) ToggleAllContainers(ctx context.Context) {
 }
 
 func (l *Log) updateLogs(ctx context.Context, c dao.LogChan) {
+	// Drain lines as they come; the ticker flushes them in batches so
+	// chatty streams still surface within one flush interval.
+	t := time.NewTicker(l.flushTimeout)
+	defer t.Stop()
+
 	for {
 		select {
 		case item, ok := <-c:
@@ -292,14 +297,7 @@ func (l *Log) updateLogs(ctx context.Context, c dao.LogChan) {
 				return
 			}
 			l.Append(item)
-			var overflow bool
-			l.mx.RLock()
-			overflow = int64(l.lines.Len()-l.lastSent) > l.logOptions.Lines
-			l.mx.RUnlock()
-			if overflow {
-				l.Notify()
-			}
-		case <-time.After(l.flushTimeout):
+		case <-t.C:
 			l.Notify()
 		case <-ctx.Done():
 			return
