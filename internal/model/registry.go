@@ -129,7 +129,7 @@ var Registry = map[*client.GVR]ResourceMeta{
 		Renderer: new(render.PersistentVolumeClaim),
 	},
 	client.EvGVR: {
-		DAO:      new(dao.Table),
+		DAO:      new(dao.Event),
 		Renderer: new(render.Event),
 	},
 

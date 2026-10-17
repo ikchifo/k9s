@@ -132,19 +132,13 @@ func (n *Node) Drain(path string, opts DrainOptions, w io.Writer) error {
 
 // Get returns a node resource.
 func (n *Node) Get(ctx context.Context, path string) (runtime.Object, error) {
-	oo, err := n.Resource.List(ctx, "")
+	o, err := n.getFactory().Get(client.NodeGVR, client.FQN(client.ClusterScope, path), true, labels.Everything())
 	if err != nil {
 		return nil, err
 	}
-
-	var raw *unstructured.Unstructured
-	for _, o := range oo {
-		if u, ok := o.(*unstructured.Unstructured); ok && u.GetName() == path {
-			raw = u
-		}
-	}
-	if raw == nil {
-		return nil, fmt.Errorf("unable to locate node %s", path)
+	raw, ok := o.(*unstructured.Unstructured)
+	if !ok {
+		return nil, fmt.Errorf("expecting *unstructured.Unstructured but got `%T", o)
 	}
 
 	var nmx *mv1beta1.NodeMetrics
@@ -154,8 +148,8 @@ func (n *Node) Get(ctx context.Context, path string) (runtime.Object, error) {
 
 	podCount := -1
 	if shouldCountPods, _ := ctx.Value(internal.KeyPodCounting).(bool); shouldCountPods {
-		if pp, err := n.GetPods(path); err == nil {
-			podCount = len(pp)
+		if c, err := n.podCount(path); err == nil {
+			podCount = c
 		}
 	}
 
@@ -175,11 +169,13 @@ func (n *Node) List(ctx context.Context, ns string) ([]runtime.Object, error) {
 	}
 
 	shouldCountPods, _ := ctx.Value(internal.KeyPodCounting).(bool)
-	var pods []runtime.Object
+	podCounts := map[string]int{}
 	if shouldCountPods {
-		pods, err = n.getFactory().List(client.PodGVR, client.BlankNamespace, false, labels.Everything())
+		pods, err := n.getFactory().List(client.PodGVR, client.BlankNamespace, false, labels.Everything())
 		if err != nil {
 			slog.Error("Unable to list pods", slogs.Error, err)
+		} else {
+			podCounts = countPodsByNode(pods)
 		}
 	}
 	res := make([]runtime.Object, 0, len(oo))
@@ -193,13 +189,7 @@ func (n *Node) List(ctx context.Context, ns string) ([]runtime.Object, error) {
 		_, name := client.Namespaced(fqn)
 		podCount := -1
 		if shouldCountPods {
-			podCount, err = n.CountPods(pods, name)
-			if err != nil {
-				slog.Error("Unable to get pods count",
-					slogs.ResName, name,
-					slogs.Error, err,
-				)
-			}
+			podCount = podCounts[name]
 		}
 		res = append(res, &render.NodeWithMetrics{
 			Raw:      u,
@@ -211,15 +201,20 @@ func (n *Node) List(ctx context.Context, ns string) ([]runtime.Object, error) {
 	return res, nil
 }
 
-// CountPods counts the pods scheduled on a given node.
-func (*Node) CountPods(oo []runtime.Object, nodeName string) (int, error) {
+// podCount tallies the pods scheduled on a given node.
+func (n *Node) podCount(nodeName string) (int, error) {
+	oo, err := n.getFactory().List(client.PodGVR, client.BlankNamespace, false, labels.Everything())
+	if err != nil {
+		return 0, err
+	}
+
 	var count int
 	for _, o := range oo {
-		pod, err := client.ToPod(o)
+		p, err := client.ToPod(o)
 		if err != nil {
 			return count, err
 		}
-		if pod.Spec.NodeName == nodeName {
+		if p.Spec.NodeName == nodeName {
 			count++
 		}
 	}
@@ -227,25 +222,21 @@ func (*Node) CountPods(oo []runtime.Object, nodeName string) (int, error) {
 	return count, nil
 }
 
-// GetPods returns all pods running on given node.
-func (n *Node) GetPods(nodeName string) ([]*v1.Pod, error) {
-	oo, err := n.getFactory().List(client.PodGVR, client.BlankNamespace, false, labels.Everything())
-	if err != nil {
-		return nil, err
-	}
-
-	pp := make([]*v1.Pod, 0, len(oo))
+// countPodsByNode tallies pods per node in a single pass.
+func countPodsByNode(oo []runtime.Object) map[string]int {
+	counts := make(map[string]int, len(oo))
 	for _, o := range oo {
-		po, err := client.ToPod(o)
+		p, err := client.ToPod(o)
 		if err != nil {
-			return nil, err
+			slog.Error("Unable to count pod", slogs.Error, err)
+			continue
 		}
-		if po.Spec.NodeName == nodeName {
-			pp = append(pp, po)
+		if p.Spec.NodeName != "" {
+			counts[p.Spec.NodeName]++
 		}
 	}
 
-	return pp, nil
+	return counts
 }
 
 // ensureCordoned returns whether the given node has been cordoned
