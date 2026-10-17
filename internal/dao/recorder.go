@@ -243,12 +243,13 @@ func (r *Recorder) recordPodsMetrics(ctx context.Context, ns string) error {
 			"type":      podMetrics,
 		},
 	}
+	// A single map fetch replaces per-pod fetches that each rebuilt it.
 	dial := client.DialMetrics(r.conn)
+	mmx, _ := dial.FetchPodsMetricsMap(ctx, ns)
 	for i := range pp.Items {
 		p := pp.Items[i]
-		fqn := client.FQN(p.Namespace, p.Name)
-		pmx, err := dial.FetchPodMetrics(ctx, fqn)
-		if err != nil {
+		pmx, ok := mmx[client.FQN(p.Namespace, p.Name)]
+		if !ok {
 			continue
 		}
 		for _, c := range pmx.Containers {

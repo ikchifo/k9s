@@ -19,9 +19,9 @@ import (
 )
 
 const (
-	mxCacheSize           = 100
-	mxCacheExpiry         = 1 * time.Minute
-	metricsPageSize int64 = 500
+	mxCacheSize   = 100
+	mxCacheExpiry = 1 * time.Minute
+	podsMapKey    = "podsMap"
 )
 
 // MetricsDial tracks global metric server handle.
@@ -87,6 +87,15 @@ func (*MetricsServer) ClusterLoad(nos *v1.NodeList, nmx *mv1beta1.NodeMetricsLis
 	mx.PercCPU, mx.PercMEM = ToPercentage(ccpu, tcpu), ToPercentage(cmem, tmem)
 
 	return nil
+}
+
+// mxNS normalizes a namespace for metrics requests and cache keys.
+func mxNS(ns string) string {
+	if ns == NamespaceAll {
+		return BlankNamespace
+	}
+
+	return ns
 }
 
 func (m *MetricsServer) checkAccess(ns string, gvr *GVR, msg string) error {
@@ -187,10 +196,9 @@ func (m *MetricsServer) fetchNodesMetrics(ctx context.Context) (*mv1beta1.NodeMe
 	if err != nil {
 		return mx, err
 	}
-	mxList := &mv1beta1.NodeMetricsList{
-		Items: make([]mv1beta1.NodeMetrics, 0, metricsPageSize),
-	}
-	opts := metav1.ListOptions{Limit: metricsPageSize}
+	// metrics-server ignores limit/continue; page defensively in case of chunking.
+	mxList := new(mv1beta1.NodeMetricsList)
+	opts := metav1.ListOptions{}
 	for {
 		page, err := client.MetricsV1beta1().NodeMetricses().List(ctx, opts)
 		if err != nil {
@@ -230,6 +238,16 @@ func (m *MetricsServer) FetchNodeMetrics(ctx context.Context, n string) (*mv1bet
 
 // FetchPodsMetricsMap fetch pods metrics as a map.
 func (m *MetricsServer) FetchPodsMetricsMap(ctx context.Context, ns string) (PodsMetricsMap, error) {
+	// Cache the built map alongside the list so callers don't rebuild it per fetch.
+	key := FQN(mxNS(ns), podsMapKey)
+	if entry, ok := m.cache.Get(key); ok {
+		hh, ok := entry.(PodsMetricsMap)
+		if !ok {
+			return nil, fmt.Errorf("expected PodsMetricsMap but got %T", entry)
+		}
+		return hh, nil
+	}
+
 	mm, err := m.FetchPodsMetrics(ctx, ns)
 	if err != nil {
 		return nil, err
@@ -240,6 +258,7 @@ func (m *MetricsServer) FetchPodsMetricsMap(ctx context.Context, ns string) (Pod
 		mx := mm.Items[i]
 		hh[FQN(mx.Namespace, mx.Name)] = &mx
 	}
+	m.cache.Add(key, hh, mxCacheExpiry)
 
 	return hh, nil
 }
@@ -265,9 +284,7 @@ func (m *MetricsServer) fetchPodsMetrics(ctx context.Context, ns string) (*mv1be
 	mx := new(mv1beta1.PodMetricsList)
 	const msg = "user is not authorized to list pods metrics"
 
-	if ns == NamespaceAll {
-		ns = BlankNamespace
-	}
+	ns = mxNS(ns)
 	if err := m.checkAccess(ns, PmxGVR, msg); err != nil {
 		return mx, err
 	}
@@ -285,10 +302,9 @@ func (m *MetricsServer) fetchPodsMetrics(ctx context.Context, ns string) (*mv1be
 	if err != nil {
 		return mx, err
 	}
-	mxList := &mv1beta1.PodMetricsList{
-		Items: make([]mv1beta1.PodMetrics, 0, metricsPageSize),
-	}
-	opts := metav1.ListOptions{Limit: metricsPageSize}
+	// metrics-server ignores limit/continue; page defensively in case of chunking.
+	mxList := new(mv1beta1.PodMetricsList)
+	opts := metav1.ListOptions{}
 	for {
 		page, err := client.MetricsV1beta1().PodMetricses(ns).List(ctx, opts)
 		if err != nil {
