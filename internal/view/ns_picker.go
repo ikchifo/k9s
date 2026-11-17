@@ -93,11 +93,11 @@ func (a *App) rescopedCmd(ns string) (string, bool) {
 		return "", false
 	}
 
-	line, ok := a.cmdHistory.Top()
-	if !ok {
+	c := v.GetTable().command
+	if c == nil {
 		return "", false
 	}
-	p := cmd.NewInterpreter(line)
+	p := cmd.NewInterpreter(c.GetLine())
 	p.SwitchNS(ns)
 
 	return p.GetLine(), true
